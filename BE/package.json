@@ -1,0 +1,17 @@
+{
+  "name": "be",
+  "version": "1.0.0",
+  "description": "quizgame",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "istvanamolnar",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^8.1.0",
+    "mongoose": "^5.7.1",
+    "router": "^1.3.3"
+  }
+}
