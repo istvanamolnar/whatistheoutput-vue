@@ -5,7 +5,7 @@ const router = express.Router();
 const Question = require('../models/questions');
 
 router.get('/', (req, res) => {
-  Question.find().select('_id question')
+  Question.find().select('_id question answers')
   .then((questions) => {
     res.status(200).json(questions);
   })

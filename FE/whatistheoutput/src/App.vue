@@ -1,17 +1,17 @@
 <template>
 <div>
   <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/styles/default.min.css">
-  <question-field />
+  <quiz-area/>
 </div>
 </template>
 
 <script>
-import QuestionField from './components/QuestionField';
+import QuizArea from './components/QuizArea/QuizArea';
 
 export default {
   name: 'app',
   components: {
-    'question-field': QuestionField
+    'quiz-area': QuizArea
   }
 }
 </script>
