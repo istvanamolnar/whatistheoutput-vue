@@ -1,9 +1,9 @@
 <template>
-  <div v-if="answers" class="container">>
+  <div v-if="answers" class="container">
     <div v-for="{answer, _id} in answers" 
-          :key="_id" class="option" 
-          @click.once="selectAnswer($event, _id)"
-          :class="[selected === _id ? 'active' : 'blue']">
+      :key="_id" class="option btn btn-outline-success" 
+      @click.once="selectAnswer($event, _id)"
+      :class="[selected === _id ? 'active' : 'blue']">
       <pre v-highlightjs class="line"><code class="javascript">{{ answer }}</code></pre>
     </div>
   </div>
@@ -22,32 +22,40 @@ export default {
 </script>
 
 <style scoped>
+
   .container {
-    width: 100%;
-    color: #fff;
-  }
-  .option {
-    border: 1px solid #999;
     border-radius: 15px;
     display: flex;
-    justify-content: center;
-    margin: 20px;
+    flex-direction: column;
+    text-align: center;
+    width: 100%;
+    height: 50vh;
+  }
+
+  .option {
+    margin: 5px auto;
+    font-size: 20px;
+    font-size: 2.5vh;
+    width: 100%;
     padding: 10px;
-    width: 80%;
-    background-color: currentColor;
+    background-color: #fff;
+  }
+
+  .option:hover {
+    cursor: pointer;
+    -webkit-text-fill-color: #fff;
   }
 
   .line {
     margin: 0;
     padding: 0;
     width: max-content;
+    margin: auto;
   }
 
   .javascript {
-    padding: 2px !important;
-    background-color: #f5f5f5;
-    font-size: 24px;
-    font-size: 3.5vw;
+    padding: 2px;
+    background-color: transparent;
   }
 
   .active {

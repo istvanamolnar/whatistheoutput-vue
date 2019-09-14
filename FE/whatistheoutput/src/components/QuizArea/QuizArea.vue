@@ -1,8 +1,8 @@
 <template>
-<div v-if="currentQuestion">
-  <div class="container">
-    <question-field :currentQuestion="currentQuestion.question"/>
-    <answers-field 
+<div class="container" v-if="currentQuestion">
+  <div class="row">
+    <question-field class="col-xl-7 col-lg-8 col-sm-10 col-xs-10 question" :currentQuestion="currentQuestion.question"/>
+    <answers-field class="col-xl-7 col-lg-8 col-sm-10 col-xs-10 answers"
       :selected="selected"
       :answers="currentQuestion.answers" 
       @chosenAnswer="handleSelected"/>
@@ -60,6 +60,11 @@ export default {
 
 <style scoped>
   .container {
+    margin: auto;
+    height: 40vh;
+  }
+
+  /* .container {
     padding: 3vh;
     border-radius: 15px;
     background-color: #f5f5f5;
@@ -69,5 +74,5 @@ export default {
     align-items: center;
     width: 65%;
     margin: 2vh auto;
-  }
+  } */
 </style>
