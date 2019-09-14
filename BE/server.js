@@ -5,12 +5,11 @@ const app = express();
 const port = 3000;
 
 const mongoose = require('mongoose');
-mongoose.set('useFindAndModify', false);
 const dotenv = require('dotenv').config();
 
-const questionsRoute = require('./routes/question');
+const questionsRoute = require('./routes/questions');
 
-mongoose.connect(`mongodb+srv://istvanamolnar:password@whatistheoutput-bekgg.mongodb.net/test?retryWrites=true&w=majority`, {
+mongoose.connect(`mongodb+srv://${process.env.U}:${process.env.P}@whatistheoutput-bekgg.mongodb.net/whatistheoutput?retryWrites=true&w=majority`, {
     useNewUrlParser: true,
     useUnifiedTopology: true
   })
@@ -21,10 +20,8 @@ mongoose.connect(`mongodb+srv://istvanamolnar:password@whatistheoutput-bekgg.mon
     console.log(error);
   });
 
-mongoose.set('useFindAndModify', false);
-mongoose.set('useCreateIndex', true);
 app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', `${process.env.BACKEND_SERVER_BASE_URL}`);
+  res.setHeader('Access-Control-Allow-Origin', `${process.env.FRONTEND_SERVER_BASE_URL}`);
   res.setHeader(
     'Access-Control-Allow-Headers',
     'Origin, X-Requested-With, Content-Type, Accept, Authorization, refreshToken, userId, email'
