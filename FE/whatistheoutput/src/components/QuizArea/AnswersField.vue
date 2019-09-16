@@ -42,6 +42,7 @@ export default {
     height: 40px;
     background-color: #fff;
     border: 2px solid #009b48;
+    font-weight: 600; 
   }
 
   .btn:not(.disabled):hover {

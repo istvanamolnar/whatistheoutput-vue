@@ -20,7 +20,7 @@ export default {
   }
 }
   .question-field {
-    background-color: #f8f8f8;
+    background-color: rgba(255, 255, 255, 0.5);
     font-size: 24px;
     font-size: 2.5vh;
   }

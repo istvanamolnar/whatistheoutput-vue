@@ -88,7 +88,7 @@ export default {
   @media all and (max-height: 420px) {
     .rotated {
       flex-direction: row;
-      justify-content: space-between;
+      justify-content: center;
       width: 90vw;
     }
 
