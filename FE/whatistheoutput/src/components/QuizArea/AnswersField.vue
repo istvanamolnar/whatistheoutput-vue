@@ -41,6 +41,7 @@ export default {
     width: 300px;
     height: 40px;
     background-color: #fff;
+    border: 2px solid #009b48;
   }
 
   .btn:not(.disabled):hover {
