@@ -1,10 +1,12 @@
 <template>
   <div v-if="answers" class="container">
-    <div v-for="{answer, _id} in answers" 
-      :key="_id" class="option btn btn-outline-success" 
-      @click.once="selectAnswer($event, _id)"
-      :class="[selected === _id ? 'active' : 'blue']">
-      <pre v-highlightjs class="line"><code class="javascript">{{ answer }}</code></pre>
+    <div v-for="ans in answers" :key="ans._id" 
+      class="row mx-auto my-1 col-10 col-md-7 col-lg-5 btn btn-outline-success" 
+      @click.once="selectAnswer($event, ans)"
+      :class="[selected !== null && selected === ans._id ? 'active' : selected !== null ? 'disabled' : '']">
+      <highlight-code lang="javascript" class="m-auto">
+        {{ ans.answer }}
+      </highlight-code>
     </div>
   </div>
 </template>
@@ -14,8 +16,20 @@ export default {
   name: 'AnswersField',
   props: ['answers', 'selected'],
   methods: {
-    selectAnswer(event, id) { 
-      this.$emit('chosenAnswer', id);
+    selectAnswer(event, ans) {
+      this.$emit('chosenAnswer', ans._id);
+      if (this.selected === null) {
+        const selectedAnswer = this.answers.find(answer => answer._id === ans._id);
+        setTimeout(() => {
+          if (selectedAnswer.isCorrect) {
+            // eslint-disable-next-line
+            console.log(this.selected);
+          } else {
+            // eslint-disable-next-line
+            console.log('nope');
+          }
+        }, 3000);
+      }
     }
   }
 }
@@ -23,43 +37,8 @@ export default {
 
 <style scoped>
 
-  .container {
-    border-radius: 15px;
-    display: flex;
-    flex-direction: column;
-    text-align: center;
-    width: 100%;
-    height: 50vh;
-  }
-
-  .option {
-    margin: 5px auto;
-    font-size: 20px;
-    font-size: 2.5vh;
-    width: 100%;
-    padding: 10px;
-    background-color: #fff;
-  }
-
-  .option:hover {
-    cursor: pointer;
-    -webkit-text-fill-color: #fff;
-  }
-
-  .line {
-    margin: 0;
-    padding: 0;
-    width: max-content;
-    margin: auto;
-  }
-
-  .javascript {
-    padding: 2px;
-    background-color: transparent;
-  }
-
   .active {
     border: 2px solid green;
+    -webkit-text-fill-color: #fff;
   }
-
 </style>

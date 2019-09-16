@@ -1,10 +1,18 @@
-import Vue from 'vue';
+import Vue from 'vue'
 import App from './App.vue';
-import VueHighlightJS from 'vue-highlightjs';
 import 'bootstrap';
 import'./assets/app.scss';
 
-Vue.use(VueHighlightJS)
+import VueHighlightJS from 'vue-highlight.js';
+import javascript from 'highlight.js/lib/languages/javascript';
+import 'highlight.js/styles/github.css';
+
+Vue.use(VueHighlightJS, {
+	languages: {
+		javascript
+	}
+});
+
 Vue.config.productionTip = false
 new Vue({
   render: h => h(App),

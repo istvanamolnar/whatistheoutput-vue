@@ -1,7 +1,5 @@
 <template>
-<div>
   <quiz-area/>
-</div>
 </template>
 
 <script>
