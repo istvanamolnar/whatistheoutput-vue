@@ -1,7 +1,7 @@
 <template>
-  <div v-if="answers" class="container">
+  <div v-if="answers" class="container d-flex flex-column">
     <div v-for="ans in answers" :key="ans._id" 
-      class="row mx-auto my-1 col-10 col-md-7 col-lg-5 btn btn-outline-success" 
+      class="mx-auto my-1 btn btn-outline-success" 
       @click.once="selectAnswer($event, ans)"
       :class="[selected !== null && selected === ans._id ? 'active' : selected !== null ? 'disabled' : '']">
       <highlight-code lang="javascript" class="m-auto">
@@ -36,9 +36,21 @@ export default {
 </script>
 
 <style scoped>
+  .btn {
+    display: flex;
+    width: 300px;
+    height: 40px;
+    background-color: #fff;
+  }
 
-  .active {
-    border: 2px solid green;
+  .btn:not(.disabled):hover {
     -webkit-text-fill-color: #fff;
+  }
+  .active {
+    -webkit-text-fill-color: #fff;
+  }
+
+  .disabled {
+    background-color: #fff;
   }
 </style>

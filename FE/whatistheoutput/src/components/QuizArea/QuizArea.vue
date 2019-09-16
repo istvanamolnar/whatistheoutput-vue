@@ -1,13 +1,14 @@
 <template>
-  <div class="container-fluid p-0" v-if="questionText">
-    <div class="row d-flex flex-column my-5">
-      <div class="p mx-auto my-5 title">What Is The Output?</div>
-      <question-field class="question p-2 m-auto" :questionText="questionText"/>
-      <answers-field class="answers d-flex flex-column m-auto p-2"
+  <div class="main-container d-flex flex-column m-auto p-0 h-100 rotated" v-if="questionText">
+    <div class="title mx-auto">What Is The Output?</div>
+    <div class="mx-auto my-2 d-flex rotated">
+      <question-field class="question m-auto" :questionText="questionText"/>
+      <answers-field class="answers mx-auto p-2"
         :selected="selected"
         :answers="currentQuestion.answers" 
         @chosenAnswer="handleSelected"/>
     </div>
+    <div class="score text-center">Score: 8966</div>
   </div>
 </template>
 
@@ -38,7 +39,7 @@ export default {
         this.questions = res.data.slice(1);
       })
       .then(() => {
-        this.currentQuestion = this.questions.find(question => question._id === '5d7bc0ae1c9d44000079f9f7');
+        this.currentQuestion = this.questions.find(question => question._id === '5d7bc2771c9d44000079f9f9');
         this. questionText = this.currentQuestion.question.join('\n');
       })
       // eslint-disable-next-line
@@ -55,18 +56,51 @@ export default {
 </script>
 
 <style scoped>
-  .question {
-    background-color: #f8f8f8;
-    font-size: 24px;
-    font-size: 2.5vh;
+
+  .row {
+    width: 99vw;
+  }
+  .rotated {
+    flex-direction: column
   }
 
   .title {
-    font-family: 'ZCOOL KuaiLe', cursive;
-    font-size: 20px;
-    font-size: 4.5vh;
-    background: linear-gradient(to right, #333, #555);
+    background: linear-gradient(to right, #444, #555);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+    font-family: 'ZCOOL KuaiLe', cursive;
+    font-size: 24px;
+    font-size: 4vh;
+    font-weight: 600;
+    margin-top: 5vh;
+  }
+
+  .score {
+    background: linear-gradient(to right, #555, #333);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-family: 'ZCOOL KuaiLe', cursive;
+    font-size: 24px;
+    font-size: 3.5vh;
+    font-weight: 600;
+  }
+
+  @media all and (max-height: 420px) {
+    .rotated {
+      flex-direction: row;
+      justify-content: space-between;
+      width: 90vw;
+    }
+
+    .title {
+      font-size: 30px;
+    }
+
+    .score {
+      font-size: 2.5vw;
+      position:fixed;
+      bottom: 5vh;
+      right: 5vw;
+    }
   }
 </style>

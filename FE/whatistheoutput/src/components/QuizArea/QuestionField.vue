@@ -1,6 +1,6 @@
 <template>
-  <div class="row" v-if="questionText">
-    <highlight-code lang="javascript" class="m-auto">
+  <div v-if="questionText" class="question-field">
+    <highlight-code lang="javascript" class="question-text m-auto p-2">
       {{ questionText }}
     </highlight-code>
   </div>
@@ -14,5 +14,14 @@ export default {
 </script>
 
 <style scoped>
-
+@media all and (max-height: 420px) {
+  .question-text {
+    font-size: 2.5vw;
+  }
+}
+  .question-field {
+    background-color: #f8f8f8;
+    font-size: 24px;
+    font-size: 2.5vh;
+  }
 </style>
