@@ -15,7 +15,7 @@
       </transition>
       <transition name="slide-fade">
         <div v-if="reveal" class="mx-0 my-1 btn-outline-success next"
-          @click="getNextQuestion">Next</div>
+          @click="getNextQuestion()">Next</div>
       </transition>
     </div>
   </div>
@@ -32,8 +32,8 @@ export default {
   },
   methods: {
     selectAnswer(event, ans) {
-      this.$emit('chosenAnswer', ans._id);
       if (this.selected === null) {
+        this.$emit('chosenAnswer', ans._id);
         const selectedAnswer = this.answers.find(answer => answer._id === ans._id);
         setTimeout(() => {
           if (!selectedAnswer.isCorrect) {
@@ -63,11 +63,13 @@ export default {
     width: 300px;
     height: 40px;
     background-color: #fff;
-    border: 2px solid #009b48;
+    border: 2px solid #3ca744;
     font-weight: 600; 
   }
 
-  .btn:not(.disabled):hover, .explain:not(.disabled):hover {
+  .btn:not(.disabled):not(.btn-danger):hover {
+    background-color: #3ca744;
+    cursor: pointer;
     -webkit-text-fill-color: #fff;
   }
 
@@ -89,8 +91,15 @@ export default {
     width: 140px;
   }
 
-  .next:hover, .explain:hover {
+  .next:hover {
+    background-color: #3ca744;
     cursor: pointer;
+  }
+  
+  .explain:hover {
+    background-color: #ffd500;
+    cursor: pointer;
+    -webkit-text-fill-color: #fff;
   }
 
   .next {
@@ -111,10 +120,10 @@ export default {
 
   /* Animations */
   .slide-fade-enter-active {
-    transition: all .3s ease;
+    transition: all .5s ease;
   }
   .slide-fade-leave-active {
-    transition: all .5s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+    transition: all .3s cubic-bezier(1.0, 0.5, 0.8, 1.0);
   }
   .slide-fade-enter, .slide-fade-leave-to {
     transform: translateX(10px);
