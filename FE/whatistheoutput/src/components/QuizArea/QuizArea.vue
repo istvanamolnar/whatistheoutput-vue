@@ -1,13 +1,15 @@
 <template>
-  <div class="main-container d-flex flex-column m-auto p-0 h-100 rotated" v-if="questionText">
+  <div class="main-container d-flex flex-column m-auto p-0 h-100 rotated">
     <div class="title mx-auto">What Is The Output?</div>
-    <div class="mx-auto my-2 d-flex rotated">
-      <question-field class="question m-auto" :questionText="questionText"/>
-      <answers-field class="answers mx-auto p-2"
-        :selected="selected"
-        :answers="currentQuestion.answers" 
-        @chosenAnswer="handleSelected"/>
-    </div>
+    <transition name="slide-fade">
+      <div v-if="questionText" class="mx-auto my-2 d-flex rotated">
+        <question-field class="question m-auto" :questionText="questionText"/>
+        <answers-field class="answers mx-auto p-2"
+          :selected="selected"
+          :answers="currentQuestion.answers" 
+          @chosenAnswer="handleSelected"/>
+      </div>
+    </transition>
     <div class="score text-center">Score: 8966</div>
   </div>
 </template>
@@ -33,15 +35,12 @@ export default {
     }
   },
 
-  beforeCreate() {
+  beforeMount() {
     axios.get("http://localhost:3000/questions")
       .then(res => {
         this.questions = res.data.slice(1);
       })
-      .then(() => {
-        this.currentQuestion = this.questions.find(question => question._id === '5d7bc2771c9d44000079f9f9');
-        this. questionText = this.currentQuestion.question.join('\n');
-      })
+      .then(() => this.getAQuestion())
       // eslint-disable-next-line
       .catch(err => console.log(err));
   },
@@ -49,7 +48,19 @@ export default {
     handleSelected(value) {
       if (!this.selected) {
         this.selected = value;
+      } else {
+        this.selected = null;
+        this.questionText = '';
+        setTimeout(() => {
+          this.getAQuestion();
+        }, 400);
       }
+    },
+
+    getAQuestion() {
+      this.currentQuestion = this.questions[0];
+      this.questions = this.questions.slice(1);
+      this.questionText = this.currentQuestion.question.join('\n');
     }
   }
 }
@@ -99,8 +110,17 @@ export default {
     .score {
       font-size: 2.5vw;
       position:fixed;
-      bottom: 5vh;
-      right: 5vw;
+      bottom: 3vh;
+      right: 3vw;
     }
+  }
+
+  /* Animations */
+  .slide-fade-leave-active {
+    transition: all .4s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+  }
+  .slide-fade-leave-to {
+    transform: translateX(10px);
+    opacity: 0;
   }
 </style>
