@@ -1,5 +1,5 @@
 <template>
-  <div class="main-container d-flex flex-column m-auto p-0 h-100 rotated">
+  <div class="main-container d-flex flex-column m-auto p-0 h-100">
     <div class="title mx-auto">What Is The Output?</div>
     <transition name="slide-fade">
       <div v-if="questionText" class="mx-auto my-2 d-flex rotated">
@@ -42,7 +42,7 @@ export default {
       })
       .then(() => this.getAQuestion())
       // eslint-disable-next-line
-      .catch(err => console.log(err));
+      .catch(err => console.log('WTF'));
   },
   methods: {
     handleSelected(value) {
@@ -68,15 +68,19 @@ export default {
 
 <style scoped>
 
+  .main-container {
+    background: url('../../assets/doodles.png');
+  }
   .row {
     width: 99vw;
   }
+
   .rotated {
     flex-direction: column
   }
 
   .title {
-    background: linear-gradient(to right, #444, #555);
+    background: linear-gradient(to right, #333, #444);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     font-family: 'ZCOOL KuaiLe', cursive;
@@ -87,7 +91,7 @@ export default {
   }
 
   .score {
-    background: linear-gradient(to right, #555, #333);
+    background: linear-gradient(to right, #333, #444);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     font-family: 'ZCOOL KuaiLe', cursive;
