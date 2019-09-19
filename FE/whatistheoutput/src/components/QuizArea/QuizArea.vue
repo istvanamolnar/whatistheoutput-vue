@@ -69,7 +69,7 @@ export default {
 <style scoped>
 
   .main-container {
-    background: url('../../assets/doodles.png');
+    background: url("http://localhost:3000/shattered.png");
   }
   .row {
     width: 99vw;
@@ -80,7 +80,7 @@ export default {
   }
 
   .title {
-    background: linear-gradient(to right, #333, #444);
+    background: linear-gradient(to right, #bbb, #ddd);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     font-family: 'ZCOOL KuaiLe', cursive;
@@ -91,7 +91,7 @@ export default {
   }
 
   .score {
-    background: linear-gradient(to right, #333, #444);
+    background: linear-gradient(to right, #bbb, #ddd);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     font-family: 'ZCOOL KuaiLe', cursive;

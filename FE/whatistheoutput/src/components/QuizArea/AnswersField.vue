@@ -62,7 +62,7 @@ export default {
     display: flex;
     width: 300px;
     height: 40px;
-    background-color: #fff;
+    background-color: #0f0f0f;
     border: 2px solid #3ca744;
     font-weight: 600; 
   }
@@ -80,7 +80,7 @@ export default {
 
   .next, .explain {
     align-items: center;
-    background-color: #fff;
+    background-color: #0f0f0f;
     border-radius: 4px;
     border-width: 2px;
     display: flex;
@@ -115,7 +115,7 @@ export default {
   }
 
   .disabled {
-    background-color: #fff;
+    background-color: #0f0f0f;
   }
 
   /* Animations */

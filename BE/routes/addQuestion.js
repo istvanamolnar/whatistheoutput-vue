@@ -6,7 +6,7 @@ const Question = require('../models/questions');
 
 router.post('/', (req, res) => {
   const questionData = req.body;
-  if (questionData.question && questionData.answers && questionData.description) {
+  if (questionData.question && questionData.answers) {
     const newQuestion = {
       question: req.body.question.split('\n'),
       answers: req.body.answers,

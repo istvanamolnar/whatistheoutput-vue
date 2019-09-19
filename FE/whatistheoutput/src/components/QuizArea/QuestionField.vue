@@ -31,7 +31,8 @@ export default {
   }
   
   .question-field {
-    background-color: rgba(255, 255, 255, 0.8);
+    background-color: rgba(0, 0, 0, 0.7);
+    border-radius: 4px;
     font-size: 24px;
     font-size: 2.5vh;
   }

@@ -37,6 +37,8 @@ app.use((req, res, next) => {
 
 app.use(express.json());
 
+app.use(express.static('public'));
+
 app.use('/questions', questionsRoute);
 app.use('/addQuestion', addQuestionRoute);
 
