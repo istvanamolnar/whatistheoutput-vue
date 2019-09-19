@@ -21,7 +21,6 @@
   </div>
 </template>
 <script>
-
 export default {
   name: 'AnswersField',
   props: ['answers', 'selected'],
@@ -33,7 +32,7 @@ export default {
   methods: {
     selectAnswer(event, ans) {
       if (this.selected === null) {
-        this.$emit('chosenAnswer', ans._id);
+        this.$emit('chosenAnswer', ans);
         const selectedAnswer = this.answers.find(answer => answer._id === ans._id);
         setTimeout(() => {
           if (!selectedAnswer.isCorrect) {

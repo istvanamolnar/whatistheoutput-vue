@@ -1,5 +1,5 @@
 <template>
-  <div class="main-container d-flex flex-column m-auto p-0 h-100">
+  <div class="main-container d-flex flex-column m-auto p-0 h-100" ref="main_container">
     <div class="title mx-auto">What Is The Output?</div>
     <transition name="slide-fade">
       <div v-if="questionText" class="mx-auto my-2 d-flex rotated">
@@ -10,7 +10,7 @@
           @chosenAnswer="handleSelected"/>
       </div>
     </transition>
-    <div class="score text-center">Score: 8966</div>
+    <div class="score text-center">Score: {{ user.currentGame.score }}</div>
   </div>
 </template>
 
@@ -18,7 +18,7 @@
 import QuestionField from './QuestionField';
 import AnswersField from './AnswersField';
 
-import axios from 'axios';
+import { eventBus } from '../../main';
 
 export default {
   name: 'QuizArea',
@@ -28,26 +28,26 @@ export default {
   },
   data() {
     return {
-      questions: [],
+      user: eventBus.user,
       currentQuestion : [],
       selected: null,
       questionText: ''
     }
   },
 
-  beforeMount() {
-    axios.get("http://localhost:3000/questions")
-      .then(res => {
-        this.questions = res.data.slice(1);
-      })
-      .then(() => this.getAQuestion())
-      // eslint-disable-next-line
-      .catch(err => console.log('WTF'));
+  mounted() {
+    this.getAQuestion();
+    this.$refs.main_container.style.backgroundImage = `url('${process.env.VUE_APP_BACKEND_SERVER_URL}/images/${eventBus.user.theme}.png')`;
   },
+
   methods: {
     handleSelected(value) {
+      eventBus.user.currentGame.answers.push({
+        questionId: this.currentQuestion._id,
+        answer: value
+      });
       if (!this.selected) {
-        this.selected = value;
+        this.selected = value._id;
       } else {
         this.selected = null;
         this.questionText = '';
@@ -58,19 +58,15 @@ export default {
     },
 
     getAQuestion() {
-      this.currentQuestion = this.questions[0];
-      this.questions = this.questions.slice(1);
+      this.currentQuestion = this.user.currentGame.questions[0];
+      this.user.currentGame.questions = this.user.currentGame.questions.slice(1);
       this.questionText = this.currentQuestion.question.join('\n');
-    }
+    },
   }
 }
 </script>
 
 <style scoped>
-
-  .main-container {
-    background: url("http://localhost:3000/shattered.png");
-  }
   .row {
     width: 99vw;
   }

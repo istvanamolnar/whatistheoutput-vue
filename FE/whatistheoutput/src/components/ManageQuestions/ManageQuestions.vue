@@ -75,7 +75,7 @@ export default {
     addQuestion(form) {
       axios({
         method: 'post',
-        url: 'http://localhost:3000/addquestion',
+        url: `${process.env.VUE_APP_BACKEND_SERVER_URL}/addquestion`,
         data: form
       })
       .then((response) => {

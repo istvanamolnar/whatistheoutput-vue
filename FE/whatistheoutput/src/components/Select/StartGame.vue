@@ -2,10 +2,10 @@
   <div class="d-flex flex-column align-items-center justify-content-center bg-dark h-100" ref="main">
     <div class="d-flex flex-column align-items-center">
       <input class="text" type="text" placeholder="Enter your name" v-model="nickname" />
-      <input class="text" type="submit" value="Let's play!" @click="startGame()" />
+      <input class="text" type="submit" value="Let's play!" @click.once="startGame()" />
     </div>
     <div class="h5 mt-4 text-white">Choose theme:</div>
-    <div class="bg-transparent" @click="doStuff">
+    <div class="bg-transparent" @click="changeTheme">
       <div class="mx-auto d-flex justify-content-around">
         <img :src="serverURL + '/images/l-leaves.png'" alt="l-leaves" ref="l-leaves" class="img-thumbnail theme">
         <img :src="serverURL + '/images/d-shattered.png'" alt="d-shattered" ref="d-shattered" class="img-thumbnail theme">
@@ -23,28 +23,44 @@
 </template>
 
 <script>
+import { eventBus } from '../../main';
+import axios from 'axios';
+
 export default {
   name: 'ManageQuestions',
   data() {
     return {
-      nickname: '',
+      nickname: 'I',
       background: 'd-shattered',
       serverURL: process.env.VUE_APP_BACKEND_SERVER_URL
     }
   },
 
   mounted() {
-    // eslint-disable-next-line
-    console.log(this.$refs);
     this.$refs.main.style.backgroundImage = `url('${process.env.VUE_APP_BACKEND_SERVER_URL}/images/${this.background}.png')`;
   },
 
   methods: {
     startGame() {
-      this.$router.push('letsplay');
+      eventBus.user = {
+        name: this.nickname,
+        theme: this.background,
+        currentGame: {
+          questions: [],
+          score: 0,
+          answers: []
+        }
+      };
+      axios.get(`${process.env.VUE_APP_BACKEND_SERVER_URL}/questions`, { crossdomain: true })
+      .then(res => {
+        eventBus.user.currentGame.questions = res.data.slice(1);
+      })
+      .then(() => this.$router.push('letsplay'))
+      // eslint-disable-next-line
+      .catch(err => console.log(err));
     },
 
-    doStuff(event) {
+    changeTheme(event) {
       this.background = event.target.alt;
       this.$refs.main.style.backgroundImage = `url('${process.env.VUE_APP_BACKEND_SERVER_URL}/images/${this.background}.png')`;
     }
