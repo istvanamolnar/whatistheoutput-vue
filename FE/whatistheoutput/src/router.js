@@ -1,7 +1,8 @@
 import Vue from "vue";
 import Router from "vue-router";
-import QuizArea from "./components/QuizArea/QuizArea.vue";
 import StartGame from "./components/Select/StartGame.vue";
+import QuizArea from "./components/QuizArea/QuizArea.vue";
+import HonestyBonus from "./components/FinishGame/HonestyBonus.vue"
 import ManageQuestions from "./components/ManageQuestions/ManageQuestions.vue";
 
 Vue.use(Router);
@@ -24,6 +25,11 @@ export default new Router({
       path: "/manage",
       name: "manage",
       component: ManageQuestions
+    },
+    {
+      path: "/gameover",
+      name: "gameover",
+      component: HonestyBonus
     }
   ]
 });

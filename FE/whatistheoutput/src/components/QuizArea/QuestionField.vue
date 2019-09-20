@@ -1,6 +1,6 @@
 <template>
   <transition name="bounce">
-    <div v-if="show" class="question-field">
+    <div v-if="show" class="question-field" ref="questionField">
       <highlight-code lang="javascript" class="question-text m-auto p-2">
         {{ questionText }}
       </highlight-code>
@@ -11,7 +11,7 @@
 <script>
 export default {
   name: 'QuestionField',
-  props: ['questionText'],
+  props: ['questionText', 'theme'],
   data() {
     return {
       show: false
@@ -19,6 +19,9 @@ export default {
   },
   mounted() {
     this.show = true;
+    setTimeout(() => {
+      this.$refs.questionField.style.backgroundColor = this.theme[0] === 'd' ? 'rgba(0, 0, 0, 0.6)' : 'rgba(255, 255, 255, 0.6)';
+    }, 0);
   }
 }
 </script>
@@ -31,7 +34,6 @@ export default {
   }
   
   .question-field {
-    background-color: rgba(0, 0, 0, 0.7);
     border-radius: 4px;
     font-size: 24px;
     font-size: 2.5vh;

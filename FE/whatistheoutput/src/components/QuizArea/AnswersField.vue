@@ -1,5 +1,5 @@
 <template>
-  <div v-if="answers" class="container d-flex flex-column">
+  <div v-if="answers" class="container py-2 mt-3 d-flex flex-column rounded" ref="answersField">
     <div v-for="ans in answers" :key="ans._id" :ref="ans.isCorrect"
       class="mx-auto my-1 btn btn-outline-success" 
       @click.once="selectAnswer($event, ans)"
@@ -10,11 +10,11 @@
     </div>
     <div class="action-buttons mx-auto d-flex flex-row justify-content-between p-0">
       <transition name="slide-fade">
-        <div v-if="reveal" class="mx-0 my-1 btn-outline-warning explain"
+        <div v-if="reveal" class="mx-0 my-1 btn-outline-warning explain" alt="explainButton"
           @click="checkSolution($event)">Explain</div>
       </transition>
       <transition name="slide-fade">
-        <div v-if="reveal" class="mx-0 my-1 btn-outline-success next"
+        <div v-if="reveal" class="mx-0 my-1 btn-outline-success next" ref="nextButton"
           @click="getNextQuestion()">Next</div>
       </transition>
     </div>
@@ -23,17 +23,23 @@
 <script>
 export default {
   name: 'AnswersField',
-  props: ['answers', 'selected'],
+  props: ['answers', 'selected', 'theme'],
   data() {
     return {
       reveal: false
     }
   },
+
+  mounted() {
+    this.$refs.answersField.style.backgroundColor = this.theme[0] === 'd' ? 'rgba(0, 0, 0, 0.8)' : 'rgba(255, 255, 255, 0.8)';
+  },
+
   methods: {
     selectAnswer(event, ans) {
       if (this.selected === null) {
         this.$emit('chosenAnswer', ans);
         const selectedAnswer = this.answers.find(answer => answer._id === ans._id);
+        console.log(this.$refs[1][0].className)
         setTimeout(() => {
           if (!selectedAnswer.isCorrect) {
             this.$refs[1][0].className = 'mx-auto my-1 p-0 btn btn-outline-success active'
@@ -41,6 +47,9 @@ export default {
           }
           this.reveal = true;
         }, 1000);
+      } else {
+        // eslint-disable-next-line
+        console.log('Something went wrong');
       }
     },
 
@@ -57,11 +66,11 @@ export default {
 </script>
 
 <style scoped>
+
   .btn {
     display: flex;
     width: 300px;
     height: 40px;
-    background-color: #0f0f0f;
     border: 2px solid #3ca744;
     font-weight: 600; 
   }
@@ -79,7 +88,6 @@ export default {
 
   .next, .explain {
     align-items: center;
-    background-color: #0f0f0f;
     border-radius: 4px;
     border-width: 2px;
     display: flex;
@@ -113,9 +121,6 @@ export default {
     -webkit-text-fill-color: #fff;
   }
 
-  .disabled {
-    background-color: #0f0f0f;
-  }
 
   /* Animations */
   .slide-fade-enter-active {
