@@ -39,7 +39,6 @@ export default {
       if (this.selected === null) {
         this.$emit('chosenAnswer', ans);
         const selectedAnswer = this.answers.find(answer => answer._id === ans._id);
-        console.log(this.$refs[1][0].className)
         setTimeout(() => {
           if (!selectedAnswer.isCorrect) {
             this.$refs[1][0].className = 'mx-auto my-1 p-0 btn btn-outline-success active'
@@ -72,7 +71,8 @@ export default {
     width: 300px;
     height: 40px;
     border: 2px solid #3ca744;
-    font-weight: 600; 
+    font-weight: 600;
+    min-width: max-content;
   }
 
   .btn:not(.disabled):not(.btn-danger):hover {

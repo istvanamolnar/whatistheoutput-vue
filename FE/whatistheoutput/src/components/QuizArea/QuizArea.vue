@@ -1,5 +1,5 @@
 <template>
-  <div class="main-container d-flex flex-column m-auto p-0 h-100" ref="main_container">
+  <div v-if="user" class="main-container d-flex flex-column m-auto p-0 h-100" ref="main_container">
     <div class="title mx-auto" ref="title">What Is The Output?</div>
     <transition name="slide-fade">
       <div v-if="questionText" class="mx-auto my-2 d-flex rotated">
@@ -11,6 +11,7 @@
           @chosenAnswer="handleSelected"/>
       </div>
     </transition>
+    <div class="score text-center" ref="questionCounter">Question: {{ user.currentGame.numOfQuestions - user.currentGame.questions.length }}/{{ user.currentGame.numOfQuestions }}</div>
     <div class="score text-center" ref="score">Score: {{ user.currentGame.score }}</div>
   </div>
 </template>
@@ -43,9 +44,11 @@ export default {
     this.$refs.main_container.style.backgroundImage = `url('${process.env.VUE_APP_BACKEND_SERVER_URL}/images/${eventBus.user.theme}.png')`;
     if (this.theme === 'dark') {
       this.$refs.title.style.color = '#ddd';
+      this.$refs.questionCounter.style.color = '#ddd';
       this.$refs.score.style.color = '#ddd';
     } else if (this.theme === 'light') {
       this.$refs.title.style.color = '#222';
+      this.$refs.questionCounter.style.color = '#222';
       this.$refs.score.style.color = '#222';
     } else {
       // eslint-disable-next-line
@@ -67,7 +70,6 @@ export default {
     },
 
     handleSelected(value) {
-      const selectedAnswer = this.currentQuestion.answers.find(answer => answer._id === value )
       if (!this.selected) {
         this.selected = value._id;
         eventBus.user.currentGame.answers.push({

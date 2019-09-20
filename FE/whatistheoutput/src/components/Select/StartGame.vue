@@ -1,16 +1,12 @@
 <template>
-  <div class="d-flex flex-column align-items-center justify-content-center bg-dark h-100" ref="main">
-    <div class="d-flex flex-column align-items-center">
-      <input class="text" type="text" placeholder="Enter your name" v-model="nickname" ref="nameInput"/>
-      <input class="text" type="submit" value="Let's play!" @click.once="startGame()" ref="startButton"/>
-    </div>
-    <div class="h3 p-3 mt-4 chose-theme" ref="chooseTheme">Choose theme:</div>
+  <div class="d-flex pt-4 flex-column align-items-center bg-dark h-100" ref="main">
+    <div class="h3 pt-3 chose-theme" ref="chooseTheme">Choose theme:</div>
     <div class="bg-transparent thumbnails">
       <div class="mx-auto my-1 d-flex justify-content-around">
         <img :src="serverURL + '/images/l-leaves.png'" @click="changeTheme" alt="l-leaves" ref="l-leaves" class="img-thumbnail theme">
         <img :src="serverURL + '/images/d-shattered.png'" @click="changeTheme" alt="d-shattered" ref="d-shattered" class="img-thumbnail theme">
       </div>
-      <div class="mx-auto my-1 d-flex justify-content-center">
+      <div class="mx-auto my-1 d-flex justify-content-center middle-row">
         <img :src="serverURL + '/images/d-evolution.png'" @click="changeTheme" alt="d-evolution" ref="d-evolution" class="img-thumbnail theme">
         <img :src="serverURL + '/images/l-alchemy.png'" @click="changeTheme" alt="l-alchemy" ref="l-alchemy" class="img-thumbnail theme">
       </div>
@@ -18,6 +14,17 @@
         <img :src="serverURL + '/images/l-memphis.png'" @click="changeTheme" alt="l-memphis" ref="l-memphis" class="img-thumbnail theme">
         <img :src="serverURL + '/images/d-bicycles.png'" @click="changeTheme" alt="d-bicycles" ref="d-bicycles" class="img-thumbnail theme">
       </div>
+    </div>
+    <div class="questionRange">
+      <p class="numOfQuestions">number of questions: <output id="rangevalue">8</output></p>
+      <div id="slider" @click="logTarget">
+        <input class="bar" type="range" id="rangeinput" ref="value" value="8" min="5" max="10" onchange="rangevalue.value=value" />
+        <span class="highlight"></span><br>
+      </div>
+    </div>
+    <div class="d-flex flex-column align-items-center">
+      <input class="text" type="text" placeholder="Enter your name" v-model="nickname" ref="nameInput"/>
+      <input class="text" type="submit" value="Let's play!" @click.once="startGame()" ref="startButton"/>
     </div>
   </div>
 </template>
@@ -32,11 +39,14 @@ export default {
     return {
       nickname: '',
       background: 'd-shattered',
-      serverURL: process.env.VUE_APP_BACKEND_SERVER_URL
+      serverURL: process.env.VUE_APP_BACKEND_SERVER_URL,
+      numOfQuestions: 8
     }
   },
 
   mounted() {
+    this.$refs.chooseTheme.style.color = 'white';
+    this.$refs.chooseTheme.style.backgroundColor = 'rgba(0, 0, 0, 0.6)';
     this.$refs.main.style.backgroundImage = `url('${process.env.VUE_APP_BACKEND_SERVER_URL}/images/${this.background}.png')`;
   },
 
@@ -46,14 +56,15 @@ export default {
         name: this.nickname,
         theme: this.background,
         currentGame: {
+          numOfQuestions: this.numOfQuestions,
           questions: [],
           score: 0,
           answers: []
         }
       };
-      axios.get(`${process.env.VUE_APP_BACKEND_SERVER_URL}/questions`, { crossdomain: true })
+      axios.get(`${process.env.VUE_APP_BACKEND_SERVER_URL}/questions?num=${this.numOfQuestions}`, { crossdomain: true })
       .then(res => {
-        eventBus.user.currentGame.questions = res.data.slice(5);
+        eventBus.user.currentGame.questions = res.data.slice(1);
       })
       .then(() => this.$router.push('letsplay'))
       // eslint-disable-next-line
@@ -81,6 +92,9 @@ export default {
       console.log("Something went wrong");
     }
       this.$refs.main.style.backgroundImage = `url('${process.env.VUE_APP_BACKEND_SERVER_URL}/images/${this.background}.png')`;
+    },
+    logTarget() {
+      this.numOfQuestions = this.$refs.value.value;
     }
   }
 }
@@ -88,14 +102,14 @@ export default {
 <style>
   .text {
     background-color: transparent;
-    color: #666;
-    border: 2px solid #666;
+    border: 2px solid #888;
     width: 50vw;
     margin: 10px;
     text-align: center;
     font-weight: 800;
     height: 50px;
-    font-size: 20px;
+    font-size: 18px;
+    color: #888;
   }
 
   ::-webkit-input-placeholder {
@@ -104,7 +118,7 @@ export default {
 
   .theme {
     background-color: transparent;
-    border: 2px solid #666;
+    border: 2px solid #888;
     height: 10vh;
     width: 10vh;
     cursor: pointer;
@@ -114,6 +128,86 @@ export default {
   .chose-theme {
     font-family: 'ZCOOL KuaiLe', cursive;
     border-radius: 15px;
+    font-weight: 700;
+  }
+
+  .questionRange {
+    height: 100px;
+    width: 330px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    border: 2px solid ,000;
+    border-radius: 10px;
+    padding: 10px;
+    font-weight: 600;
+  }
+
+  #slider {
+    width: 220px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    background: transparent;
+    border: 3px solid #888;
+    border-radius: 12px;
+    justify-content: center;
+  }
+  #slider .bar {
+    width: 100%;
+    height: 2px;
+    background:#888;
+  }
+  #slider .highlight {
+    height: 2px;
+    position: absolute;
+    width: 140px;
+    border-radius: 40px;
+    background: #888;
+  }
+  input[type="range"] {
+    -webkit-appearance: none;
+    background-color: #000;
+    height: 2px;
+  }
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    position: relative;
+    top: 0px;
+    z-index: 1;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    border-radius: 30px;
+    border: 2px solid #000;
+    background-color: #fff;
+  }
+
+  #rangevalue {
+    font-size: 24px;
+    font-family: 'ZCOOL KuaiLe', cursive;
+    width: 30px;
+    height: 30px;
+    text-align: center;
+  }
+  input[type="range"]:focus {
+    outline: none;
+  }
+
+  .numOfQuestions {
+    background-color: rgba(255, 255, 255, 1);;
+    padding: 0 10px;
+    border-radius: 4px;
+    border: 2px solid #000;
+    font-size: 24px;
+    font-family: 'ZCOOL KuaiLe', cursive;
+    height: 40px;
+    display: flex;
+    width: 300px;
+    color: #000;
+    margin: auto;
+    justify-content: space-around;
   }
 
   @media all and (max-height: 420px) {
@@ -121,6 +215,30 @@ export default {
       display: flex;
       flex-direction: row;
       justify-content: center;
+      width: 60vw;
+      height: 20vh;
+      margin-bottom: 3vh;
+    }
+
+    .middle-row {
+      flex-direction: row-reverse;
+    }
+
+  .theme {
+    height: 9vw;
+    width: 9vw;
+  }
+
+    .chose-theme {
+      margin-top: 0;
+      padding: 0;
+    }
+
+    .text {
+      width: 50vw;
+      height: 10vh;
+      margin: 3px 0;
+      font-size: 2.5vw;
     }
   }
 </style>

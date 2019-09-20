@@ -3,9 +3,9 @@ const mongoose = require('mongoose');
 const router = express.Router();
 
 const Question = require('../models/questions');
-
 router.get('/', (req, res) => {
-  Question.find().select('_id question answers')
+  const numOfQuestions = Number(req.query.num) + 1;
+  Question.find().limit(numOfQuestions)
   .then((questions) => {
     res.status(200).json(questions);
   })
