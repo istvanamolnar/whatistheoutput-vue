@@ -11,19 +11,26 @@
     <div class="action-buttons mx-auto d-flex flex-row justify-content-between p-0">
       <transition name="slide-fade">
         <div v-if="reveal" class="mx-0 my-1 btn-outline-warning explain" alt="explainButton"
-          @click="checkSolution($event)">Explain</div>
+          @click="checkSolution($event)"
+          data-toggle="modal" data-target="#exampleModalCenter">Explain</div>
       </transition>
       <transition name="slide-fade">
         <div v-if="reveal" class="mx-0 my-1 btn-outline-success next" ref="nextButton"
           @click="getNextQuestion()">Next</div>
       </transition>
     </div>
+    <explain-modal :description="description" :theme="theme" :questionText="questionText"/>
   </div>
 </template>
 <script>
+import ExplainModal from './ExplainModal';
+
 export default {
   name: 'AnswersField',
-  props: ['answers', 'selected', 'theme'],
+  components: {
+    'explain-modal': ExplainModal
+  },
+  props: ['answers', 'selected', 'theme', 'description', 'questionText'],
   data() {
     return {
       reveal: false
@@ -46,9 +53,6 @@ export default {
           }
           this.reveal = true;
         }, 1000);
-      } else {
-        // eslint-disable-next-line
-        console.log('Something went wrong');
       }
     },
 

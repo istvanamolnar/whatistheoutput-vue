@@ -8,6 +8,8 @@
           :selected="selected"
           :answers="currentQuestion.answers" 
           :theme="theme"
+          :description="currentQuestion.description.join('\n')"
+          :questionText="questionText"
           @chosenAnswer="handleSelected"/>
       </div>
     </transition>
@@ -50,9 +52,6 @@ export default {
       this.$refs.title.style.color = '#222';
       this.$refs.questionCounter.style.color = '#222';
       this.$refs.score.style.color = '#222';
-    } else {
-      // eslint-disable-next-line
-      console.log("Something went wrong");
     }
   },
 
