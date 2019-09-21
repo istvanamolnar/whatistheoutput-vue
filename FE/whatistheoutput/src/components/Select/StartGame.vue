@@ -16,7 +16,7 @@
       </div>
     </div>
     <div class="questionRange">
-      <p class="numOfQuestions">number of questions: <output id="rangevalue">8</output></p>
+      <p class="numOfQuestions" ref="questionCounter">number of questions: <output id="rangevalue">8</output></p>
       <div id="slider" @click="logTarget">
         <input class="bar" type="range" id="rangeinput" ref="value" value="8" min="5" max="10" onchange="rangevalue.value=value" />
         <span class="highlight"></span><br>
@@ -24,7 +24,7 @@
     </div>
     <div class="d-flex flex-column align-items-center">
       <input class="text" type="text" placeholder="Enter your name" v-model="nickname" ref="nameInput"/>
-      <input class="text" type="submit" value="Let's play!" @click.once="startGame()" ref="startButton"/>
+      <input class="text btn btn-success" type="submit" value="Let's play!" @click.once="startGame()" ref="startButton"/>
     </div>
   </div>
 </template>
@@ -45,9 +45,13 @@ export default {
   },
 
   mounted() {
-    this.$refs.chooseTheme.style.color = 'white';
     this.$refs.chooseTheme.style.backgroundColor = 'rgba(0, 0, 0, 0.6)';
+    this.$refs.chooseTheme.style.color = 'white';
     this.$refs.main.style.backgroundImage = `url('${process.env.VUE_APP_BACKEND_SERVER_URL}/images/${this.background}.png')`;
+    this.$refs.questionCounter.style.backgroundColor = 'rgba(255, 255, 255, 0.9)';
+    this.$refs.questionCounter.style.color = 'rgba(0, 0, 0, 0.9)';
+    this.$refs.startButton.style.backgroundColor = '#009b48';
+    this.$refs.startButton.style.color = 'white';
   },
 
   methods: {
@@ -75,18 +79,18 @@ export default {
       this.background = event.target.alt;
       if (this.background[0] === 'd') {
       this.$refs.nameInput.style.backgroundColor = 'black';
-      this.$refs.nameInput.style.color = 'white';
-      this.$refs.startButton.style.backgroundColor = 'white';
-      this.$refs.startButton.style.color = 'black';
-      this.$refs.chooseTheme.style.color = 'white';
+      this.$refs.nameInput.style.color = '#009b48';
       this.$refs.chooseTheme.style.backgroundColor = 'rgba(0, 0, 0, 0.6)';
+      this.$refs.chooseTheme.style.color = 'white';
+      this.$refs.questionCounter.style.backgroundColor = 'rgba(0, 0, 0, 0.6)';
+      this.$refs.questionCounter.style.color = 'rgba(255, 255, 255, 0.9)';
     } else if (this.background[0] === 'l') {
       this.$refs.nameInput.style.backgroundColor = 'white';
-      this.$refs.nameInput.style.color = 'black';
-      this.$refs.startButton.style.backgroundColor = 'black';
-      this.$refs.startButton.style.color = 'white';
-      this.$refs.chooseTheme.style.color = 'black';
+      this.$refs.nameInput.style.color = '#009b48';
       this.$refs.chooseTheme.style.backgroundColor = 'rgba(255, 255, 255, 0.6)';
+      this.$refs.chooseTheme.style.color = 'black';
+      this.$refs.questionCounter.style.backgroundColor = 'rgba(255, 255, 255, 0.9)';
+      this.$refs.questionCounter.style.color = 'rgba(0, 0, 0, 0.9)';
     } else {
       // eslint-disable-next-line
       console.log("Something went wrong");
@@ -101,7 +105,6 @@ export default {
 </script>
 <style>
   .text {
-    background-color: transparent;
     border: 2px solid #888;
     width: 50vw;
     margin: 10px;
@@ -109,7 +112,11 @@ export default {
     font-weight: 800;
     height: 50px;
     font-size: 18px;
-    color: #888;
+    color:#009b48;
+  }
+
+  .text::placeholder {
+    color: #009b48;
   }
 
   ::-webkit-input-placeholder {
@@ -117,12 +124,12 @@ export default {
   }
 
   .theme {
-    background-color: transparent;
-    border: 2px solid #888;
+    border: 3px solid #009b48;
     height: 10vh;
     width: 10vh;
     cursor: pointer;
     margin: 1vh;
+    padding: 0;
   }
 
   .chose-theme {
@@ -157,14 +164,14 @@ export default {
   #slider .bar {
     width: 100%;
     height: 2px;
-    background:#888;
+    background: #009b48;
   }
   #slider .highlight {
     height: 2px;
     position: absolute;
     width: 140px;
     border-radius: 40px;
-    background: #888;
+    background: #009b48;
   }
   input[type="range"] {
     -webkit-appearance: none;
@@ -181,7 +188,7 @@ export default {
     cursor: pointer;
     border-radius: 30px;
     border: 2px solid #000;
-    background-color: #fff;
+    background-color: #009b48;
   }
 
   #rangevalue {
@@ -190,13 +197,13 @@ export default {
     width: 30px;
     height: 30px;
     text-align: center;
+    color: #009b48;
   }
   input[type="range"]:focus {
     outline: none;
   }
 
   .numOfQuestions {
-    background-color: rgba(255, 255, 255, 1);;
     padding: 0 10px;
     border-radius: 4px;
     border: 2px solid #000;
