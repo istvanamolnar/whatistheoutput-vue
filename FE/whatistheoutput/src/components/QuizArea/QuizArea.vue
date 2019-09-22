@@ -73,7 +73,8 @@ export default {
         this.selected = value._id;
         eventBus.user.currentGame.answers.push({
           question: this.questionText,
-          answer: value
+          answer: value,
+          cheated: false
         });
         setTimeout(() => {
           if (value.isCorrect === 1) {
@@ -90,7 +91,7 @@ export default {
     },
 
     finishGame() {
-      this.$router.push('gameover');
+      this.$router.push('claimreward');
     }
   }
 }

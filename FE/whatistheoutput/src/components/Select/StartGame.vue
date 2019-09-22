@@ -1,5 +1,5 @@
 <template>
-  <div class="d-flex pt-4 flex-column align-items-center bg-dark h-100" ref="main">
+  <div class="d-flex flex-column align-items-center bg-dark h-100" ref="main">
     <div class="h3 pt-3 chose-theme" ref="chooseTheme">Choose theme:</div>
     <div class="bg-transparent thumbnails">
       <div class="mx-auto my-1 d-flex justify-content-around">
@@ -17,13 +17,13 @@
     </div>
     <div class="questionRange">
       <p class="numOfQuestions" ref="questionCounter">number of questions: <output id="rangevalue">8</output></p>
-      <div id="slider" @click="logTarget">
+      <div id="slider" @click="getNumOfQuestions">
         <input class="bar" type="range" id="rangeinput" ref="value" value="8" min="5" max="10" onchange="rangevalue.value=value" />
         <span class="highlight"></span><br>
       </div>
     </div>
     <div class="d-flex flex-column align-items-center">
-      <input class="text" type="text" placeholder="Enter your name" v-model="nickname" ref="nameInput"/>
+      <input class="text" type="text" placeholder="Enter your name" v-model="nickname" ref="nameInput" required/>
       <input class="text btn btn-success" type="submit" value="Let's play!" @click.once="startGame()" ref="startButton"/>
     </div>
   </div>
@@ -46,12 +46,14 @@ export default {
 
   mounted() {
     this.$refs.chooseTheme.style.backgroundColor = 'rgba(0, 0, 0, 0.6)';
-    this.$refs.chooseTheme.style.color = 'white';
+    this.$refs.chooseTheme.style.color = 'rgba(255, 255, 255, 0.9)';
     this.$refs.main.style.backgroundImage = `url('${process.env.VUE_APP_BACKEND_SERVER_URL}/images/${this.background}.png')`;
-    this.$refs.questionCounter.style.backgroundColor = 'rgba(255, 255, 255, 0.9)';
-    this.$refs.questionCounter.style.color = 'rgba(0, 0, 0, 0.9)';
+    this.$refs.questionCounter.style.backgroundColor = 'rgba(0, 0, 0, 0.9)';
+    this.$refs.questionCounter.style.color = 'rgba(255, 255, 255, 0.9)';
     this.$refs.startButton.style.backgroundColor = '#009b48';
-    this.$refs.startButton.style.color = 'white';
+    this.$refs.startButton.style.color = 'rgba(255, 255, 255, 0.9)';
+    this.$refs.nameInput.style.backgroundColor = 'rgba(0, 0, 0, 0.9)';
+    this.$refs.nameInput.style.color = '#009b48';
   },
 
   methods: {
@@ -68,7 +70,7 @@ export default {
       };
       axios.get(`${process.env.VUE_APP_BACKEND_SERVER_URL}/questions?num=${this.numOfQuestions}`, { crossdomain: true })
       .then(res => {
-        eventBus.user.currentGame.questions = res.data.slice(1);
+        eventBus.user.currentGame.questions = res.data;
       })
       .then(() => this.$router.push('letsplay'))
       // eslint-disable-next-line
@@ -97,7 +99,7 @@ export default {
     }
       this.$refs.main.style.backgroundImage = `url('${process.env.VUE_APP_BACKEND_SERVER_URL}/images/${this.background}.png')`;
     },
-    logTarget() {
+    getNumOfQuestions() {
       this.numOfQuestions = this.$refs.value.value;
     }
   }
@@ -136,6 +138,7 @@ export default {
     font-family: 'ZCOOL KuaiLe', cursive;
     border-radius: 15px;
     font-weight: 700;
+    margin-top: 30px;
   }
 
   .questionRange {
@@ -231,14 +234,14 @@ export default {
       flex-direction: row-reverse;
     }
 
-  .theme {
-    height: 9vw;
-    width: 9vw;
-  }
+    .theme {
+      height: 9vw;
+      width: 9vw;
+    }
 
     .chose-theme {
       margin-top: 0;
-      padding: 0;
+      padding-top: 0;
     }
 
     .text {

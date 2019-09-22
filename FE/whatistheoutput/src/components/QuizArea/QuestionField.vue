@@ -36,7 +36,9 @@ export default {
   .question-field {
     border-radius: 4px;
     font-size: 24px;
-    font-size: 2.5vh;
+    font-size: 2vh;
+    width: 100%;
+    display: flex;
   }
 
   /* Animations */

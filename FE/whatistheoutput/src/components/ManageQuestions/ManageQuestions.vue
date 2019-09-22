@@ -1,92 +1,106 @@
 <template>
-  <form class="add-question d-flex flex-column align-items-center h-75">
-    <div class="d-flex flex-column w-50 mb-4">
-      <label for="question">Question</label>
-      <textarea type="text" rows="8" v-model="form.question" 
-        class="" id="question" aria-describedby="questionHelp" required/>
+  <div class="manageContainer">
+    <nav class="navbar">
+      <div class="btn btn-success" data-toggle="modal" data-target="#exampleModalCenterTwo">Add new question</div>
+    </nav>
+    <div v-if="questions" class="d-flex flex-column align-items-center">
+      <div v-for="question in questions" :key="question._id" class="d-flex flex-column align-items-center justify-content-center answerCheck" :ref="question._id">
+        <question-field class="question mx-auto mt-2" :questionText="question.question.join('\n')" :theme="theme"/>
+        <answers-field class="answers mx-auto p-2"
+          :answers="question.answers" 
+          :theme="theme"/>
+      </div>
+      <handle-question
+        :pickedQuestion="pickedQuestion" 
+        :theme="theme"/>
     </div>
-    <div class="w-50 mb-4">
-      <label for="answers-field" aria-describedby="answerHelp">Answers</label>
-      <div class="input-group">
-        <div class="input-group-prepend">
-          <div class="input-group-text">
-            <input type="radio" name="is-correct" value="0" v-model="form.isCorrect" aria-label="Answer one" required>
-          </div>
-        </div>
-        <input type="text" class="form-control" v-model="form.answers[0].answer" aria-label="Answer one" required>
-      </div>
-      <div class="input-group">
-        <div class="input-group-prepend">
-          <div class="input-group-text">
-            <input type="radio" name="is-correct" value="1" v-model="form.isCorrect" aria-label="Answer two" required>
-          </div>
-        </div>
-        <input type="text" class="form-control" v-model="form.answers[1].answer" aria-label="Answer two" required>
-      </div>
-      <div class="input-group">
-        <div class="input-group-prepend">
-          <div class="input-group-text">
-            <input type="radio" name="is-correct" value="2" v-model="form.isCorrect" aria-label="Answer three" required>
-          </div>
-        </div>
-        <input type="text" class="form-control" v-model="form.answers[2].answer" aria-label="Answer three">
-      </div>
-      <div class="input-group">
-        <div class="input-group-prepend">
-          <div class="input-group-text">
-            <input type="radio" name="is-correct" value="3" v-model="form.isCorrect" aria-label="Answer four" required>
-          </div>
-        </div>
-        <input type="text" class="form-control" v-model="form.answers[3].answer" aria-label="Answer four">
-      </div>
-      <small id="answerHelp" class="form-text text-muted">Add at least two, up to four answers and select the correct one</small>
-    </div>
-    <div class="d-flex flex-column w-50 mb-4">
-      <label for="description">Description</label>
-      <textarea type="text" rows="5" v-model="form.description" 
-        class="" id="description" required/>
-    </div>
-    <button type="submit" class="btn btn-success" @click.prevent="addQuestion(form)">Submit</button>
-  </form>
+  </div>
 </template>
 
 <script>
 import axios from 'axios';
+import QuestionField from '../QuizArea/QuestionField';
+import AnswersField from '../QuizArea/AnswersField';
+import HandleQuestion from '../ManageQuestions/HandleQuestion';
 
 export default {
   name: 'ManageQuestions',
+  components: {
+    'question-field': QuestionField,
+    'answers-field': AnswersField,
+    'handle-question': HandleQuestion
+  },
+
   data() {
     return {
-      form: {
-        question: '',
+      serverURL: process.env.VUE_APP_BACKEND_SERVER_URL,
+      questions: [],
+      theme: 'd-shattered',
+      pickedQuestion: {
+        question: [],
         answers: [
-          { answer: '' },
-          { answer: '' },
-          { answer: '' },
-          { answer: '' },
+          { 
+            answer: '',
+            isCorrect: 0
+          },
+          { 
+            answer: '',
+            isCorrect: 0
+          },
+          { 
+            answer: '',
+            isCorrect: 0
+          },
+          { 
+            answer: '',
+            isCorrect: 0
+          },
         ],
-        isCorrect: 0,
-        description: ''
+        description: []
       }
     }
   },
 
-  methods: {
-    addQuestion(form) {
-      axios({
-        method: 'post',
-        url: `${process.env.VUE_APP_BACKEND_SERVER_URL}/addquestion`,
-        data: form
-      })
-      .then((response) => {
-        // eslint-disable-next-line
-        console.log(response);
-      })
-      .catch((error) => {
-        // eslint-disable-next-line
-        console.log(error);
-      });
-    }
+  created() {
+    axios(process.env.VUE_APP_BACKEND_SERVER_URL + '/questions/getall')
+    .then((response) => {
+      this.questions = response.data;
+    })
+    .catch((error) => {
+      // eslint-disable-next-line
+      console.log(error);
+    });
+  },
+
+  mounted() {
   }
 }
+
 </script>
+
+<style>
+  .manageContainer {
+    width: 99vw;
+    background-repeat: repeat;
+    background-image: url('http://localhost:3000/images/d-shattered.png');
+  }
+
+  .navbar {
+    background-color: #0f0f0f;
+    position: fixed;
+    top: 0;
+    width: 99vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .question-container {
+    margin: 15px;
+  }
+
+  .answerCheck {
+    padding: 0;
+    background-color: transparent;
+  }
+</style>

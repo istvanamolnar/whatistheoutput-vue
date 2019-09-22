@@ -8,9 +8,8 @@ const mongoose = require('mongoose');
 const dotenv = require('dotenv').config();
 
 const questionsRoute = require('./routes/questions');
-const addQuestionRoute = require('./routes/addQuestion');
 
-mongoose.connect(`mongodb+srv://${process.env.U}:${process.env.P}@whatistheoutput-bekgg.mongodb.net/whatistheoutput?retryWrites=true&w=majority`, {
+mongoose.connect(`mongodb+srv://${process.env.U}:${process.env.P}@doyouknow-hucjo.mongodb.net/doyouknow?retryWrites=true&w=majority`, {
     useNewUrlParser: true,
     useUnifiedTopology: true
   })
@@ -36,11 +35,7 @@ app.use((req, res, next) => {
 });
 
 app.use(express.json());
-
 app.use(express.static('public'));
-
 app.use('/questions', questionsRoute);
-app.use('/addQuestion', addQuestionRoute);
-
 
 app.listen(port, () => console.log(`Server is running on port ${port}!`));

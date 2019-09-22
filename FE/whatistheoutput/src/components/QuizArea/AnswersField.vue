@@ -1,5 +1,5 @@
 <template>
-  <div v-if="answers" class="container py-2 mt-3 d-flex flex-column rounded" ref="answersField">
+  <div v-if="answers" class="container py-2 d-flex flex-column rounded" ref="answersField">
     <div v-for="ans in answers" :key="ans._id" :ref="ans.isCorrect"
       class="mx-auto my-1 btn btn-outline-success" 
       @click.once="selectAnswer($event, ans)"

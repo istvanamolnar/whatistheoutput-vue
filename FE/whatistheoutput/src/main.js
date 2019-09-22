@@ -8,7 +8,6 @@ import VueHighlightJS from 'vue-highlight.js';
 import javascript from 'highlight.js/lib/languages/javascript';
 import 'highlight.js/styles/atelier-savanna-dark.css';
 
-
 Vue.use(VueHighlightJS, {
 	languages: {
 		javascript
