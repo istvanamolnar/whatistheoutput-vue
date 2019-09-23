@@ -1,9 +1,9 @@
 <template>
-  <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal fade" id="seedetails" tabindex="-1" role="dialog" aria-labelledby="DetailsLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered d-flex justify-content-center align-items-center" role="document">
       <div class="modal-content" ref="title" >
         <div class="modal-header mx-auto p-1">
-          <div id="exampleModalLongTitle">
+          <div id="DetailsLabel">
             <highlight-code lang="javascript" class="m-auto p-1">
               {{ questionText }}
             </highlight-code>

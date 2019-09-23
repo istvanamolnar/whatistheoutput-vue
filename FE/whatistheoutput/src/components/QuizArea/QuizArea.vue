@@ -2,14 +2,13 @@
   <div v-if="user" class="main-container d-flex flex-column m-auto p-0 h-100" ref="main_container">
     <div class="title mx-auto" ref="title">What Is The Output?</div>
     <transition name="slide-fade">
-      <div v-if="questionText" class="mx-auto my-2 d-flex rotated">
-        <question-field class="question m-auto" :questionText="questionText" :theme="theme"/>
+      <div v-if="currentQuestion" class="mx-auto my-2 d-flex rotated">
+        <question-field class="question m-auto" :questionText="currentQuestion.question" :theme="theme"/>
         <answers-field class="answers mx-auto p-2"
           :selected="selected"
-          :answers="currentQuestion.answers" 
+          :currentQuestion="currentQuestion"
           :theme="theme"
-          :description="currentQuestion.description.join('\n')"
-          :questionText="questionText"
+          :mode="mode"
           @chosenAnswer="handleSelected"/>
       </div>
     </transition>
@@ -33,16 +32,19 @@ export default {
   data() {
     return {
       user: eventBus.user,
+      mode: 'quiz',
       currentQuestion : [],
       selected: null,
-      questionText: '',
       scoreCounter: 0,
-      theme: eventBus.user.theme[0] === 'd' ? 'dark' : 'light'
+      theme: eventBus.user.theme[0] === 'd' ? 'dark' : 'light',
     }
   },
 
-  mounted() {
+  created() {
     this.getAQuestion();
+  },
+
+  mounted() {
     this.$refs.main_container.style.backgroundImage = `url('${process.env.VUE_APP_BACKEND_SERVER_URL}/images/${eventBus.user.theme}.png')`;
     if (this.theme === 'dark') {
       this.$refs.title.style.color = '#ddd';
@@ -64,7 +66,6 @@ export default {
         this.scoreCounter = Date.now();
         this.currentQuestion = this.user.currentGame.questions[0];
         this.user.currentGame.questions = this.user.currentGame.questions.slice(1);
-        this.questionText = this.currentQuestion.question.join('\n');
       }
     },
 
@@ -73,8 +74,7 @@ export default {
         this.selected = value._id;
         eventBus.user.currentGame.answers.push({
           question: this.questionText,
-          answer: value,
-          cheated: false
+          answer: value
         });
         setTimeout(() => {
           if (value.isCorrect === 1) {
@@ -83,7 +83,7 @@ export default {
         }, 2000);
       } else {
         this.selected = null;
-        this.questionText = '';
+        this.currentQuestion = null;
         setTimeout(() => {
           this.getAQuestion();
         }, 400);

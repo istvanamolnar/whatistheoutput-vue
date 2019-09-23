@@ -1,6 +1,6 @@
 <template>
-  <div v-if="answers" class="container py-2 d-flex flex-column rounded" ref="answersField">
-    <div v-for="ans in answers" :key="ans._id" :ref="ans.isCorrect"
+  <div v-if="currentQuestion" class="container py-2 d-flex flex-column rounded" ref="answersField">
+    <div v-for="ans in currentQuestion.answers" :key="ans._id" :ref="ans.isCorrect"
       class="mx-auto my-1 btn btn-outline-success" 
       @click.once="selectAnswer($event, ans)"
       :class="[selected !== null && selected === ans._id ? 'active' : selected !== null ? 'disabled' : '']">
@@ -8,18 +8,24 @@
         {{ ans.answer }}
       </highlight-code>
     </div>
-    <div class="action-buttons mx-auto d-flex flex-row justify-content-between p-0">
+    <div class="action-buttons mx-auto p-0 d-flex flex-row justify-content-between" ref="buttonContainer">
       <transition name="slide-fade">
         <div v-if="reveal" class="mx-0 my-1 btn-outline-warning explain" alt="explainButton"
           @click="checkSolution($event)"
-          data-toggle="modal" data-target="#exampleModalCenter">Explain</div>
+          data-toggle="modal" data-target="#seedetails">Explain</div>
       </transition>
       <transition name="slide-fade">
         <div v-if="reveal" class="mx-0 my-1 btn-outline-success next" ref="nextButton"
           @click="getNextQuestion()">Next</div>
       </transition>
+      <div v-if="mode === 'manage'">
+        <img :src="serverURL + '/images/wrench.png'" 
+          class="edit-icon" alt="Edit icon"
+          data-toggle="modal" data-target="#editquestion"
+          @click="emitPickedQuestion($event, currentQuestion)"/>
+      </div>
     </div>
-    <explain-modal :description="description" :theme="theme" :questionText="questionText"/>
+    <explain-modal :description="currentQuestion.description" :theme="theme" :questionText="currentQuestion.question"/>
   </div>
 </template>
 <script>
@@ -30,22 +36,40 @@ export default {
   components: {
     'explain-modal': ExplainModal
   },
-  props: ['answers', 'selected', 'theme', 'description', 'questionText'],
+  props: ['currentQuestion', 'mode', 'selected', 'theme'],
   data() {
     return {
+      serverURL: process.env.VUE_APP_BACKEND_SERVER_URL,
       reveal: false
     }
   },
 
   mounted() {
     this.$refs.answersField.style.backgroundColor = this.theme[0] === 'd' ? 'rgba(0, 0, 0, 0.8)' : 'rgba(255, 255, 255, 0.8)';
+    if (this.mode === 'manage') {
+      this.$refs[1][0].className = 'mx-auto my-1 p-0 btn btn-success active';
+      this.$refs.buttonContainer.className = 'd-flex flex-row-reverse';
+    }
   },
 
   methods: {
+    checkSolution(event) {
+      event.target.className += ' active';
+    },
+
+    emitPickedQuestion(event, currentQuestion) {
+      this.$emit('questionToEdit', currentQuestion);
+    },
+
+    getNextQuestion() {
+      this.reveal = false;
+      this.$emit('chosenAnswer', null);
+    },
+
     selectAnswer(event, ans) {
       if (this.selected === null) {
         this.$emit('chosenAnswer', ans);
-        const selectedAnswer = this.answers.find(answer => answer._id === ans._id);
+        const selectedAnswer = this.currentQuestion.answers.find(answer => answer._id === ans._id);
         setTimeout(() => {
           if (!selectedAnswer.isCorrect) {
             this.$refs[1][0].className = 'mx-auto my-1 p-0 btn btn-outline-success active'
@@ -54,15 +78,6 @@ export default {
           this.reveal = true;
         }, 1000);
       }
-    },
-
-    getNextQuestion() {
-      this.reveal = false;
-      this.$emit('chosenAnswer', null);
-    },
-
-    checkSolution(event) {
-      event.target.className += ' active';
     }
   }
 }
@@ -123,6 +138,16 @@ export default {
 
   .active {
     -webkit-text-fill-color: #fff;
+  }
+
+  .edit-icon {
+    height: 40px;
+    width: 40px;
+    padding: 10px 10px 0 0;
+  }
+
+  .edit-icon:hover {
+    cursor: pointer;
   }
 
 

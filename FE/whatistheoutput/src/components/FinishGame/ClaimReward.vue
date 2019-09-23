@@ -13,15 +13,15 @@
             <div v-if="show" class="finalScore">{{score}}</div>
           </transition>
         </div>
-        <div class="claimText h3">
-          <div ref="claimText">
-            Claim your Awesome Reward:
-          </div>
-        </div>
+        <h3 class="claimText" ref="claimText">
+          You won:
+        </h3>
+        <div class="lootboxText 2">Epic Chest</div>
+        <img class="treasure-chest" :src="serverURL + '/images/treasure.png'" alt="treasure">
         <transition name="bounceIn">
           <div v-if="show" 
-            class="mt-3 btn btn-success font-weight-bold claimButton"
-            @click="$router.push('')">Claim Reward</div>
+            class="mt-3 btn btn-success d-flex justify-content-center align-items-center font-weight-bold claimButton"
+            @click="$router.push('reward')">OPEN</div>
         </transition>
       </div>
     </transition>
@@ -63,7 +63,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
   .claimContainer {
     height: 100vh;
     display: flex;
@@ -86,6 +86,11 @@ export default {
 
   .claimButton:hover {
     cursor: pointer;
+  }
+
+  .claimButton {
+    width: 120px;
+    height: 50px;
   }
 
   .finalScore {
@@ -111,6 +116,13 @@ export default {
     margin: 50px;
     padding: 20px;
     border-radius: 5px;
+  }
+
+  .lootboxText {
+    font-family: 'ZCOOL KuaiLe', cursive;
+    font-size: 30px;
+    color: #F725E2;
+    font-weight: 700;
   }
 
   /* Animations */

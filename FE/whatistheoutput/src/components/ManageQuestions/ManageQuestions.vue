@@ -1,14 +1,19 @@
 <template>
   <div class="manageContainer">
     <nav class="navbar">
-      <div class="btn btn-success" data-toggle="modal" data-target="#exampleModalCenterTwo">Add new question</div>
+      <div class="btn btn-success" 
+        data-toggle="modal" 
+        data-target="#editquestion"
+        @click="newQuestion">Add new question</div>
     </nav>
     <div v-if="questions" class="d-flex flex-column align-items-center">
       <div v-for="question in questions" :key="question._id" class="d-flex flex-column align-items-center justify-content-center answerCheck" :ref="question._id">
-        <question-field class="question mx-auto mt-2" :questionText="question.question.join('\n')" :theme="theme"/>
+        <question-field class="question mx-auto mt-2" :questionText="question.question" :theme="theme"/>
         <answers-field class="answers mx-auto p-2"
-          :answers="question.answers" 
-          :theme="theme"/>
+          :currentQuestion="question" 
+          :theme="theme"
+          :mode="mode"
+          @questionToEdit="handleQuestion($event)"/>
       </div>
       <handle-question
         :pickedQuestion="pickedQuestion" 
@@ -36,25 +41,14 @@ export default {
       serverURL: process.env.VUE_APP_BACKEND_SERVER_URL,
       questions: [],
       theme: 'd-shattered',
+      mode: 'manage',
       pickedQuestion: {
-        question: [],
+        question: [], 
         answers: [
-          { 
-            answer: '',
-            isCorrect: 0
-          },
-          { 
-            answer: '',
-            isCorrect: 0
-          },
-          { 
-            answer: '',
-            isCorrect: 0
-          },
-          { 
-            answer: '',
-            isCorrect: 0
-          },
+          { answer: '', isCorrect: 0 },
+          { answer: '', isCorrect: 0 },
+          { answer: '', isCorrect: 0 },
+          { answer: '', isCorrect: 0 },
         ],
         description: []
       }
@@ -65,6 +59,10 @@ export default {
     axios(process.env.VUE_APP_BACKEND_SERVER_URL + '/questions/getall')
     .then((response) => {
       this.questions = response.data;
+      this.questions.forEach(question => {
+        question.question = question.question.join('\n');
+        question.description = question.description.join('\n');
+      });
     })
     .catch((error) => {
       // eslint-disable-next-line
@@ -72,7 +70,23 @@ export default {
     });
   },
 
-  mounted() {
+  methods: {
+    handleQuestion(event) {
+      this.pickedQuestion = event;
+    },
+
+    newQuestion() {
+      this.pickedQuestion = {
+        question: [], 
+        answers: [
+          { answer: '', isCorrect: 0 },
+          { answer: '', isCorrect: 0 },
+          { answer: '', isCorrect: 0 },
+          { answer: '', isCorrect: 0 },
+        ],
+        description: []
+      };
+    }
   }
 }
 
@@ -83,6 +97,7 @@ export default {
     width: 99vw;
     background-repeat: repeat;
     background-image: url('http://localhost:3000/images/d-shattered.png');
+    padding-top: 50px;
   }
 
   .navbar {
@@ -93,6 +108,7 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
+    z-index: 1;
   }
 
   .question-container {
@@ -102,5 +118,6 @@ export default {
   .answerCheck {
     padding: 0;
     background-color: transparent;
+    margin-top: 30px;
   }
 </style>

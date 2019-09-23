@@ -1,5 +1,5 @@
 <template>
-  <div class="modal fade" id="exampleModalCenterTwo" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle2" aria-hidden="true">
+  <div class="modal fade" id="editquestion" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-dialog-centered d-flex justify-content-center align-items-center" role="document">
       <div class="modal-content" ref="title">
         <div class="modal-body mx-auto" ref="details">
@@ -8,7 +8,7 @@
               <div class="d-flex flex-column mb-4">
                 <label for="question">Question</label>
                 <textarea type="text" rows="8" v-model="pickedQuestion.question" 
-                  class="question-area" id="question" placeholder="Enter question here" aria-describedby="questionHelp" required/>
+                  class="question-area" placeholder="Enter question here" aria-describedby="questionHelp" required/>
               </div>
               <div class="mb-4">
                 <label for="answers-field" aria-describedby="answerHelp">Answers</label>
@@ -52,8 +52,10 @@
                   class="description-area" id="description" placeholder="Add explaination" required/>
               </div>
               <div class="d-flex justify-content-between w-50">
-                <button type="submit" class="btn btn-success submit-button" data-dismiss="modal" @click.prevent="addQuestion(pickedQuestion)">Submit</button>
-                <button type="button" class="btn btn-outline-danger cancel-button" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-outline-warning cancel-button" data-dismiss="modal">Cancel</button>
+                <button v-if="!pickedQuestion.question.length" type="submit" class="btn btn-success submit-button" data-dismiss="modal" @click.prevent="addQuestion(pickedQuestion)">Submit</button>
+                <button v-if="pickedQuestion.question.length" type="submit" class="btn btn-danger submit-button" data-dismiss="modal" @click.prevent="deleteQuestion(pickedQuestion)">Delete</button>
+                <button v-if="pickedQuestion.question.length" type="submit" class="btn btn-success submit-button" data-dismiss="modal" @click.prevent="editQuestion(pickedQuestion)">Update</button>
               </div>
             </form>
           </div>
@@ -71,23 +73,43 @@ import axios from 'axios';
 export default {
   name: 'HandleQuestion',
   props: ['pickedQuestion', 'theme'],
-  data() {
-    return {
-      showModal: false,
-      questions: []
-    }
-  },
-
-  mounted() {
-    this.pickedQuestion.description = this.pickedQuestion.description.join('\n');
-    this.pickedQuestion.question = this.pickedQuestion.question.join('\n');
-  },
-
   methods: {
     addQuestion(form) {
       axios({
         method: 'post',
         url: `${process.env.VUE_APP_BACKEND_SERVER_URL}/questions/add`,
+        data: form
+      })
+      .then((response) => {
+        // eslint-disable-next-line
+        console.log(response);
+      })
+      .catch((error) => {
+        // eslint-disable-next-line
+        console.log(error);
+      });
+    },
+
+    deleteQuestion(form) {
+      axios({
+        method: 'delete',
+        url: `${process.env.VUE_APP_BACKEND_SERVER_URL}/questions/delete`,
+        data: form
+      })
+      .then((response) => {
+        // eslint-disable-next-line
+        console.log(response);
+      })
+      .catch((error) => {
+        // eslint-disable-next-line
+        console.log(error);
+      });
+    },
+
+    editQuestion(form) {
+      axios({
+        method: 'put',
+        url: `${process.env.VUE_APP_BACKEND_SERVER_URL}/questions/update`,
         data: form
       })
       .then((response) => {

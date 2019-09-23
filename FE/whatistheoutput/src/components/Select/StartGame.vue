@@ -1,6 +1,6 @@
 <template>
   <div class="d-flex flex-column align-items-center bg-dark h-100" ref="main">
-    <div class="h3 pt-3 chose-theme" ref="chooseTheme">Choose theme:</div>
+    <div class="h3 p-2 chose-theme" ref="chooseTheme">Choose theme:</div>
     <div class="bg-transparent thumbnails">
       <div class="mx-auto my-1 d-flex justify-content-around">
         <img :src="serverURL + '/images/l-leaves.png'" @click="changeTheme" alt="l-leaves" ref="l-leaves" class="img-thumbnail theme">
@@ -71,6 +71,10 @@ export default {
       axios.get(`${process.env.VUE_APP_BACKEND_SERVER_URL}/questions?num=${this.numOfQuestions}`, { crossdomain: true })
       .then(res => {
         eventBus.user.currentGame.questions = res.data;
+        eventBus.user.currentGame.questions.forEach(question => {
+          question.question = question.question.join('\n');
+          question.description = question.description.join('\n');
+        });
       })
       .then(() => this.$router.push('letsplay'))
       // eslint-disable-next-line
