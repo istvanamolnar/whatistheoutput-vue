@@ -70,7 +70,7 @@ export default {
           score: 0
         }
       };
-      axios.get(`${process.env.VUE_APP_BACKEND_SERVER_URL}/questions?num=${this.numOfQuestions}`, { crossdomain: true })
+      axios.get(`/questions?num=${this.numOfQuestions}`, { crossdomain: true })
       .then(res => {
         eventBus.user.currentGame.questions = res.data;
         eventBus.user.currentGame.questions.forEach(question => {
