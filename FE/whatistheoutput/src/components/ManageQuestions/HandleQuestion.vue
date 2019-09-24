@@ -8,55 +8,68 @@
               <div class="d-flex flex-column mb-4">
                 <label for="question">Question</label>
                 <textarea type="text" rows="8" v-model="pickedQuestion.question" 
-                  class="question-area" placeholder="Enter question here" aria-describedby="questionHelp" required/>
+                  class="question-area" placeholder="Enter question here" required/>
               </div>
               <div class="mb-4">
-                <label for="answers-field" aria-describedby="answerHelp">Answers</label>
+                <label for="answers-field">Answers</label>
                 <div class="input-group answers-area">
                   <div class="input-group-prepend">
                     <div class="input-group-text">
-                      <input type="radio" name="is-correct" value="0" v-model="pickedQuestion.correctOne" aria-label="Answer one" required>
+                      <input type="radio" name="is-correct" value="0" 
+                        v-model="pickedQuestion.correctOne" aria-label="Answer one" required>
                     </div>
                   </div>
-                  <input type="text" class="form-control" v-model="pickedQuestion.answers[0].answer" placeholder="Answer one" required>
+                  <input type="text" class="form-control" 
+                    v-model="pickedQuestion.answers[0].answer" placeholder="Answer one" required>
                 </div>
                 <div class="input-group">
                   <div class="input-group-prepend">
                     <div class="input-group-text">
-                      <input type="radio" name="is-correct" value="1" v-model="pickedQuestion.correctOne" aria-label="Answer two" required>
+                      <input type="radio" name="is-correct" value="1" 
+                        v-model="pickedQuestion.correctOne" aria-label="Answer two" required>
                     </div>
                   </div>
-                  <input type="text" class="form-control" v-model="pickedQuestion.answers[1].answer" placeholder="Answer two" required>
+                  <input type="text" class="form-control" 
+                    v-model="pickedQuestion.answers[1].answer" placeholder="Answer two" required>
                 </div>
                 <div class="input-group">
                   <div class="input-group-prepend">
                     <div class="input-group-text">
-                      <input type="radio" name="is-correct" value="2" v-model="pickedQuestion.correctOne" aria-label="Answer three" required>
+                      <input type="radio" name="is-correct" 
+                        value="2" v-model="pickedQuestion.correctOne" aria-label="Answer three" required>
                     </div>
                   </div>
-                  <input type="text" class="form-control" v-model="pickedQuestion.answers[2].answer" placeholder="Answer three">
+                  <input type="text" class="form-control" 
+                    v-model="pickedQuestion.answers[2].answer" placeholder="Answer three">
                 </div>
                 <div class="input-group">
                   <div class="input-group-prepend">
                     <div class="input-group-text">
-                      <input type="radio" name="is-correct" value="3" v-model="pickedQuestion.correctOne" aria-label="Answer four" required>
+                      <input type="radio" name="is-correct" value="3" 
+                        v-model="pickedQuestion.correctOne" aria-label="Answer four" required>
                     </div>
                   </div>
-                  <input type="text" class="form-control" v-model="pickedQuestion.answers[3].answer" placeholder="Answer four">
+                  <input type="text" class="form-control" 
+                    v-model="pickedQuestion.answers[3].answer" placeholder="Answer four">
                 </div>
-                <small id="answerHelp" class="form-text text-muted">Add at least two, up to four answers and select the correct one</small>
+                <small id="answerHelp" class="form-text text-muted">
+                  Add at least two, up to four answers and select the correct one</small>
               </div>
-              <input type="text" class="form-control" v-model="pickedQuestion.reference" placeholder="link">
+              <input type="text" class="form-control" 
+                v-model="pickedQuestion.reference" placeholder="link">
               <div class="d-flex flex-column mb-4">
                 <label for="description">Description</label>
                 <textarea type="text" rows="5" v-model="pickedQuestion.description" 
                   class="description-area" id="description" placeholder="Add explaination" required/>
               </div>
-              <div class="d-flex justify-content-between w-50">
-                <button type="submit" class="btn btn-outline-warning cancel-button" data-dismiss="modal">Cancel</button>
-                <button type="submit" class="btn btn-success submit-button" data-dismiss="modal" @click.prevent="addQuestion(pickedQuestion)">Submit</button>
-                <button type="submit" class="btn btn-danger submit-button mx-4" data-dismiss="modal" @click.prevent="deleteQuestion(pickedQuestion)">Remove</button>
-                <button type="submit" class="btn btn-success submit-button" data-dismiss="modal" @click.prevent="editQuestion(pickedQuestion)">Update</button>
+              <div class="d-flex justify-content-between w-100">
+                <button type="submit" class="btn btn-light submit-button" data-dismiss="modal">Cancel</button>
+                <button type="submit" class="btn btn-danger submit-button" data-dismiss="modal" 
+                  @click.prevent="deleteQuestion(pickedQuestion)">Remove</button>
+                <button type="submit" class="btn btn-primary submit-button" data-dismiss="modal" 
+                  @click.prevent="editQuestion(pickedQuestion)">Update</button>
+                <button type="submit" class="btn btn-success submit-button" data-dismiss="modal" 
+                  @click.prevent="addQuestion(pickedQuestion)">Submit</button>
               </div>
             </form>
           </div>
@@ -130,15 +143,15 @@ export default {
 
 <style>
   .modal-content {
-    width: max-content;
-    border: none;
     background-color: transparent;
+    border: none;
+    width: max-content;
   }
 
   .modal-body {
+    background-color: #333;
     border-radius: 10px;
     padding: 30px;
-    background-color: #333;
   }
 
   .modal-footer {
@@ -146,10 +159,10 @@ export default {
   }
 
   .question-area, .answers-area, .description-area {
-    min-width: 300px;
-    width: 50vw;
     background-color: #000;
     color: #fff;
+    min-width: 300px;
+    width: 50vw;
   }
 
   .question {
@@ -163,14 +176,14 @@ export default {
 
   .form-control:focus {
     background-color: #000;
-    color: #009b48;
     border: none;
+    color: #009b48;
   }
 
   .form-control {
     background-color: #000;
-    padding: 5px;
     color: #fff;
+    padding: 5px;
   }
 
   .input-group-text {
@@ -180,8 +193,8 @@ export default {
 
   .input-group {
     border: 1px solid #888;
-    margin: 10px auto;
     border-radius: 5px;
+    margin: 10px auto;
   }
 
   .add-question {

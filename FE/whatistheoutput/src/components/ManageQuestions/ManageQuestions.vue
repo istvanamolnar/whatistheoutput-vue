@@ -1,18 +1,22 @@
 <template>
   <div class="manageContainer" ref="manageContainer">
     <nav class="navbar">
-      <div class="btn btn-success" 
-        data-toggle="modal" 
+      <div class="btn btn-success new-question" 
         data-target="#editquestion"
+        data-toggle="modal" 
         @click="newQuestion">Add new question</div>
     </nav>
     <div v-if="questions" class="d-flex flex-column align-items-center">
-      <div v-for="question in questions" :key="question._id" class="d-flex flex-column align-items-center justify-content-center answerCheck" :ref="question._id">
-        <question-field class="question mx-auto mt-2" :questionText="question.question" :theme="theme"/>
+      <div v-for="question in questions" :key="question._id" 
+        class="d-flex flex-column align-items-center justify-content-center answerCheck" 
+        :ref="question._id">
+        <question-field class="question mx-auto mt-2" 
+          :questionText="question.question" 
+          :theme="theme"/>
         <answers-field class="answers mx-auto p-2"
           :currentQuestion="question" 
-          :theme="theme"
           :mode="mode"
+          :theme="theme"
           @questionToEdit="handleQuestion($event)"/>
         <div>
           <img :src="serverURL + '/images/wrench.png'" 
@@ -29,38 +33,39 @@
 </template>
 
 <script>
-import axios from 'axios';
 import QuestionField from '../QuizArea/QuestionField';
 import AnswersField from '../QuizArea/AnswersField';
 import HandleQuestion from '../ManageQuestions/HandleQuestion';
 
+import axios from 'axios';
+
 export default {
   name: 'ManageQuestions',
   components: {
-    'question-field': QuestionField,
     'answers-field': AnswersField,
-    'handle-question': HandleQuestion
+    'handle-question': HandleQuestion,
+    'question-field': QuestionField
   },
 
   data() {
     return {
-      serverURL: process.env.VUE_APP_BACKEND_SERVER_URL,
-      questions: [],
-      theme: 'd-shattered',
       mode: 'manage',
+      questions: [],
+      serverURL: process.env.VUE_APP_BACKEND_SERVER_URL,
+      theme: 'd-shattered',
       pickedQuestion: {
-        question: [], 
         answers: [
           { answer: '' },
           { answer: '' },
           { answer: '' },
           { answer: '' },
         ],
+        correctOne: null,
         description: [],
-        reference: '',
-        correctOne: null
+        question: [], 
+        reference: ''
       }
-    }
+    };
   },
 
   created() {
@@ -79,7 +84,7 @@ export default {
   },
 
   mounted() {
-    this.$refs.manageContainer.style.backgroundImage = `url('${process.env.VUE_APP_BACKEND_SERVER_URL}/images/${this.theme}.png')`
+    this.$refs.manageContainer.style.backgroundImage = `url('${process.env.VUE_APP_BACKEND_SERVER_URL}/images/${this.theme}.png')`;
   },
 
   methods: {
@@ -93,15 +98,15 @@ export default {
     newQuestion() {
       this.isNew = 1;
       this.pickedQuestion = {
-        question: [], 
         answers: [
           { answer: '' },
           { answer: '' },
           { answer: '' },
           { answer: '' },
         ],
-        description: [],
         correctOne: null,
+        description: [],
+        question: [], 
         reference: ''
       };
     }
@@ -112,19 +117,19 @@ export default {
 
 <style>
   .manageContainer {
-    width: 99vw;
     background-repeat: repeat;
     padding-top: 50px;
+    width: 99vw;
   }
 
   .navbar {
+    align-items: center;
     background-color: #0f0f0f;
+    display: flex;
+    justify-content: center;
     position: fixed;
     top: 0;
     width: 99vw;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     z-index: 1;
   }
 
@@ -133,19 +138,19 @@ export default {
   }
 
   .answerCheck {
-    padding: 0;
     background-color: #000;
     margin-top: 30px;
+    padding: 0;
   }
 
   .edit-icon {
     height: 40px;
-    width: 40px;
+    margin-bottom: 10px;
     position: inherit;
+    width: 40px;
   }
 
-  .edit-icon:hover {
+  .edit-icon:hover, .new-question:hover {
     cursor: pointer;
   }
-
 </style>

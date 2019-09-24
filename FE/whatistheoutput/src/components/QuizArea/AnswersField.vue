@@ -1,18 +1,20 @@
 <template>
   <div v-if="currentQuestion" class="container py-2 d-flex flex-column rounded" ref="answersField">
-    <div v-for="ans in currentQuestion.answers" :key="ans._id" :ref="ans.isCorrect"
+    <div v-for="ans in currentQuestion.answers" :key="ans._id"
       class="mx-auto my-1 btn btn-outline-success" 
-      @click.once="selectAnswer($event, ans)"
-      :class="[selected !== null && selected === ans._id ? 'active' : selected !== null ? 'disabled' : '']">
+      :class="[selected !== null && selected === ans._id ? 'active' : selected !== null ? 'disabled' : '']"
+      :ref="ans.isCorrect"
+      @click.once="selectAnswer($event, ans)">
       <highlight-code lang="javascript" class="m-auto">
         {{ ans.answer }}
       </highlight-code>
     </div>
     <div class="action-buttons mx-auto p-0 d-flex flex-row justify-content-between" ref="buttonContainer">
       <transition name="slide-fade">
-        <div v-if="reveal" class="mx-0 my-1 btn-outline-warning explain" alt="explainButton"
+        <div v-if="reveal" class="mx-0 my-1 btn-outline-warning explain" ref="explainButton"
           @click="checkSolution($event)"
-          data-toggle="modal" data-target="#seedetails">Explain</div>
+          data-toggle="modal" 
+          data-target="#seedetails">Explain</div>
       </transition>
       <transition name="slide-fade">
         <div v-if="reveal" class="mx-0 my-1 btn-outline-success next" ref="nextButton"
@@ -21,8 +23,8 @@
     </div>
     <explain-modal 
       :description="currentQuestion.description" 
-      :theme="theme" 
-      :questionText="currentQuestion.question"/>
+      :questionText="currentQuestion.question"
+      :theme="theme"/>
   </div>
 </template>
 <script>
@@ -36,8 +38,8 @@ export default {
   props: ['currentQuestion', 'mode', 'selected', 'theme'],
   data() {
     return {
-      serverURL: process.env.VUE_APP_BACKEND_SERVER_URL,
-      reveal: false
+      reveal: false,
+      serverURL: process.env.VUE_APP_BACKEND_SERVER_URL
     }
   },
 
@@ -80,11 +82,11 @@ export default {
 
   .btn {
     display: flex;
-    width: 300px;
-    height: 40px;
     border: 2px solid #3ca744;
     font-weight: 600;
+    height: 40px;
     min-width: max-content;
+    width: 300px;
   }
 
   .btn:not(.disabled):not(.btn-danger):hover {

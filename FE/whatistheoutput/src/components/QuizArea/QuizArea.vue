@@ -3,7 +3,9 @@
     <div class="title mx-auto" ref="title">What Is The Output?</div>
     <transition name="slide-fade">
       <div v-if="currentQuestion" class="mx-auto my-2 d-flex rotated">
-        <question-field class="question m-auto" :questionText="currentQuestion.question" :theme="theme"/>
+        <question-field class="question m-auto" 
+          :questionText="currentQuestion.question" 
+          :theme="theme"/>
         <answers-field class="answers mx-auto p-2"
           :selected="selected"
           :currentQuestion="currentQuestion"
@@ -20,23 +22,22 @@
 <script>
 import QuestionField from './QuestionField';
 import AnswersField from './AnswersField';
-
 import { eventBus } from '../../main';
 
 export default {
   name: 'QuizArea',
   components: {
-    'question-field': QuestionField,
-    'answers-field': AnswersField
+    'answers-field': AnswersField,
+    'question-field': QuestionField
   },
   data() {
     return {
-      user: eventBus.user,
-      mode: 'quiz',
       currentQuestion : [],
-      selected: null,
+      mode: 'quiz',
       scoreCounter: 0,
+      selected: null,
       theme: eventBus.user.theme[0] === 'd' ? 'dark' : 'light',
+      user: eventBus.user
     }
   },
 
@@ -133,9 +134,9 @@ export default {
     }
 
     .score {
+      bottom: 3vh;
       font-size: 2.5vw;
       position:fixed;
-      bottom: 3vh;
       right: 3vw;
     }
   }

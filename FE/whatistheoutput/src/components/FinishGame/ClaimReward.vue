@@ -36,12 +36,12 @@ export default {
 
   data() {
     return {
-      serverURL: process.env.VUE_APP_BACKEND_SERVER_URL,
+      answers: eventBus.user.currentGame.answers,
       name: eventBus.user.name,
       score: eventBus.user.currentGame.score,
-      answers: eventBus.user.currentGame.answers,
-      theme: eventBus.user.theme,
-      show: false
+      serverURL: process.env.VUE_APP_BACKEND_SERVER_URL,
+      show: false,
+      theme: eventBus.user.theme
     }
   },
 
@@ -65,19 +65,19 @@ export default {
 
 <style scoped>
   .claimContainer {
-    height: 100vh;
     display: flex;
     flex-direction: column;
+    height: 100vh;
   }
 
   .claimText, .claimHeader {
-    font-family: 'ZCOOL KuaiLe', cursive;
+    align-items: center;
     border: none;
+    display: flex;
+    font-family: 'ZCOOL KuaiLe', cursive;
+    justify-content: center;
     text-align: center;
     width: 75vw;
-    display: flex;
-    justify-content: center;
-    align-items: center;
   }
 
   .claimScore {
@@ -89,16 +89,16 @@ export default {
   }
 
   .claimButton {
-    width: 120px;
     height: 50px;
+    width: 120px;
   }
 
   .finalScore {
-    font-family: 'ZCOOL KuaiLe', cursive;
     color: #009b48;
-    padding: 20px;
+    font-family: 'ZCOOL KuaiLe', cursive;
     font-size: 34px;
     font-weight: 700;
+    padding: 20px;
   }
 
   .answerBox {
@@ -113,15 +113,15 @@ export default {
 
   .answerCheck {
     background-color: #333;
+    border-radius: 5px;
     margin: 50px;
     padding: 20px;
-    border-radius: 5px;
   }
 
   .lootboxText {
+    color: #F725E2;
     font-family: 'ZCOOL KuaiLe', cursive;
     font-size: 30px;
-    color: #F725E2;
     font-weight: 700;
   }
 

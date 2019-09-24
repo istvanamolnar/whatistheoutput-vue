@@ -35,10 +35,10 @@ export default {
   
   .question-field {
     border-radius: 4px;
+    display: flex;
     font-size: 24px;
     font-size: 2vh;
     width: 100%;
-    display: flex;
   }
 
   /* Animations */

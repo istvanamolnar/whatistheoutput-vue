@@ -1,30 +1,31 @@
 <template>
   <div class="d-flex flex-column align-items-center bg-dark h-100" ref="main">
     <div class="h3 p-2 chose-theme" ref="chooseTheme">Choose theme:</div>
-    <div class="bg-transparent thumbnails">
-      <div class="mx-auto my-1 d-flex justify-content-around">
-        <img :src="serverURL + '/images/l-leaves.png'" @click="changeTheme" alt="l-leaves" ref="l-leaves" class="img-thumbnail theme">
-        <img :src="serverURL + '/images/d-shattered.png'" @click="changeTheme" alt="d-shattered" ref="d-shattered" class="img-thumbnail theme">
-      </div>
-      <div class="mx-auto my-1 d-flex justify-content-center middle-row">
-        <img :src="serverURL + '/images/d-evolution.png'" @click="changeTheme" alt="d-evolution" ref="d-evolution" class="img-thumbnail theme">
-        <img :src="serverURL + '/images/l-alchemy.png'" @click="changeTheme" alt="l-alchemy" ref="l-alchemy" class="img-thumbnail theme">
-      </div>
-      <div class="mx-auto my-1 d-flex justify-content-center">
-        <img :src="serverURL + '/images/l-memphis.png'" @click="changeTheme" alt="l-memphis" ref="l-memphis" class="img-thumbnail theme">
-        <img :src="serverURL + '/images/d-bicycles.png'" @click="changeTheme" alt="d-bicycles" ref="d-bicycles" class="img-thumbnail theme">
+    <div class="container bg-transparent thumbnails">
+      <div class="row w-50vw">
+        <img :src="serverURL + '/images/' + background + '.png'" class="img-thumbnail theme"
+          v-for="background in themes" :key="background"
+          @click="changeTheme" :alt="background">
       </div>
     </div>
     <div class="questionRange">
-      <p class="numOfQuestions" ref="questionCounter">number of questions: <output id="rangevalue">8</output></p>
+      <p class="numOfQuestions" ref="questionCounter">number of questions: 
+        <output id="rangevalue">8</output></p>
       <div id="slider" @click="getNumOfQuestions">
-        <input class="bar" type="range" id="rangeinput" ref="value" value="8" min="5" max="10" onchange="rangevalue.value=value" />
+        <input class="bar" type="range" id="rangeinput" 
+          value="8" min="5" max="10" onchange="rangevalue.value=value" ref="value"/>
         <span class="highlight"></span><br>
       </div>
     </div>
     <div class="d-flex flex-column align-items-center">
-      <input class="text" type="text" placeholder="Enter your name" v-model="nickname" ref="nameInput" required/>
-      <input class="text btn btn-success" type="submit" value="Let's play!" @click.once="startGame()" ref="startButton"/>
+      <input class="text" type="text" 
+        placeholder="Enter your name" 
+        v-model="nickname" 
+        ref="nameInput" required/>
+      <input class="text btn btn-success" type="submit" 
+        value="Let's play!" 
+        @click.once="startGame()" 
+        ref="startButton"/>
     </div>
   </div>
 </template>
@@ -38,34 +39,35 @@ export default {
   data() {
     return {
       nickname: '',
-      background: 'd-shattered',
+      numOfQuestions: 8,
       serverURL: process.env.VUE_APP_BACKEND_SERVER_URL,
-      numOfQuestions: 8
+      theme: 'd-bicycles',
+      themes: ['d-bicycles', 'd-evolution', 'd-shattered', 'd-squares', 'd-pool', 'l-wood', 'l-alchemy', 'l-restaurant', 'l-memphis', 'l-symphony']
     }
   },
 
   mounted() {
+    this.$refs.main.style.backgroundImage = `url('${process.env.VUE_APP_BACKEND_SERVER_URL}/images/d-bicycles.png')`;
     this.$refs.chooseTheme.style.backgroundColor = 'rgba(0, 0, 0, 0.6)';
     this.$refs.chooseTheme.style.color = 'rgba(255, 255, 255, 0.9)';
-    this.$refs.main.style.backgroundImage = `url('${process.env.VUE_APP_BACKEND_SERVER_URL}/images/${this.background}.png')`;
+    this.$refs.nameInput.style.backgroundColor = 'rgba(0, 0, 0, 0.9)';
+    this.$refs.nameInput.style.color = '#009b48';
     this.$refs.questionCounter.style.backgroundColor = 'rgba(0, 0, 0, 0.9)';
     this.$refs.questionCounter.style.color = 'rgba(255, 255, 255, 0.9)';
     this.$refs.startButton.style.backgroundColor = '#009b48';
     this.$refs.startButton.style.color = 'rgba(255, 255, 255, 0.9)';
-    this.$refs.nameInput.style.backgroundColor = 'rgba(0, 0, 0, 0.9)';
-    this.$refs.nameInput.style.color = '#009b48';
   },
 
   methods: {
     startGame() {
       eventBus.user = {
         name: this.nickname,
-        theme: this.background,
+        theme: this.theme,
         currentGame: {
+          answers: [],
           numOfQuestions: this.numOfQuestions,
           questions: [],
-          score: 0,
-          answers: []
+          score: 0
         }
       };
       axios.get(`${process.env.VUE_APP_BACKEND_SERVER_URL}/questions?num=${this.numOfQuestions}`, { crossdomain: true })
@@ -82,26 +84,26 @@ export default {
     },
 
     changeTheme(event) {
-      this.background = event.target.alt;
-      if (this.background[0] === 'd') {
-      this.$refs.nameInput.style.backgroundColor = 'black';
-      this.$refs.nameInput.style.color = '#009b48';
-      this.$refs.chooseTheme.style.backgroundColor = 'rgba(0, 0, 0, 0.6)';
-      this.$refs.chooseTheme.style.color = 'white';
-      this.$refs.questionCounter.style.backgroundColor = 'rgba(0, 0, 0, 0.6)';
-      this.$refs.questionCounter.style.color = 'rgba(255, 255, 255, 0.9)';
-    } else if (this.background[0] === 'l') {
-      this.$refs.nameInput.style.backgroundColor = 'white';
-      this.$refs.nameInput.style.color = '#009b48';
-      this.$refs.chooseTheme.style.backgroundColor = 'rgba(255, 255, 255, 0.6)';
-      this.$refs.chooseTheme.style.color = 'black';
-      this.$refs.questionCounter.style.backgroundColor = 'rgba(255, 255, 255, 0.9)';
-      this.$refs.questionCounter.style.color = 'rgba(0, 0, 0, 0.9)';
-    } else {
-      // eslint-disable-next-line
-      console.log("Something went wrong");
-    }
-      this.$refs.main.style.backgroundImage = `url('${process.env.VUE_APP_BACKEND_SERVER_URL}/images/${this.background}.png')`;
+      this.theme = event.target.alt;
+      if (this.theme[0] === 'd') {
+        this.$refs.nameInput.style.backgroundColor = 'black';
+        this.$refs.nameInput.style.color = '#009b48';
+        this.$refs.chooseTheme.style.backgroundColor = 'rgba(0, 0, 0, 0.6)';
+        this.$refs.chooseTheme.style.color = 'white';
+        this.$refs.questionCounter.style.backgroundColor = 'rgba(0, 0, 0, 0.6)';
+        this.$refs.questionCounter.style.color = 'rgba(255, 255, 255, 0.9)';
+      } else if (this.theme[0] === 'l') {
+        this.$refs.nameInput.style.backgroundColor = 'white';
+        this.$refs.nameInput.style.color = '#009b48';
+        this.$refs.chooseTheme.style.backgroundColor = 'rgba(255, 255, 255, 0.6)';
+        this.$refs.chooseTheme.style.color = 'black';
+        this.$refs.questionCounter.style.backgroundColor = 'rgba(255, 255, 255, 0.9)';
+        this.$refs.questionCounter.style.color = 'rgba(0, 0, 0, 0.9)';
+      } else {
+        // eslint-disable-next-line
+        console.log("Something went wrong");
+      }
+      this.$refs.main.style.backgroundImage = `url('${process.env.VUE_APP_BACKEND_SERVER_URL}/images/${this.theme}.png')`;
     },
     getNumOfQuestions() {
       this.numOfQuestions = this.$refs.value.value;
@@ -112,13 +114,13 @@ export default {
 <style>
   .text {
     border: 2px solid #888;
-    width: 50vw;
-    margin: 10px;
-    text-align: center;
+    color:#009b48;
+    font-size: 18px;
     font-weight: 800;
     height: 50px;
-    font-size: 18px;
-    color:#009b48;
+    margin: 10px;
+    text-align: center;
+    width: 50vw;
   }
 
   .text::placeholder {
@@ -131,54 +133,54 @@ export default {
 
   .theme {
     border: 3px solid #009b48;
-    height: 10vh;
-    width: 10vh;
     cursor: pointer;
+    height: 10vh;
     margin: 1vh;
     padding: 0;
+    width: 10vh;
   }
 
   .chose-theme {
-    font-family: 'ZCOOL KuaiLe', cursive;
     border-radius: 15px;
+    font-family: 'ZCOOL KuaiLe', cursive;
     font-weight: 700;
     margin-top: 30px;
   }
 
   .questionRange {
-    height: 100px;
-    width: 330px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
     align-items: center;
     border: 2px solid ,000;
     border-radius: 10px;
-    padding: 10px;
+    display: flex;
+    flex-direction: column;
     font-weight: 600;
+    height: 100px;
+    justify-content: space-between;
+    padding: 10px;
+    width: 330px;
   }
 
   #slider {
-    width: 220px;
-    height: 30px;
-    display: flex;
     align-items: center;
     background: transparent;
-    border: 3px solid #888;
     border-radius: 12px;
+    border: 3px solid #888;
+    display: flex;
     justify-content: center;
+    height: 30px;
+    width: 220px;
   }
   #slider .bar {
-    width: 100%;
-    height: 2px;
     background: #009b48;
+    height: 2px;
+    width: 100%;
   }
   #slider .highlight {
+    background: #009b48;
+    border-radius: 40px;
     height: 2px;
     position: absolute;
     width: 140px;
-    border-radius: 40px;
-    background: #009b48;
   }
   input[type="range"] {
     -webkit-appearance: none;
@@ -187,51 +189,51 @@ export default {
   }
   input[type="range"]::-webkit-slider-thumb {
     -webkit-appearance: none;
+    background-color: #009b48;
+    border: 2px solid #000;
+    border-radius: 30px;
+    cursor: pointer;
+    height: 40px;
     position: relative;
     top: 0px;
-    z-index: 1;
     width: 40px;
-    height: 40px;
-    cursor: pointer;
-    border-radius: 30px;
-    border: 2px solid #000;
-    background-color: #009b48;
+    z-index: 1;
   }
 
   #rangevalue {
+    color: #009b48;
     font-size: 24px;
     font-family: 'ZCOOL KuaiLe', cursive;
-    width: 30px;
     height: 30px;
     text-align: center;
-    color: #009b48;
+    width: 30px;
   }
   input[type="range"]:focus {
     outline: none;
   }
 
   .numOfQuestions {
-    padding: 0 10px;
     border-radius: 4px;
     border: 2px solid #000;
+    color: #000;
+    display: flex;
     font-size: 24px;
     font-family: 'ZCOOL KuaiLe', cursive;
     height: 40px;
-    display: flex;
-    width: 300px;
-    color: #000;
-    margin: auto;
     justify-content: space-around;
+    margin: auto;
+    padding: 0 10px;
+    width: 300px;
   }
 
   @media all and (max-height: 420px) {
     .thumbnails {
       display: flex;
       flex-direction: row;
-      justify-content: center;
-      width: 60vw;
       height: 20vh;
+      justify-content: center;
       margin-bottom: 3vh;
+      width: 60vw;
     }
 
     .middle-row {
@@ -249,10 +251,10 @@ export default {
     }
 
     .text {
-      width: 50vw;
+      font-size: 2.5vw;
       height: 10vh;
       margin: 3px 0;
-      font-size: 2.5vw;
+      width: 50vw;
     }
   }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <div class="modal fade" id="seedetails" tabindex="-1" role="dialog" aria-labelledby="DetailsLabel" aria-hidden="true">
+  <div class="modal fade" id="seedetails" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-dialog-centered d-flex justify-content-center align-items-center" role="document">
       <div class="modal-content" ref="title" >
         <div class="modal-header mx-auto p-1">
@@ -25,7 +25,7 @@
 <script>
 export default {
   name: 'ExplainModal',
-  props: ['description', 'theme', 'questionText'],
+  props: ['description', 'questionText', 'theme',],
   data() {
     return {
       showModal: false
@@ -46,10 +46,10 @@ export default {
 
 </script>
 
-<style>
+<style scoped>
   .modal-content {
-    width: max-content;
     border: 2px solid #f0f0f0;
+    width: max-content;
   }
 
   .modal-header {
