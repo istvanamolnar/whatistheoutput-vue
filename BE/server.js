@@ -9,7 +9,7 @@ const dotenv = require('dotenv').config();
 
 const questionsRoute = require('./routes/questions');
 
-mongoose.connect(`mongodb+srv://${process.env.U}:${process.env.P}@doyouknow-hucjo.mongodb.net/doyouknow?retryWrites=true&w=majority`, {
+mongoose.connect(`mongodb+srv://${process.env.U}:${process.env.P}@whatistheoutput-bekgg.mongodb.net/whatistheoutput?retryWrites=true&w=majority`, {
     useNewUrlParser: true,
     useUnifiedTopology: true
   })

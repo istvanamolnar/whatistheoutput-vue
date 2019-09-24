@@ -12,7 +12,7 @@
           @chosenAnswer="handleSelected"/>
       </div>
     </transition>
-    <div class="score text-center" ref="questionCounter">Question: {{ user.currentGame.numOfQuestions - user.currentGame.questions.length }}/{{ user.currentGame.numOfQuestions }}</div>
+    <div class="score text-center" ref="questionCounter">Question: {{ user.currentGame.numOfQuestions - user.currentGame.questions.length }} / {{ user.currentGame.numOfQuestions }}</div>
     <div class="score text-center" ref="score">Score: {{ user.currentGame.score }}</div>
   </div>
 </template>

@@ -18,14 +18,11 @@
         <div v-if="reveal" class="mx-0 my-1 btn-outline-success next" ref="nextButton"
           @click="getNextQuestion()">Next</div>
       </transition>
-      <div v-if="mode === 'manage'">
-        <img :src="serverURL + '/images/wrench.png'" 
-          class="edit-icon" alt="Edit icon"
-          data-toggle="modal" data-target="#editquestion"
-          @click="emitPickedQuestion($event, currentQuestion)"/>
-      </div>
     </div>
-    <explain-modal :description="currentQuestion.description" :theme="theme" :questionText="currentQuestion.question"/>
+    <explain-modal 
+      :description="currentQuestion.description" 
+      :theme="theme" 
+      :questionText="currentQuestion.question"/>
   </div>
 </template>
 <script>
@@ -55,10 +52,6 @@ export default {
   methods: {
     checkSolution(event) {
       event.target.className += ' active';
-    },
-
-    emitPickedQuestion(event, currentQuestion) {
-      this.$emit('questionToEdit', currentQuestion);
     },
 
     getNextQuestion() {
@@ -139,17 +132,6 @@ export default {
   .active {
     -webkit-text-fill-color: #fff;
   }
-
-  .edit-icon {
-    height: 40px;
-    width: 40px;
-    padding: 10px 10px 0 0;
-  }
-
-  .edit-icon:hover {
-    cursor: pointer;
-  }
-
 
   /* Animations */
   .slide-fade-enter-active {

@@ -1,5 +1,5 @@
 <template>
-  <div class="manageContainer">
+  <div class="manageContainer" ref="manageContainer">
     <nav class="navbar">
       <div class="btn btn-success" 
         data-toggle="modal" 
@@ -14,11 +14,17 @@
           :theme="theme"
           :mode="mode"
           @questionToEdit="handleQuestion($event)"/>
+        <div>
+          <img :src="serverURL + '/images/wrench.png'" 
+            class="edit-icon" alt="Edit icon"
+            data-toggle="modal" data-target="#editquestion"
+            @click="pickedQuestion = question"/>
+        </div>
       </div>
-      <handle-question
-        :pickedQuestion="pickedQuestion" 
-        :theme="theme"/>
     </div>
+    <handle-question
+      :pickedQuestion="pickedQuestion" 
+      :theme="theme"/>
   </div>
 </template>
 
@@ -45,12 +51,14 @@ export default {
       pickedQuestion: {
         question: [], 
         answers: [
-          { answer: '', isCorrect: 0 },
-          { answer: '', isCorrect: 0 },
-          { answer: '', isCorrect: 0 },
-          { answer: '', isCorrect: 0 },
+          { answer: '' },
+          { answer: '' },
+          { answer: '' },
+          { answer: '' },
         ],
-        description: []
+        description: [],
+        reference: '',
+        correctOne: null
       }
     }
   },
@@ -59,7 +67,7 @@ export default {
     axios(process.env.VUE_APP_BACKEND_SERVER_URL + '/questions/getall')
     .then((response) => {
       this.questions = response.data;
-      this.questions.forEach(question => {
+      this.questions.forEach((question) => {
         question.question = question.question.join('\n');
         question.description = question.description.join('\n');
       });
@@ -70,21 +78,31 @@ export default {
     });
   },
 
+  mounted() {
+    this.$refs.manageContainer.style.backgroundImage = `url('${process.env.VUE_APP_BACKEND_SERVER_URL}/images/${this.theme}.png')`
+  },
+
   methods: {
     handleQuestion(event) {
       this.pickedQuestion = event;
+      this.pickedQuestion.answers.forEach((answer, index) => {
+        answer.isCorrect ? this.pickedQuestion.correctOne = index : null;
+      })
     },
 
     newQuestion() {
+      this.isNew = 1;
       this.pickedQuestion = {
         question: [], 
         answers: [
-          { answer: '', isCorrect: 0 },
-          { answer: '', isCorrect: 0 },
-          { answer: '', isCorrect: 0 },
-          { answer: '', isCorrect: 0 },
+          { answer: '' },
+          { answer: '' },
+          { answer: '' },
+          { answer: '' },
         ],
-        description: []
+        description: [],
+        correctOne: null,
+        reference: ''
       };
     }
   }
@@ -96,7 +114,6 @@ export default {
   .manageContainer {
     width: 99vw;
     background-repeat: repeat;
-    background-image: url('http://localhost:3000/images/d-shattered.png');
     padding-top: 50px;
   }
 
@@ -117,7 +134,18 @@ export default {
 
   .answerCheck {
     padding: 0;
-    background-color: transparent;
+    background-color: #000;
     margin-top: 30px;
   }
+
+  .edit-icon {
+    height: 40px;
+    width: 40px;
+    position: inherit;
+  }
+
+  .edit-icon:hover {
+    cursor: pointer;
+  }
+
 </style>
