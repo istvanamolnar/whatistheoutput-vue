@@ -96,7 +96,7 @@ export default {
     deleteQuestion(form) {
       axios({
         method: 'delete',
-        url: `${process.env.VUE_APP_BACKEND_SERVER_URL}/questions/delete`,
+        url: `${process.env.VUE_APP_BACKEND_SERVER_URL}/questions/delete?id=${form._id}`,
         data: form
       })
       .then((response) => {

@@ -28,14 +28,10 @@ router.get('/getall', (req, res) => {
   });
 });
 
-router.put('/update', (req, res) => {
-  const updatedQuestion = req.body;
-  updatedQuestion.answers.forEach((answer, index) => {
-    answer.isCorrect = index === Number(updatedQuestion.correctOne) ? 1 : 0;
-  })
-  Question.findByIdAndUpdate(req.body._id, updatedQuestion)
+router.delete('/delete', (req, res) => {
+  Question.deleteOne({'_id': req.query.id})
   .then(() => {
-    res.status(200).json('Question updated');
+    res.status(200).json('Question deleted');
   })
   .catch(() => {
     res.status(500).json({
@@ -57,13 +53,28 @@ router.post('/add', (req, res) => {
       answer.isCorrect = (index === Number(questionData.correctOne) ? 1 : 0)
     })
     const question = new Question(newQuestion);
-      question.save()
-      .then(() => res.status(200).json('Question saved'))
-      .catch(err => console.log(err));
+    question.save()
+    .then(() => res.status(200).json('Question saved'))
+    .catch(err => console.log(err));
   } else {
     res.status(400).json('Missing data');
-  }
+  };
 });
 
+router.put('/update', (req, res) => {
+  const updatedQuestion = req.body;
+  updatedQuestion.answers.forEach((answer, index) => {
+    answer.isCorrect = index === Number(updatedQuestion.correctOne) ? 1 : 0;
+  })
+  Question.findByIdAndUpdate(req.body._id, updatedQuestion)
+  .then(() => {
+    res.status(200).json('Question updated');
+  })
+  .catch(() => {
+    res.status(500).json({
+      message: 'Something went wrong, please try again later.',
+    });
+  });
+});
 
 module.exports = router;
