@@ -14,8 +14,10 @@
           @chosenAnswer="handleSelected"/>
       </div>
     </transition>
-    <div class="score text-center" ref="questionCounter">Question: {{ user.currentGame.numOfQuestions - user.currentGame.questions.length }} / {{ user.currentGame.numOfQuestions }}</div>
-    <div class="score text-center" ref="score">Score: {{ user.currentGame.score }}</div>
+    <div class="score text-center" ref="questionCounter">
+      Question: {{ user.currentGame.numOfQuestions - user.currentGame.questions.length }} / {{ user.currentGame.numOfQuestions }}
+      <br>Score: {{ user.currentGame.score }}
+    </div>
   </div>
 </template>
 
@@ -46,15 +48,13 @@ export default {
   },
 
   mounted() {
-    this.$refs.main_container.style.backgroundImage = `url('${process.env.VUE_APP_BACKEND_SERVER_URL}/images/${eventBus.user.theme}.png')`;
+    this.$refs.main_container.style.backgroundImage = `url('${process.env.VUE_APP_IMAGES_URL}/images/${eventBus.user.theme}.png')`;
     if (this.theme === 'dark') {
       this.$refs.title.style.color = '#ddd';
       this.$refs.questionCounter.style.color = '#ddd';
-      this.$refs.score.style.color = '#ddd';
     } else if (this.theme === 'light') {
       this.$refs.title.style.color = '#222';
       this.$refs.questionCounter.style.color = '#222';
-      this.$refs.score.style.color = '#222';
     }
   },
 
@@ -78,7 +78,7 @@ export default {
           answer: value
         });
         setTimeout(() => {
-          if (value.isCorrect === 1) {
+          if (value.isCorrect === true) {
             eventBus.user.currentGame.score += Math.floor((Date.now() - this.scoreCounter) / 100);
           }
         }, 2000);

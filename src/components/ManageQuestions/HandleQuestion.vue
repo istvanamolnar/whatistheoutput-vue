@@ -89,9 +89,10 @@ export default {
   props: ['pickedQuestion', 'theme'],
   methods: {
     addQuestion(form) {
+      form.game = 'doyouknow';
       axios({
         method: 'post',
-        url: `${process.env.VUE_APP_BACKEND_SERVER_URL}/questions/add`,
+        url: `${process.env.VUE_APP_BACKEND_SERVER_URL}/questions`,
         data: form,
       })
       .then((response) => {
@@ -109,7 +110,7 @@ export default {
     deleteQuestion(form) {
       axios({
         method: 'delete',
-        url: `${process.env.VUE_APP_BACKEND_SERVER_URL}/questions/delete?id=${form._id}`,
+        url: `${process.env.VUE_APP_BACKEND_SERVER_URL}/questions?questionId=${form._id}`,
         data: form
       })
       .then((response) => {
@@ -125,7 +126,7 @@ export default {
     editQuestion(form) {
       axios({
         method: 'put',
-        url: `${process.env.VUE_APP_BACKEND_SERVER_URL}/questions/update`,
+        url: `${process.env.VUE_APP_BACKEND_SERVER_URL}/questions`,
         data: form
       })
       .then((response) => {

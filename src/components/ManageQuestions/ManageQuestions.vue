@@ -19,7 +19,7 @@
           :theme="theme"
           @questionToEdit="handleQuestion($event)"/>
         <div>
-          <img :src="serverURL + '/images/wrench.png'" 
+          <img :src="imagesURL + '/images/wrench.png'" 
             class="edit-icon" alt="Edit icon"
             data-toggle="modal" data-target="#editquestion"
             @click="pickedQuestion = question"/>
@@ -51,6 +51,7 @@ export default {
     return {
       mode: 'manage',
       questions: [],
+      imagesURL: process.env.VUE_APP_IMAGES_URL,
       serverURL: process.env.VUE_APP_BACKEND_SERVER_URL,
       theme: 'd-shattered',
       pickedQuestion: {
@@ -69,13 +70,9 @@ export default {
   },
 
   created() {
-    axios(process.env.VUE_APP_BACKEND_SERVER_URL + '/questions/getall')
+    axios(this.serverURL + '/whatistheoutput')
     .then((response) => {
       this.questions = response.data;
-      this.questions.forEach((question) => {
-        question.question = question.question.join('\n');
-        question.description = question.description.join('\n');
-      });
     })
     .catch((error) => {
       // eslint-disable-next-line
@@ -84,7 +81,7 @@ export default {
   },
 
   mounted() {
-    this.$refs.manageContainer.style.backgroundImage = `url('${process.env.VUE_APP_BACKEND_SERVER_URL}/images/${this.theme}.png')`;
+    this.$refs.manageContainer.style.backgroundImage = `url('${this.imagesURL}/images/${this.theme}.png')`;
   },
 
   methods: {
@@ -96,7 +93,6 @@ export default {
     },
 
     newQuestion() {
-      this.isNew = 1;
       this.pickedQuestion = {
         answers: [
           { answer: '' },

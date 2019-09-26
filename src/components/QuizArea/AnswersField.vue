@@ -46,7 +46,7 @@ export default {
   mounted() {
     this.$refs.answersField.style.backgroundColor = this.theme[0] === 'd' ? 'rgba(0, 0, 0, 0.8)' : 'rgba(255, 255, 255, 0.8)';
     if (this.mode === 'manage') {
-      this.$refs[1][0].className = 'mx-auto my-1 p-0 btn btn-success active';
+      this.$refs[true][0].className = 'mx-auto my-1 p-0 btn btn-success active disabled';
       this.$refs.buttonContainer.className = 'd-flex flex-row-reverse';
     }
   },
@@ -67,8 +67,8 @@ export default {
         const selectedAnswer = this.currentQuestion.answers.find(answer => answer._id === ans._id);
         setTimeout(() => {
           if (!selectedAnswer.isCorrect) {
-            this.$refs[1][0].className = 'mx-auto my-1 p-0 btn btn-outline-success active'
-            this.$refs[0].find(answer => answer.className.includes('active')).className = 'mx-auto my-1 p-0 btn btn-danger active';
+            this.$refs[true][0].className = 'mx-auto my-1 p-0 btn btn-outline-success active'
+            this.$refs[false].find(answer => answer.className.includes('active')).className = 'mx-auto my-1 p-0 btn btn-danger active';
           }
           this.reveal = true;
         }, 1000);

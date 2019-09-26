@@ -17,7 +17,7 @@
           You won:
         </h3>
         <div class="lootboxText 2">Epic Chest</div>
-        <img class="treasure-chest" :src="serverURL + '/images/treasure.png'" alt="treasure">
+        <img class="treasure-chest" :src="imagesURL + '/images/treasure.png'" alt="treasure">
         <transition name="bounceIn">
           <div v-if="show" 
             class="mt-3 btn btn-success d-flex justify-content-center align-items-center font-weight-bold claimButton"
@@ -39,7 +39,7 @@ export default {
       answers: eventBus.user.currentGame.answers,
       name: eventBus.user.name,
       score: eventBus.user.currentGame.score,
-      serverURL: process.env.VUE_APP_BACKEND_SERVER_URL,
+      imagesURL: process.env.VUE_APP_IMAGES_URL,
       show: false,
       theme: eventBus.user.theme
     }
@@ -48,7 +48,7 @@ export default {
   mounted() {
     this.show = true;
     setTimeout(() => {
-      this.$refs.claimContainer.style.backgroundImage = `url('${process.env.VUE_APP_BACKEND_SERVER_URL}/images/${this.theme}.png')`;
+      this.$refs.claimContainer.style.backgroundImage = `url('${this.imagesURL}/images/${this.theme}.png')`;
       if (this.theme[0] === 'd') {
         this.$refs.claimHeader.style.color = '#ddd';
         this.$refs.claimScore.style.color = '#ddd';

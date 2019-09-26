@@ -1,31 +1,35 @@
 <template>
-  <div class="d-flex flex-column align-items-center bg-dark h-100" ref="main">
-    <div class="h3 p-2 chose-theme" ref="chooseTheme">Choose theme:</div>
-    <div class="container bg-transparent thumbnails">
-      <div class="row w-50vw">
-        <img :src="serverURL + '/images/' + background + '.png'" class="img-thumbnail theme"
-          v-for="background in themes" :key="background"
-          @click="changeTheme" :alt="background">
+  <div class="d-flex align-items-center bg-dark h-100 m-0 main" ref="main">
+    <div class="top">
+      <div class="h3 p-2 m-0 chose-theme" ref="chooseTheme">Choose theme:</div>
+      <div class="container-fluid bg-transparent p-0 m-0 d-flex justify-content-center">
+        <div class="row m-0 justify-content-center">
+          <img :src="imagesURL + '/images/' + background + '.png'" class="theme"
+            v-for="background in themes" :key="background"
+            @click="changeTheme" :alt="background">
+        </div>
       </div>
     </div>
-    <div class="questionRange">
-      <p class="numOfQuestions" ref="questionCounter">number of questions: 
-        <output id="rangevalue">8</output></p>
-      <div id="slider" @click="getNumOfQuestions">
-        <input class="bar" type="range" id="rangeinput" 
-          value="8" min="5" max="10" onchange="rangevalue.value=value" ref="value"/>
-        <span class="highlight"></span><br>
+    <div class="bottom">
+      <div class="questionRange">
+        <p class="numOfQuestions" ref="questionCounter">number of questions: 
+          <output id="rangevalue">8</output></p>
+        <div id="slider" @click="getNumOfQuestions">
+          <input class="bar" type="range" id="rangeinput" 
+            value="8" min="5" max="10" onchange="rangevalue.value=value" ref="value"/>
+          <span class="highlight"></span><br>
+        </div>
       </div>
-    </div>
-    <div class="d-flex flex-column align-items-center">
-      <input class="text" type="text" 
-        placeholder="Enter your name" 
-        v-model="nickname" 
-        ref="nameInput" required/>
-      <input class="text btn btn-success" type="submit" 
-        value="Let's play!" 
-        @click.once="startGame()" 
-        ref="startButton"/>
+      <div class="d-flex flex-column align-items-center button-container">
+        <input class="text" type="text" 
+          placeholder="Enter your name" 
+          v-model="nickname" 
+          ref="nameInput" required/>
+        <input class="text btn btn-success" type="submit" 
+          value="Let's play!" 
+          @click="startGame()" 
+          ref="startButton"/>
+      </div>
     </div>
   </div>
 </template>
@@ -40,14 +44,14 @@ export default {
     return {
       nickname: '',
       numOfQuestions: 8,
-      serverURL: process.env.VUE_APP_BACKEND_SERVER_URL,
+      imagesURL: process.env.VUE_APP_IMAGES_URL,
       theme: 'd-bicycles',
-      themes: ['d-bicycles', 'd-evolution', 'd-shattered', 'd-squares', 'd-pool', 'l-wood', 'l-alchemy', 'l-restaurant', 'l-memphis', 'l-symphony']
+      themes: ['d-bicycles', 'd-shattered', 'l-alchemy', 'l-restaurant']
     }
   },
 
   mounted() {
-    this.$refs.main.style.backgroundImage = `url('${process.env.VUE_APP_BACKEND_SERVER_URL}/images/d-bicycles.png')`;
+    this.$refs.main.style.backgroundImage = `url('${this.imagesURL}/images/d-bicycles.png')`;
     this.$refs.chooseTheme.style.backgroundColor = 'rgba(0, 0, 0, 0.6)';
     this.$refs.chooseTheme.style.color = 'rgba(255, 255, 255, 0.9)';
     this.$refs.nameInput.style.backgroundColor = 'rgba(0, 0, 0, 0.9)';
@@ -60,50 +64,51 @@ export default {
 
   methods: {
     startGame() {
-      eventBus.user = {
-        name: this.nickname,
-        theme: this.theme,
-        currentGame: {
-          answers: [],
-          numOfQuestions: this.numOfQuestions,
-          questions: [],
-          score: 0
-        }
-      };
-      axios.get(`/questions?num=${this.numOfQuestions}`, { crossdomain: true })
-      .then(res => {
-        eventBus.user.currentGame.questions = res.data;
-        eventBus.user.currentGame.questions.forEach(question => {
-          question.question = question.question.join('\n');
-          question.description = question.description.join('\n');
-        });
-      })
-      .then(() => this.$router.push('letsplay'))
-      // eslint-disable-next-line
-      .catch(err => console.log(err));
+      if (this.$refs.nameInput.value) {
+        eventBus.user = {
+          name: this.nickname,
+          theme: this.theme,
+          currentGame: {
+            answers: [],
+            numOfQuestions: this.numOfQuestions,
+            questions: [],
+            score: 0
+          }
+        };
+        axios.get(`${process.env.VUE_APP_BACKEND_SERVER_URL}/whatistheoutput?numOfQuestions=${this.numOfQuestions}`, { crossdomain: true })
+        .then(res => {
+          eventBus.user.currentGame.questions = res.data;
+        })
+        .then(() => this.$router.push('letsplay'))
+        // eslint-disable-next-line
+        .catch(err => console.log(err));
+      } else {
+        const isBlack = this.$refs.nameInput.style.backgroundColor === 'rgb(0, 0, 0)';
+        this.$refs.nameInput.style.backgroundColor = isBlack ? 'rgb(255, 255, 255)' : 'rgb(0, 0, 0)';
+      }
     },
 
     changeTheme(event) {
       this.theme = event.target.alt;
       if (this.theme[0] === 'd') {
-        this.$refs.nameInput.style.backgroundColor = 'black';
+        this.$refs.nameInput.style.backgroundColor = 'rgb(0, 0, 0)';
         this.$refs.nameInput.style.color = '#009b48';
         this.$refs.chooseTheme.style.backgroundColor = 'rgba(0, 0, 0, 0.6)';
-        this.$refs.chooseTheme.style.color = 'white';
+        this.$refs.chooseTheme.style.color = '#fff';
         this.$refs.questionCounter.style.backgroundColor = 'rgba(0, 0, 0, 0.6)';
         this.$refs.questionCounter.style.color = 'rgba(255, 255, 255, 0.9)';
       } else if (this.theme[0] === 'l') {
-        this.$refs.nameInput.style.backgroundColor = 'white';
+        this.$refs.nameInput.style.backgroundColor = 'rgb(255, 255, 255)';
         this.$refs.nameInput.style.color = '#009b48';
         this.$refs.chooseTheme.style.backgroundColor = 'rgba(255, 255, 255, 0.6)';
-        this.$refs.chooseTheme.style.color = 'black';
+        this.$refs.chooseTheme.style.color = '#000';
         this.$refs.questionCounter.style.backgroundColor = 'rgba(255, 255, 255, 0.9)';
         this.$refs.questionCounter.style.color = 'rgba(0, 0, 0, 0.9)';
       } else {
         // eslint-disable-next-line
         console.log("Something went wrong");
       }
-      this.$refs.main.style.backgroundImage = `url('${process.env.VUE_APP_BACKEND_SERVER_URL}/images/${this.theme}.png')`;
+      this.$refs.main.style.backgroundImage = `url('${this.imagesURL}/images/${this.theme}.png')`;
     },
     getNumOfQuestions() {
       this.numOfQuestions = this.$refs.value.value;
@@ -118,9 +123,9 @@ export default {
     font-size: 18px;
     font-weight: 800;
     height: 50px;
-    margin: 10px;
+    margin: 7px;
     text-align: center;
-    width: 50vw;
+    width: 100%;
   }
 
   .text::placeholder {
@@ -134,17 +139,18 @@ export default {
   .theme {
     border: 3px solid #009b48;
     cursor: pointer;
-    height: 10vh;
+    height: 89px;
     margin: 1vh;
     padding: 0;
-    width: 10vh;
+    width: 89px;
   }
 
   .chose-theme {
-    border-radius: 15px;
     font-family: 'ZCOOL KuaiLe', cursive;
     font-weight: 700;
     margin-top: 30px;
+    width: 100vw;
+    text-align: center;
   }
 
   .questionRange {
@@ -213,6 +219,7 @@ export default {
   }
 
   .numOfQuestions {
+    align-items: center;
     border-radius: 4px;
     border: 2px solid #000;
     color: #000;
@@ -221,40 +228,30 @@ export default {
     font-family: 'ZCOOL KuaiLe', cursive;
     height: 40px;
     justify-content: space-around;
-    margin: auto;
+    margin: 0;
     padding: 0 10px;
-    width: 300px;
   }
 
+  .row {
+    width: 240px;
+  }
+
+  .button-container {
+    width: 320px;
+  }
+
+  .main {
+      flex-direction: column;
+    }
+
   @media all and (max-height: 420px) {
-    .thumbnails {
-      display: flex;
-      flex-direction: row;
-      height: 20vh;
-      justify-content: center;
-      margin-bottom: 3vh;
-      width: 60vw;
+    .row {
+      width: 100vw;
     }
-
-    .middle-row {
-      flex-direction: row-reverse;
-    }
-
-    .theme {
-      height: 9vw;
-      width: 9vw;
-    }
-
-    .chose-theme {
-      margin-top: 0;
-      padding-top: 0;
-    }
-
-    .text {
-      font-size: 2.5vw;
-      height: 10vh;
-      margin: 3px 0;
-      width: 50vw;
+  }
+  @media all and (min-width: 950px) {
+    .row {
+      width: 100vw;
     }
   }
 </style>
