@@ -16,13 +16,12 @@
         <answers-field class="answers mx-auto p-2"
           :currentQuestion="question" 
           :mode="mode"
-          :theme="theme"
-          @questionToEdit="handleQuestion($event)"/>
+          :theme="theme"/>
         <div>
           <img :src="imagesURL + '/images/wrench.png'" 
             class="edit-icon" alt="Edit icon"
             data-toggle="modal" data-target="#editquestion"
-            @click="pickedQuestion = question"/>
+            @click="handleQuestion(question)"/>
         </div>
       </div>
     </div>
@@ -85,8 +84,9 @@ export default {
   },
 
   methods: {
-    handleQuestion(event) {
-      this.pickedQuestion = event;
+    handleQuestion(question) {
+      this.pickedQuestion = question;
+      // to select current correct answer in modal
       this.pickedQuestion.answers.forEach((answer, index) => {
         answer.isCorrect ? this.pickedQuestion.correctOne = index : null;
       })

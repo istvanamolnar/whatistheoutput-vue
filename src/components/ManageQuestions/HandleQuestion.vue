@@ -74,8 +74,7 @@
             </form>
           </div>
         </div>
-        <div class="modal-footer mx-auto" ref="footer">
-        </div>
+        <div class="modal-footer mx-auto" ref="footer"></div>
       </div>
     </div>
   </div>
@@ -124,6 +123,7 @@ export default {
     },
 
     editQuestion(form) {
+      form.game = 'whatistheoutput';
       axios({
         method: 'put',
         url: `${process.env.VUE_APP_BACKEND_SERVER_URL}/questions`,
