@@ -32,7 +32,7 @@
 import { eventBus } from '../../main';
 
 export default {
-  name: 'LikedInfo',
+  name: 'SummaryPage',
 
   data() {
     return {

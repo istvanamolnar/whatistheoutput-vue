@@ -25,21 +25,27 @@
           placeholder="Enter your name" 
           v-model="nickname" 
           ref="nameInput" required/>
-        <input class="text btn btn-success" type="submit" 
-          value="Let's play!" 
+        <div class="text btn btn-success" type="submit" 
           @click="startGame()" 
-          ref="startButton"/>
+          ref="startButton">Let's play!</div>
       </div>
     </div>
+    <welcome-page/>
   </div>
 </template>
 
 <script>
+import WelcomePage from './WelcomePage';
 import { eventBus } from '../../main';
 import axios from 'axios';
+import $ from 'jquery';
 
 export default {
-  name: 'ManageQuestions',
+  name: 'SelectTheme',
+  components: {
+    'welcome-page': WelcomePage
+  },
+
   data() {
     return {
       nickname: '',
@@ -51,10 +57,16 @@ export default {
   },
 
   mounted() {
+    // currently, this is the only way I can generate an auto-popup-modal
+    setTimeout(() => {
+      $(document).ready(function () {
+        $('#welcomepage').modal('show')
+      });
+    }, 500);
     this.$refs.main.style.backgroundImage = `url('${this.imagesURL}/images/d-bicycles.png')`;
     this.$refs.chooseTheme.style.backgroundColor = 'rgba(0, 0, 0, 0.6)';
     this.$refs.chooseTheme.style.color = 'rgba(255, 255, 255, 0.9)';
-    this.$refs.nameInput.style.backgroundColor = 'rgba(0, 0, 0, 0.9)';
+    this.$refs.nameInput.style.backgroundColor = 'rgba(0, 0, 0)';
     this.$refs.nameInput.style.color = '#009b48';
     this.$refs.questionCounter.style.backgroundColor = 'rgba(0, 0, 0, 0.9)';
     this.$refs.questionCounter.style.color = 'rgba(255, 255, 255, 0.9)';
@@ -112,9 +124,10 @@ export default {
     },
     getNumOfQuestions() {
       this.numOfQuestions = this.$refs.value.value;
-    }
-  }
+    },
+  },
 }
+
 </script>
 <style>
   .text {
@@ -122,7 +135,7 @@ export default {
     color:#009b48;
     font-size: 18px;
     font-weight: 800;
-    height: 50px;
+    height: 45px;
     margin: 7px;
     text-align: center;
     width: 100%;

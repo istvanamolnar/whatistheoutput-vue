@@ -1,8 +1,8 @@
 <template>
   <div class="modal fade" id="editquestion" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-dialog-centered d-flex justify-content-center align-items-center" role="document">
-      <div class="modal-content" ref="title">
-        <div class="modal-body mx-auto" ref="details">
+      <div class="handlemodal-content" ref="title">
+        <div class="handlemodal-body mx-auto" ref="details">
           <div class="handleContainer">
             <form class="add-question d-flex flex-column align-items-center">
               <div class="d-flex flex-column mb-4">
@@ -74,7 +74,7 @@
             </form>
           </div>
         </div>
-        <div class="modal-footer mx-auto" ref="footer"></div>
+        <div class="handlemodal-footer mx-auto" ref="footer"></div>
       </div>
     </div>
   </div>
@@ -143,19 +143,19 @@ export default {
 </script>
 
 <style>
-  .modal-content {
+  .handlemodal-content {
     background-color: transparent;
     border: none;
     width: max-content;
   }
 
-  .modal-body {
+  .handlemodal-body {
     background-color: #333;
     border-radius: 10px;
     padding: 30px;
   }
 
-  .modal-footer {
+  .handlemodal-footer {
     border: none;
   }
 
