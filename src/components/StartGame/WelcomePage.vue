@@ -3,7 +3,7 @@
     <div class="modal-dialog mx-auto my-3" role="document">
       <div class="welcome-content modal-content d-flex flex-column">
         <transition name="slide-fade" mode="out-in">
-          <div v-if="page === 'guest'" class="modal-body pt-0">
+          <div v-if="tab === 'guest'" class="modal-body pt-0">
             <div class="welcome-text">Welcome to</div>
             <div class="welcome-text">What Is The Output quiz</div>
             <div class="rules my-3">In this game, you will get tricky JavaScript interview questions.</div>
@@ -11,36 +11,34 @@
           </div>
         </transition>
         <transition name="slide-fade" mode="out-in">
-          <div v-if="page === 'login'" class="modal-body pt-0">
+          <div v-if="tab === 'login'" class="modal-body pt-0">
             <div class="welcome-text">Welcome back!</div>
             <div class="secondline-text mb-3">Please sign in:</div>
             <div class="login-area">
               <form>
                 <div class="form-group">
-                  <label for="username">username</label>
-                  <input type="email" class="form-control input-field" id="username" placeholder="Enter username">
+                  <input type="email" class="form-control input-field" placeholder="username">
                 </div>
                 <div class="form-group">
-                  <label for="password">password</label>
-                  <input type="password" class="form-control" id="password" placeholder="Password">
+                  <input type="password" class="form-control" placeholder="password">
                 </div>
               </form>
             </div>
           </div>
         </transition>
         <transition name="slide-fade" mode="out-in">
-          <div v-if="page === 'signup'" class="modal-body pt-0">
+          <div v-if="tab === 'signup'" class="modal-body pt-0">
             <div class="welcome-text">Welcome, stranger!</div>
             <div class="secondline-text mb-3">Quick sign up, no verification. Or continue as a guest, no strings attached.</div>
             <div class="signup-area">
               <form>
                 <div class="form-group">
-                  <label for="username">username</label>
-                  <input type="email" class="form-control input-field" id="username" placeholder="Enter username" ref="signupUsername">
+                  <label for="username">enter your username:</label>
+                  <input type="email" class="form-control input-field" id="username" ref="signupUsername">
                 </div>
                 <div class="form-group">
-                  <label for="password">password</label>
-                  <input type="password" class="form-control" id="password" placeholder="Password" ref="signupPassword">
+                  <label for="password">enter your password:</label>
+                  <input type="password" class="form-control" id="password" ref="signupPassword">
                   <small class="form-text text-right" ref="passwordHint">minimum 8 characters</small>
                 </div>
               </form>
@@ -48,8 +46,8 @@
           </div>
         </transition>
         <div class="mx-auto">
-          <div class="proceed-button btn btn-outline-success m-3" @click="signupUser" ref="signupButton">Sign up</div>
-          <div class="proceed-button btn btn-outline-danger m-3" @click="loginUser" ref="loginButton">Login</div>
+          <div class="proceed-button btn btn-outline-success disabled m-3" ref="signupButton">Sign up</div>
+          <div class="proceed-button btn btn-outline-danger disabled m-3" ref="loginButton">Login</div>
           <div class="proceed-button btn btn-warning m-3" data-dismiss="modal" ref="guestButton">Continue as guest</div>
         </div>
       </div>
@@ -59,18 +57,20 @@
 
 <script>
 export default {
-    name: 'WelcomPage',
+    name: 'WelcomePage',
     data() {
       return {
-        page: 'guest'
+        tab: 'guest'
       }
     },
 
     methods: {
       loginUser() {
-        if (this.page === 'login') {
+        if (this.tab === 'login') {
+          // eslint-disable-next-line
+            console.log('logging in');
         } else {
-          this.page = 'login';
+          this.tab = 'login';
           this.$refs.signupButton.className = 'proceed-button btn btn-outline-success m-3';
           this.$refs.loginButton.className = 'proceed-button btn btn-danger m-3';
           this.$refs.guestButton.className = 'proceed-button btn btn-outline-warning m-3';
@@ -78,21 +78,22 @@ export default {
       },
 
       signupUser() {
-        if (this.page === 'signup') {
+        if (this.tab === 'signup') {
           if (this.$refs.signupPassword.value.length < 8) {
             this.$refs.passwordHint.style.color = '#f00';
             this.$refs.passwordHint.style.fontSize = '1em';
             this.$refs.passwordHint.style.fontWeight = '600';
           } else {
-            const userToSignup = {
+            /* const userToSignup = {
               username: this.$refs.signupUsername.value,
               password: this.$refs.signupPassword.value
-            };
-            
+            }; */
+            // eslint-disable-next-line
+            console.log('signing up');
 
           }
         } else {
-          this.page = 'signup';
+          this.tab = 'signup';
           this.$refs.signupButton.className = 'proceed-button btn btn-success m-3';
           this.$refs.loginButton.className = 'proceed-button btn btn-outline-danger m-3';
           this.$refs.guestButton.className = 'proceed-button btn btn-outline-warning m-3';
