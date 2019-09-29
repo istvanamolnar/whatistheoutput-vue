@@ -3,10 +3,10 @@
     <div class="title mx-auto" ref="title">What Is The Output?</div>
     <transition name="slide-fade">
       <div v-if="currentQuestion" class="mx-auto my-2 d-flex rotated">
-        <question-field class="question m-auto" 
+        <question-field class="m-auto" 
           :questionText="currentQuestion.question" 
           :theme="theme"/>
-        <answers-field class="answers mx-auto p-2"
+        <answers-field class="mx-auto p-2"
           :selected="selected"
           :currentQuestion="currentQuestion"
           :theme="theme"
@@ -34,11 +34,11 @@ export default {
   },
   data() {
     return {
-      currentQuestion : [],
+      currentQuestion : Object,
       mode: 'quiz',
       scoreCounter: 0,
       selected: null,
-      theme: eventBus.user.theme[0] === 'd' ? 'dark' : 'light',
+      theme: eventBus.user.theme,
       user: eventBus.user
     }
   },
@@ -49,10 +49,10 @@ export default {
 
   mounted() {
     this.$refs.main_container.style.backgroundImage = `url('${process.env.VUE_APP_IMAGES_URL}/images/${eventBus.user.theme}.png')`;
-    if (this.theme === 'dark') {
+    if (this.theme[0] === 'd') {
       this.$refs.title.style.color = '#ddd';
       this.$refs.questionCounter.style.color = '#ddd';
-    } else if (this.theme === 'light') {
+    } else if (this.theme[0] === 'l') {
       this.$refs.title.style.color = '#222';
       this.$refs.questionCounter.style.color = '#222';
     }
@@ -74,8 +74,10 @@ export default {
       if (!this.selected) {
         this.selected = value._id;
         eventBus.user.currentGame.answers.push({
-          question: this.questionText,
-          answer: value
+          question: this.currentQuestion.question,
+          answers: this.currentQuestion.answers,
+          selectedAnswer: value,
+          description: this.currentQuestion.description
         });
         setTimeout(() => {
           if (value.isCorrect === true) {
@@ -92,7 +94,7 @@ export default {
     },
 
     finishGame() {
-      this.$router.push('claimreward');
+      this.$router.push('summary');
     }
   }
 }

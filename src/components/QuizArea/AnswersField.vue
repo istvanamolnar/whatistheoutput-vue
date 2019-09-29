@@ -3,6 +3,7 @@
     <div v-for="ans in currentQuestion.answers" :key="ans._id"
       class="mx-auto my-1 btn btn-outline-success" 
       :class="[selected !== null && selected === ans._id ? 'active' : selected !== null ? 'disabled' : '']"
+      :data-id="ans._id"
       :ref="ans.isCorrect"
       @click.once="selectAnswer($event, ans)">
       <highlight-code lang="javascript" class="m-auto">
@@ -35,7 +36,7 @@ export default {
   components: {
     'explain-modal': ExplainModal
   },
-  props: ['currentQuestion', 'mode', 'selected', 'theme'],
+  props: ['currentQuestion', 'mode', 'picked', 'selected', 'theme'],
   data() {
     return {
       reveal: false,
@@ -48,6 +49,11 @@ export default {
     if (this.mode === 'manage') {
       this.$refs[true][0].className = 'mx-auto my-1 p-0 btn btn-success active disabled';
       this.$refs.buttonContainer.className = 'd-flex flex-row-reverse';
+    } else if (this.mode === 'summary') {
+      this.$refs[true][0].className = 'mx-auto my-1 p-0 btn btn-success active';
+      this.$refs[false].forEach(falseAnswer => {
+        falseAnswer.dataset.id === this.picked._id ? falseAnswer.className = 'mx-auto my-1 p-0 btn btn-danger active' : false;
+      })
     }
   },
 

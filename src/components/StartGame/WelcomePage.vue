@@ -1,55 +1,15 @@
 <template>
   <div class="modal fade p-3" id="welcomepage" tabindex="-1" role="dialog" ref="welcome-page">
     <div class="modal-dialog mx-auto my-3" role="document">
-      <div class="welcome-content modal-content d-flex flex-column">
-        <transition name="slide-fade" mode="out-in">
-          <div v-if="tab === 'guest'" class="modal-body pt-0">
-            <div class="welcome-text">Welcome to</div>
-            <div class="welcome-text">What Is The Output quiz</div>
-            <div class="rules my-3">In this game, you will get tricky JavaScript interview questions.</div>
-            <div class="rules mb-2">Afterwards, you can claim your well deserved reward, according to your score.</div>
-          </div>
-        </transition>
-        <transition name="slide-fade" mode="out-in">
-          <div v-if="tab === 'login'" class="modal-body pt-0">
-            <div class="welcome-text">Welcome back!</div>
-            <div class="secondline-text mb-3">Please sign in:</div>
-            <div class="login-area">
-              <form>
-                <div class="form-group">
-                  <input type="email" class="form-control input-field" placeholder="username">
-                </div>
-                <div class="form-group">
-                  <input type="password" class="form-control" placeholder="password">
-                </div>
-              </form>
-            </div>
-          </div>
-        </transition>
-        <transition name="slide-fade" mode="out-in">
-          <div v-if="tab === 'signup'" class="modal-body pt-0">
-            <div class="welcome-text">Welcome, stranger!</div>
-            <div class="secondline-text mb-3">Quick sign up, no verification. Or continue as a guest, no strings attached.</div>
-            <div class="signup-area">
-              <form>
-                <div class="form-group">
-                  <label for="username">enter your username:</label>
-                  <input type="email" class="form-control input-field" id="username" ref="signupUsername">
-                </div>
-                <div class="form-group">
-                  <label for="password">enter your password:</label>
-                  <input type="password" class="form-control" id="password" ref="signupPassword">
-                  <small class="form-text text-right" ref="passwordHint">minimum 8 characters</small>
-                </div>
-              </form>
-            </div>
-          </div>
-        </transition>
-        <div class="mx-auto">
-          <div class="proceed-button btn btn-outline-success disabled m-3" ref="signupButton">Sign up</div>
-          <div class="proceed-button btn btn-outline-danger disabled m-3" ref="loginButton">Login</div>
-          <div class="proceed-button btn btn-warning m-3" data-dismiss="modal" ref="guestButton">Continue as guest</div>
+      <div class="welcome-content modal-content d-flex flex-column align-items-center">
+        <div class="modal-body pt-0">
+          <div class="welcome-text">Welcome to</div>
+          <div class="welcome-text">What Is The Output quiz!</div>
+          <div class="rules my-3">In this game, you will get tricky JavaScript interview questions.</div>
+          <div class="rules">Afterwards, you can claim your well deserved reward, according to your score.</div>
+          <div class="rules my-2 font-weight-bold">Have fun!</div>
         </div>
+        <div class="okay-button btn btn-success mb-3" data-dismiss="modal">Okay</div>
       </div>
     </div>
   </div>
@@ -57,53 +17,11 @@
 
 <script>
 export default {
-    name: 'WelcomePage',
-    data() {
-      return {
-        tab: 'guest'
-      }
-    },
-
-    methods: {
-      loginUser() {
-        if (this.tab === 'login') {
-          // eslint-disable-next-line
-            console.log('logging in');
-        } else {
-          this.tab = 'login';
-          this.$refs.signupButton.className = 'proceed-button btn btn-outline-success m-3';
-          this.$refs.loginButton.className = 'proceed-button btn btn-danger m-3';
-          this.$refs.guestButton.className = 'proceed-button btn btn-outline-warning m-3';
-        }
-      },
-
-      signupUser() {
-        if (this.tab === 'signup') {
-          if (this.$refs.signupPassword.value.length < 8) {
-            this.$refs.passwordHint.style.color = '#f00';
-            this.$refs.passwordHint.style.fontSize = '1em';
-            this.$refs.passwordHint.style.fontWeight = '600';
-          } else {
-            /* const userToSignup = {
-              username: this.$refs.signupUsername.value,
-              password: this.$refs.signupPassword.value
-            }; */
-            // eslint-disable-next-line
-            console.log('signing up');
-
-          }
-        } else {
-          this.tab = 'signup';
-          this.$refs.signupButton.className = 'proceed-button btn btn-success m-3';
-          this.$refs.loginButton.className = 'proceed-button btn btn-outline-danger m-3';
-          this.$refs.guestButton.className = 'proceed-button btn btn-outline-warning m-3';
-        }
-      }
-    }
-  }
+  name: 'WelcomePage',
+}
 </script>
 
-<style>
+<style scoped>
   .welcome-content {
     background-color: #333;
     border-radius: 10px;
@@ -131,26 +49,13 @@ export default {
     font-family: 'Courier New', Courier, monospace;
   }
 
-  .proceed-button:hover {
+  .okay-button {
+    max-width: max-content;
+    padding: 5px 50px;
+    font-weight: 600;
+    margin: auto;
+  }
+  .okay-button:hover {
     cursor: pointer;
-  }
-
-  /* Animations */
-  .slide-fade-leave-active {
-    transition: all .4s ease;
-  }
-  .slide-fade-enter-active {
-  transition: all .4s ease;
-  }
-  .slide-fade-enter{
-    transform: translateX(-100px);
-    opacity: 0;
-  }
-  
-  .slide-fade-leave-active {
-    transform: translateX(100px);
-    opacity: 0;
-    position: absolute;
-    z-index: 1;
   }
 </style>

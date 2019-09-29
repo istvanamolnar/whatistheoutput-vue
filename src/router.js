@@ -2,7 +2,7 @@ import Vue from "vue";
 import Router from "vue-router";
 import SelectTheme from "./components/StartGame/SelectTheme.vue";
 import QuizArea from "./components/QuizArea/QuizArea.vue";
-import SummaryPage from "./components/FinishGame/SummaryPage.vue"
+import SummaryPage from "./components/FinishGame/SummaryPage.vue";
 import ManageQuestions from "./components/ManageQuestions/ManageQuestions.vue";
 
 Vue.use(Router);

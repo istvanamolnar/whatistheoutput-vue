@@ -21,18 +21,33 @@
         <transition name="bounceIn">
           <div v-if="show" 
             class="mt-3 btn btn-success d-flex justify-content-center align-items-center font-weight-bold claimButton"
-            @click="$router.push('reward')">OPEN</div>
+            data-toggle="modal" 
+            data-target="#rewardpage">OPEN</div>
+        </transition>
+        <transition name="bounceIn">
+          <div v-if="show" 
+            class="mt-3 btn btn-info d-flex justify-content-center align-items-center font-weight-bold claimButton"
+            data-toggle="modal" 
+            data-target="#questionSummary">SUMMARY</div>
         </transition>
       </div>
     </transition>
+    <reward-page/>
+    <question-summary/>
   </div>
 </template>
 
 <script>
+import RewardPage from './RewardPage';
+import QuestionSummary from './QuestionSummary';
 import { eventBus } from '../../main';
 
 export default {
   name: 'SummaryPage',
+  components: {
+    'reward-page': RewardPage,
+    'question-summary': QuestionSummary
+  },
 
   data() {
     return {
@@ -46,6 +61,7 @@ export default {
   },
 
   mounted() {
+    // for css animation
     this.show = true;
     setTimeout(() => {
       this.$refs.claimContainer.style.backgroundImage = `url('${this.imagesURL}/images/${this.theme}.png')`;

@@ -35,7 +35,6 @@
 import QuestionField from '../QuizArea/QuestionField';
 import AnswersField from '../QuizArea/AnswersField';
 import HandleQuestion from '../ManageQuestions/HandleQuestion';
-
 import axios from 'axios';
 
 export default {

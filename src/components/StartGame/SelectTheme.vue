@@ -14,9 +14,9 @@
       <div class="questionRange">
         <p class="numOfQuestions" ref="questionCounter">number of questions: 
           <output id="rangevalue">8</output></p>
-        <div id="slider" @click="getNumOfQuestions">
+        <div id="slider">
           <input class="bar" type="range" id="rangeinput" 
-            value="8" min="5" max="10" onchange="rangevalue.value=value" ref="value"/>
+            value="8" min="4" max="12" onchange="rangevalue.value=value" ref="value"/>
           <span class="highlight"></span><br>
         </div>
       </div>
@@ -25,7 +25,7 @@
           placeholder="Enter your name" 
           v-model="nickname" 
           ref="nameInput" required/>
-        <div class="text btn btn-success" type="submit" 
+        <div class="letsplay btn btn-success"
           @click="startGame()" 
           ref="startButton">Let's play!</div>
       </div>
@@ -52,7 +52,8 @@ export default {
       numOfQuestions: 8,
       imagesURL: process.env.VUE_APP_IMAGES_URL,
       theme: 'd-bicycles',
-      themes: ['d-bicycles', 'd-shattered', 'l-alchemy', 'l-restaurant']
+      themes: ['d-bicycles', 'd-shattered', 'l-alchemy', 'l-restaurant'],
+      disabledPlayButton: false
     }
   },
 
@@ -76,8 +77,11 @@ export default {
 
   methods: {
     startGame() {
-      if (this.$refs.nameInput.value) {
+      this.numOfQuestions = this.$refs.value.value
+      if (this.$refs.nameInput.value && !this.disabledPlayButton) {
+        this.disabledPlayButton = true; // otherwise play button can be clicked multiple times, which causes duplicated first question
         eventBus.user = {
+          game: 'whatistheoutput',
           name: this.nickname,
           theme: this.theme,
           currentGame: {
@@ -121,17 +125,15 @@ export default {
         console.log("Something went wrong");
       }
       this.$refs.main.style.backgroundImage = `url('${this.imagesURL}/images/${this.theme}.png')`;
-    },
-    getNumOfQuestions() {
-      this.numOfQuestions = this.$refs.value.value;
-    },
+    }
   },
 }
 
 </script>
-<style>
-  .text {
+<style scoped>
+  .text, .letsplay {
     border: 2px solid #888;
+    border-radius: 5px;
     color:#009b48;
     font-size: 18px;
     font-weight: 800;
@@ -143,6 +145,10 @@ export default {
 
   .text::placeholder {
     color: #009b48;
+  }
+
+  .letsplay:hover {
+    cursor: pointer;
   }
 
   ::-webkit-input-placeholder {
@@ -251,6 +257,10 @@ export default {
 
   .button-container {
     width: 320px;
+  }
+
+  .disabled {
+    opacity: 1;
   }
 
   .main {

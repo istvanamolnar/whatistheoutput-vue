@@ -19,7 +19,7 @@ export default {
   },
   mounted() {
     this.show = true;
-    setTimeout(() => {
+    setTimeout(() => { // for some reason it doesn't work outside of the setTimeout, I haven't found any more practical solution for this
       this.$refs.questionField.style.backgroundColor = this.theme[0] === 'd' ? 'rgba(0, 0, 0, 0.6)' : 'rgba(255, 255, 255, 0.6)';
     }, 0);
   }
@@ -37,7 +37,7 @@ export default {
     border-radius: 4px;
     display: flex;
     font-size: 24px;
-    font-size: 2vh;
+    font-size: 2.5vh;
     width: 100%;
   }
 

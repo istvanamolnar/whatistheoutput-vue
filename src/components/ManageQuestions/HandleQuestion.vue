@@ -1,7 +1,7 @@
 <template>
   <div class="modal fade" id="editquestion" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-dialog-centered d-flex justify-content-center align-items-center" role="document">
-      <div class="handlemodal-content" ref="title">
+      <div class="modal-content handle-content" ref="title">
         <div class="handlemodal-body mx-auto" ref="details">
           <div class="handleContainer">
             <form class="add-question d-flex flex-column align-items-center">
@@ -64,17 +64,16 @@
               </div>
               <div class="d-flex justify-content-between w-100">
                 <button type="submit" class="btn btn-light submit-button" data-dismiss="modal">Cancel</button>
-                <button type="submit" class="btn btn-danger submit-button" data-dismiss="modal" 
+                <button type="submit" class="btn btn-danger submit-button" data-dismiss="modal"
                   @click.prevent="deleteQuestion(pickedQuestion)">Remove</button>
-                <button type="submit" class="btn btn-primary submit-button" data-dismiss="modal" 
+                <button type="submit" class="btn btn-primary submit-button" data-dismiss="modal"
                   @click.prevent="editQuestion(pickedQuestion)">Update</button>
-                <button type="submit" class="btn btn-success submit-button" data-dismiss="modal" 
+                <button type="submit" class="btn btn-success submit-button" data-dismiss="modal"
                   @click.prevent="addQuestion(pickedQuestion)">Submit</button>
               </div>
             </form>
           </div>
         </div>
-        <div class="handlemodal-footer mx-auto" ref="footer"></div>
       </div>
     </div>
   </div>
@@ -86,9 +85,10 @@ import axios from 'axios';
 export default {
   name: 'HandleQuestion',
   props: ['pickedQuestion', 'theme'],
+
   methods: {
     addQuestion(form) {
-      form.game = 'doyouknow';
+      form.game = 'whatistheoutput';
       axios({
         method: 'post',
         url: `${process.env.VUE_APP_BACKEND_SERVER_URL}/questions`,
@@ -142,8 +142,8 @@ export default {
 }
 </script>
 
-<style>
-  .handlemodal-content {
+<style scoped>
+  .handle-content {
     background-color: transparent;
     border: none;
     width: max-content;

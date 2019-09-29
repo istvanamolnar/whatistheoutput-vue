@@ -4,19 +4,15 @@
       <div class="modal-content" ref="title" >
         <div class="modal-header mx-auto p-1">
           <div id="DetailsLabel">
-            <highlight-code lang="javascript" class="m-auto p-1">
+            <highlight-code lang="javascript" class="m-auto p-1 explain-code">
               {{ questionText }}
             </highlight-code>
           </div>
         </div>
         <div class="modal-body mx-auto explanation" ref="details">
-          <highlight-code lang="javascript" class="m-auto p-1">
-            {{ description }}
-          </highlight-code>
+            <p class="m-0">{{ description }}</p>
         </div>
-        <div class="modal-footer mx-auto" ref="footer">
-          <button type="button" class="btn btn-success m-auto" data-dismiss="modal">Thanks</button>
-        </div>
+        <button type="button" class="btn btn-success mx-auto mb-3" data-dismiss="modal">Thanks</button>
       </div>
     </div>
   </div>
@@ -32,14 +28,14 @@ export default {
     }
   },
   mounted() {
-    if (this.theme === 'dark') {
+    if (this.theme[0] === 'd') {
       this.$refs.title.style.backgroundColor = '#0f0f0f';
+      this.$refs.details.style.color = '#bbb';
       this.$refs.details.style.backgroundColor = '#0f0f0f';
-      this.$refs.footer.style.backgroundColor = '#0f0f0f';
-    } else if (this.theme === 'light') {
+    } else if (this.theme[0] === 'l') {
       this.$refs.title.style.backgroundColor = '#f0f0f0';
+      this.$refs.details.style.color = '#444';
       this.$refs.details.style.backgroundColor = '#f0f0f0';
-      this.$refs.footer.style.backgroundColor = '#f0f0f0';
     }
   }
 }
@@ -58,5 +54,10 @@ export default {
 
   .explanation {
     max-width: 100vw;
+    font-family: 'Courier New', Courier, monospace;
+  }
+
+  .explain-code {
+    font-size: 18px;
   }
 </style>
