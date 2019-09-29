@@ -61,6 +61,7 @@ export default {
   },
 
   mounted() {
+    console.log(eventBus.user)
     // for css animation
     this.show = true;
     setTimeout(() => {
@@ -114,7 +115,7 @@ export default {
     font-family: 'ZCOOL KuaiLe', cursive;
     font-size: 34px;
     font-weight: 700;
-    padding: 20px;
+    padding: 5px;
   }
 
   .answerBox {

@@ -136,10 +136,10 @@ export default {
     }
 
     .score {
-      bottom: 3vh;
       font-size: 2.5vw;
       position:fixed;
       right: 3vw;
+      top: 3vh;
     }
   }
 

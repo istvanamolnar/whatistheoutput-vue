@@ -91,8 +91,9 @@ export default {
     border: 2px solid #3ca744;
     font-weight: 600;
     height: 40px;
+    max-width: 300px;
     min-width: max-content;
-    width: 300px;
+    width: 100%;
   }
 
   .btn:not(.disabled):not(.btn-danger):hover {

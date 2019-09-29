@@ -13,10 +13,10 @@
     <div class="bottom">
       <div class="questionRange">
         <p class="numOfQuestions" ref="questionCounter">number of questions: 
-          <output id="rangevalue">8</output></p>
+          <output id="rangevalue">{{numOfQuestions}}</output></p>
         <div id="slider">
           <input class="bar" type="range" id="rangeinput" 
-            value="8" min="4" max="12" onchange="rangevalue.value=value" ref="value"/>
+            value="8" min="4" max="12" @mousemove="numOfQuestions = $refs.value.value" v-on="handlers" onchange="rangevalue.value=value" ref="value"/>
           <span class="highlight"></span><br>
         </div>
       </div>
@@ -47,13 +47,17 @@ export default {
   },
 
   data() {
+    const vm = this;
     return {
       nickname: '',
       numOfQuestions: 8,
       imagesURL: process.env.VUE_APP_IMAGES_URL,
       theme: 'd-bicycles',
       themes: ['d-bicycles', 'd-shattered', 'l-alchemy', 'l-restaurant'],
-      disabledPlayButton: false
+      disabledPlayButton: false,
+      handlers: {
+        touchmove: vm.divTouchmove
+      }
     }
   },
 
@@ -125,6 +129,10 @@ export default {
         console.log("Something went wrong");
       }
       this.$refs.main.style.backgroundImage = `url('${this.imagesURL}/images/${this.theme}.png')`;
+    },
+
+    divTouchmove() {
+      this.numOfQuestions = this.$refs.value.value;
     }
   },
 }

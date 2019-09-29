@@ -47,6 +47,10 @@ export default {
       .then((res) => {
         this.dogPhoto = res.data.message;
       })
+      .catch((error) => {
+        // eslint-disable-next-line
+        console.log(error);
+      });
     },
 
     saveUserData() {
@@ -55,14 +59,10 @@ export default {
         url: `${process.env.VUE_APP_BACKEND_SERVER_URL}/user`,
         data: {
           name: eventBus.user.name,
-          score: eventBus.user.score,
+          score: eventBus.user.currentGame.score,
           userAnswers: eventBus.user.currentGame.answers,
-          game: 'whatistheoutput'
+          game: eventBus.user.game
         }
-      })
-      .then((response) => {
-        // eslint-disable-next-line
-        console.log(response);
       })
       .catch((error) => {
         // eslint-disable-next-line
