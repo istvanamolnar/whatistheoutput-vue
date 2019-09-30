@@ -17,7 +17,7 @@ export default new Router({
     },
     {
       path: "/letsplay",
-      name: "quiz",
+      name: "letsplay",
       component: QuizArea
     },
     {

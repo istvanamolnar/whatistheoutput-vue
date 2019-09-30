@@ -1,5 +1,5 @@
 <template>
-  <div class="manageContainer" ref="manageContainer">
+  <div class="manage-container" ref="manageContainer">
     <nav class="navbar">
       <div class="btn btn-success new-question" 
         data-target="#editquestion"
@@ -8,8 +8,12 @@
     </nav>
     <div v-if="questions" class="d-flex flex-column align-items-center">
       <div v-for="question in questions" :key="question._id" 
-        class="d-flex flex-column align-items-center justify-content-center answerCheck" 
+        class="d-flex flex-column align-items-center justify-content-center answer-check" 
         :ref="question._id">
+        <img :src="imagesURL + '/images/wrench.png'" 
+          class="edit-icon" alt="Edit icon"
+          data-toggle="modal" data-target="#editquestion"
+          @click="handleQuestion(question)"/>
         <question-field class="question mx-auto mt-2" 
           :questionText="question.question" 
           :theme="theme"/>
@@ -17,17 +21,12 @@
           :currentQuestion="question" 
           :mode="mode"
           :theme="theme"/>
-        <div>
-          <img :src="imagesURL + '/images/wrench.png'" 
-            class="edit-icon" alt="Edit icon"
-            data-toggle="modal" data-target="#editquestion"
-            @click="handleQuestion(question)"/>
-        </div>
       </div>
     </div>
     <handle-question
       :pickedQuestion="pickedQuestion" 
       :theme="theme"/>
+    <img :src="imagesURL + '/images/settings.png'" class="manage-questions" @click="$router.push('/')"/>
   </div>
 </template>
 
@@ -110,8 +109,8 @@ export default {
 
 </script>
 
-<style>
-  .manageContainer {
+<style scoped>
+  .manage-container {
     background-repeat: repeat;
     padding-top: 50px;
     width: 99vw;
@@ -132,20 +131,32 @@ export default {
     margin: 15px;
   }
 
-  .answerCheck {
+  .answer-check {
     background-color: #000;
     margin-top: 30px;
     padding: 0;
   }
 
   .edit-icon {
-    height: 40px;
-    margin-bottom: 10px;
-    position: inherit;
-    width: 40px;
+    height: 25px;
+    margin: 10px 10px 0 0;
+    width: 25px;
+    align-self:flex-end
   }
 
   .edit-icon:hover, .new-question:hover {
+    cursor: pointer;
+  }
+
+  .manage-questions {
+    bottom: 10px;
+    height: 10px;
+    left: 10px;
+    position:fixed;
+    width: 10px;
+  }
+
+  .manage-questions:hover {
     cursor: pointer;
   }
 </style>

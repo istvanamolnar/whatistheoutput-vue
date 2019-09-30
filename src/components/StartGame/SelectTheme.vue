@@ -33,6 +33,7 @@
       </div>
     </div>
     <welcome-page/>
+    <img :src="imagesURL + '/images/settings.png'" class="manage-questions" @click="$router.push('manage')"/>
   </div>
 </template>
 
@@ -287,8 +288,20 @@ export default {
   }
 
   .main {
-      flex-direction: column;
-    }
+    flex-direction: column;
+  }
+
+  .manage-questions {
+    bottom: 10px;
+    height: 10px;
+    left: 10px;
+    position:fixed;
+    width: 10px;
+  }
+
+  .manage-questions:hover {
+    cursor: pointer;
+  }
 
   @media all and (max-height: 420px) {
     .row {
