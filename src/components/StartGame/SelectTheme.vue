@@ -11,9 +11,10 @@
       </div>
     </div>
     <div class="bottom">
-      <div class="questionRange">
-        <p class="numOfQuestions" ref="questionCounter">number of questions: 
-          <output id="rangevalue">{{numOfQuestions}}</output></p>
+      <div class="question-range">
+        <p class="num-of-questions" ref="questionCounter">number of questions: 
+          <output id="rangevalue">{{numOfQuestions}}</output>
+        </p>
         <div id="slider">
           <input class="bar" type="range" id="rangeinput" 
             value="8" min="4" max="12" @mousemove="numOfQuestions = $refs.value.value" v-on="handlers" onchange="rangevalue.value=value" ref="value"/>
@@ -180,7 +181,7 @@ export default {
     text-align: center;
   }
 
-  .questionRange {
+  .question-range {
     align-items: center;
     border: 2px solid ,000;
     border-radius: 10px;
@@ -232,6 +233,18 @@ export default {
     width: 40px;
     z-index: 1;
   }
+  input[type="range"]::-moz-range-thumb {
+    -webkit-appearance: none;
+    background-color: #3ca744;
+    border: 2px solid #000;
+    border-radius: 30px;
+    cursor: pointer;
+    height: 40px;
+    position: relative;
+    top: 0px;
+    width: 40px;
+    z-index: 1;
+  }
 
   #rangevalue {
     color: #3ca744;
@@ -245,7 +258,7 @@ export default {
     outline: none;
   }
 
-  .numOfQuestions {
+  .num-of-questions {
     align-items: center;
     border-radius: 4px;
     border: 2px solid #000;
@@ -257,6 +270,7 @@ export default {
     justify-content: space-around;
     margin: 0;
     padding: 0 10px;
+    width: max-content;
   }
 
   .row {

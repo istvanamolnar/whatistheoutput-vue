@@ -1,32 +1,32 @@
 <template>
-  <div class="container-fluid align-items-center claimContainer" ref="claimContainer">
+  <div class="container-fluid align-items-center claim-container" ref="claim-container">
     <transition name="slide-fade">
-      <div class="d-flex flex-column align-items-center claimBackground" ref="claimBackground">
+      <div class="d-flex flex-column align-items-center claim-background" ref="claimBackground">
         <transition name="bounceIn">
-          <div v-if="show" class="d-flex flex-column align-items-center justify-content-center" ref="claimHeader">
+          <div v-if="show" class="d-flex flex-column justify-content-center" ref="claimHeader">
             <h1 class="claimHeader font-weight-bold">Well done {{ name }}!</h1>
           </div>
         </transition>
         <div class="d-flex align-items-center justify-content-center">
-          <h2 class="claimScore" ref="claimScore">Your score is:</h2>
+          <h2 class="claim-score" ref="claimScore">Your score is:</h2>
           <transition name="bounceIn">
-            <div v-if="show" class="finalScore">{{score}}</div>
+            <div v-if="show" class="final-score">{{score}}</div>
           </transition>
         </div>
-        <h3 class="claimText" ref="claimText">
+        <h3 class="claim-text" ref="claim-text">
           You won:
         </h3>
-        <div class="lootboxText 2">Epic Chest</div>
+        <div class="lootbox-text">Epic Chest</div>
         <img class="treasure-chest" :src="imagesURL + '/images/treasure.png'" alt="treasure">
         <transition name="bounceIn">
           <div v-if="show" 
-            class="mt-3 btn btn-success d-flex justify-content-center align-items-center font-weight-bold claimButton"
+            class="mt-3 btn btn-success d-flex justify-content-center align-items-center font-weight-bold claim-button"
             data-toggle="modal" 
             data-target="#rewardpage">OPEN</div>
         </transition>
         <transition name="bounceIn">
           <div v-if="show" 
-            class="mt-3 btn btn-info d-flex justify-content-center align-items-center font-weight-bold claimButton"
+            class="mt-3 btn btn-info d-flex justify-content-center align-items-center font-weight-bold claim-button"
             data-toggle="modal" 
             data-target="#questionSummary">SUMMARY</div>
         </transition>
@@ -80,13 +80,13 @@ export default {
 </script>
 
 <style scoped>
-  .claimContainer {
+  .claim-container {
     display: flex;
     flex-direction: column;
     height: 100vh;
   }
 
-  .claimText, .claimHeader {
+  .claim-text, .claim-header {
     align-items: center;
     border: none;
     display: flex;
@@ -96,20 +96,20 @@ export default {
     width: 75vw;
   }
 
-  .claimScore {
+  .claim-score {
     font-family: 'ZCOOL KuaiLe', cursive;
   }
 
-  .claimButton:hover {
+  .claim-button:hover {
     cursor: pointer;
   }
 
-  .claimButton {
+  .claim-button {
     height: 50px;
     width: 250px;
   }
 
-  .finalScore {
+  .final-score {
     color: #009b48;
     font-family: 'ZCOOL KuaiLe', cursive;
     font-size: 34px;
@@ -117,24 +117,24 @@ export default {
     padding: 5px;
   }
 
-  .answerBox {
+  .answer-sox {
     border-radius: 4px;
     padding-left: 10px;
   }
 
-  .selectedAnswer {
+  .selected-answer {
     color: #fff;
     font-weight: 600;
   }
 
-  .answerCheck {
+  .answer-check {
     background-color: #333;
     border-radius: 5px;
     margin: 50px;
     padding: 20px;
   }
 
-  .lootboxText {
+  .lootbox-text {
     color: #F725E2;
     font-family: 'ZCOOL KuaiLe', cursive;
     font-size: 30px;
