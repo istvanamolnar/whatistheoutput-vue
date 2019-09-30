@@ -47,11 +47,10 @@ export default {
     this.$refs.answersField.style.backgroundColor = this.theme[0] === 'd' ? 'rgba(0, 0, 0, 0.8)' : 'rgba(255, 255, 255, 0.8)';
     if (this.mode === 'manage') {
       this.$refs[true][0].className = 'mx-auto my-1 p-0 btn btn-success active disabled';
-      this.$refs.buttonContainer.className = 'd-flex flex-row-reverse';
     } else if (this.mode === 'summary') {
       this.$refs[true][0].className = 'mx-auto my-1 p-0 btn btn-success active';
       this.$refs[false].forEach(falseAnswer => {
-        falseAnswer.dataset.id === this.picked._id ? falseAnswer.className = 'mx-auto my-1 p-0 btn btn-danger active' : false;
+        falseAnswer.className = falseAnswer.dataset.id === this.picked._id ? 'mx-auto my-1 p-0 btn btn-danger active' : 'mx-auto my-1 p-0 btn btn-outline-success disabled';
       })
     }
   },
@@ -67,13 +66,6 @@ export default {
     },
 
     selectAnswer(event, ans) {
-      /* function toggle(correctAnswer) {
-        if (correctAnswer.className.includes('active')) {
-          correctAnswer.className = 'mx-auto my-1 p-0 btn btn-success';
-        } else {
-          correctAnswer.className = 'mx-auto my-1 p-0 btn btn-success active';
-        }
-      } */
       if (this.selected === null) {
         this.$emit('chosenAnswer', ans);
         const selectedAnswer = this.currentQuestion.answers.find(answer => answer._id === ans._id);
@@ -87,23 +79,32 @@ export default {
             if (answer.dataset.id === ans._id) {
               answer.className = 'mx-auto my-1 p-0 btn btn-success active';
             } else {
-              answer.className += ' disabled'
+              answer.className += ' disabled';
             }
           });
         }
         setTimeout(() => {
+          correctAnswer.className = 'mx-auto my-1 p-0 btn btn-success active';
+          for (let i = 1; i < 5; i++) {
+            setTimeout(() => {
+              if (correctAnswer.className.includes('active')) {
+                correctAnswer.className = 'mx-auto my-1 p-0 btn btn-outline-success disabled';
+              } else {
+                correctAnswer.className = 'mx-auto my-1 p-0 btn btn-success active';
+              }
+            }, 500 * i);
+          }
           if (selectedAnswer.isCorrect === false) {
-            correctAnswer.className = 'mx-auto my-1 p-0 btn btn-success active';
             this.$refs[false].forEach((answer) => {
               if (answer.dataset.id === selectedAnswer._id) {
                 answer.className = 'mx-auto my-1 p-0 btn btn-danger active';
               } else {
-                answer.className += ' disabled'
+                answer.className = 'mx-auto my-1 p-0 btn btn-outline-success disabled'
               }
             });
           }
           this.reveal = true;
-        }, 1000);
+        }, 1500);
       }
     }
   }
@@ -124,6 +125,7 @@ export default {
 
   .option:not(.disabled):hover {
     background-color: #3ca744;
+    border-radius: 8px;
     cursor: pointer;
     -webkit-text-fill-color: #fff;
   }
