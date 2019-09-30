@@ -1,6 +1,6 @@
 <template>
   <div class="modal fade h-100 m-0 p-0" id="questionSummary" tabindex="-1" role="dialog">
-    <div class="modal-dialog modal-dialog-centered d-flex justify-content-center align-items-center" role="document">
+    <div class="modal-dialog modal-dialog-centered d-flex justify-content-center align-items-center dialog-container" role="document">
       <div class="modal-content summary-container" ref="title">
         <div class="close-button-container">
           <button type="submit" class="btn btn-info close-summary" data-dismiss="modal">Close</button>
@@ -8,11 +8,11 @@
         <div v-if="answers" class="d-flex flex-column align-items-center summary-background">
           <div v-for="answer in answers" :key="answer._id" 
             class="d-flex flex-column align-items-center justify-content-center correct-container"
-            :ref="answer._id">
-            <question-field class="question mx-auto mt-2" 
+            ref="correctContainer">
+            <question-field class="mx-auto mt-2" 
               :questionText="answer.question" 
               :theme="theme"/>
-            <answers-field class="answers mx-auto p-2"
+            <answers-field class="mx-auto p-2"
               :currentQuestion="answer" 
               :mode="mode"
               :picked="answer.selectedAnswer"
@@ -50,15 +50,35 @@ export default {
 
   mounted() {
     if (this.theme[0] === 'd') {
-      this.$refs.title.style.backgroundColor = '#0f0f0f';
+      this.$refs.correctContainer.forEach(answer => answer.style.backgroundColor = '#0f0f0f');
+      this.$refs.details.forEach(answer => answer.style.backgroundColor = '#0f0f0f');
     } else if (this.theme[0] === 'l') {
-      this.$refs.title.style.backgroundColor = '#f0f0f0';
+      this.$refs.correctContainer.forEach(answer => answer.style.backgroundColor = '#f0f0f0');
+      this.$refs.details.forEach(answer => answer.style.backgroundColor = '#f0f0f0');
     }
   },
 }
 </script>
 
 <style scoped>
+  .dialog-container {
+    background-color: transparent;
+  }
+
+  .summary-container {
+    border-radius: 15px;
+    background-color: transparent;
+  }
+
+  .correct-container {
+    background-color: transparent;
+    border: 2px solid #888;
+    border-radius: 15px;
+    margin-bottom: 10px;
+    padding: 20px;
+    width: 100%;
+  }
+
   .close-button-container {
     background-color: rgba(126, 126, 126, 0.8);
     width: 100%;
@@ -76,28 +96,14 @@ export default {
     right: 25px;
   }
 
-  .correct-container {
-    border: 2px solid #888;
-    border-radius: 15px;
-    margin-bottom: 10px;
-    padding: 20px;
-    width: 100%;
-  }
-
-  .summary-container {
-    border-radius: 15px;
-    background-color: '#888';
-  }
-
   .summary-background {
-    background-color: transparent;
     padding: 10px;
   }
 
   .hint {
+    background-color: transparent;
     color: #888;
     font-size: 18px;
     font-weight: 600;
-    margin-top: -50px;
   }
 </style>

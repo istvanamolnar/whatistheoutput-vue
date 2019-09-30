@@ -1,10 +1,10 @@
 <template>
-  <div class="container-fluid align-items-center claim-container" ref="claim-container">
+  <div v-if="theme" class="container-fluid align-items-center claim-container" ref="claimContainer">
     <transition name="slide-fade">
       <div class="d-flex flex-column align-items-center claim-background" ref="claimBackground">
         <transition name="bounceIn">
           <div v-if="show" class="d-flex flex-column justify-content-center" ref="claimHeader">
-            <h1 class="claimHeader font-weight-bold">Well done {{ name }}!</h1>
+            <h1 class="claim-header font-weight-bold">Well done {{ name }}!</h1>
           </div>
         </transition>
         <div class="d-flex align-items-center justify-content-center">
@@ -13,7 +13,7 @@
             <div v-if="show" class="final-score">{{score}}</div>
           </transition>
         </div>
-        <h3 class="claim-text" ref="claim-text">
+        <h3 class="claim-text" ref="claimText">
           You won:
         </h3>
         <div class="lootbox-text">Epic Chest</div>
