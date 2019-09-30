@@ -1,15 +1,15 @@
 <template>
   <div class="modal fade p-3" id="rewardpage" tabindex="-2" role="dialog" ref="rewardPage">
-    <div class="modal-dialog mx-auto my-3" role="document">
+    <div v-if="dogPhoto" class="modal-dialog mx-auto my-3" role="document">
       <div class="reward-content modal-content d-flex flex-column" ref="rewardContainer">
         <div class="congratulations">Congratulations!</div>
         <div class="congratulations">You have won:</div>
         <div class="reward">A random dog photo:</div>
         <div class="d-flex justify-content-center align-items-center">
-          <img v-if="dogPhoto" :src="dogPhoto" class="dog-photo" alt="Random dog photo">
+          <img :src="dogPhoto" class="dog-photo" alt="Random dog photo">
         </div>
         <div class="d-flex justify-content-center">
-          <div class="btn btn-success finish-button" data-dismiss="modal" @click="$router.push('/')">Nice, cheers!</div>
+          <div class="btn btn-success finish-button" @click="openImage()" >{{opened ? "New game" : "Nice, cheers!"}}</div>
           <div class="btn btn-outline-danger finish-button" @click="getDogPhoto">I don't like this one</div>
         </div>
       </div>
@@ -25,6 +25,7 @@ export default {
   data() {
     return {
       dogPhoto: String,
+      opened: false,
       theme: eventBus.user.theme
     }
   },
@@ -43,6 +44,7 @@ export default {
 
   methods: {
     getDogPhoto() {
+      this.opened = false;
       axios.get('https://dog.ceo/api/breeds/image/random')
       .then((res) => {
         this.dogPhoto = res.data.message;
@@ -68,6 +70,16 @@ export default {
         // eslint-disable-next-line
         console.log(error);
       });
+    },
+
+    openImage() {
+      if (this.opened) {
+        window.location.href = '/';
+      } else {
+        window.open(this.dogPhoto, '_blank');
+        this.opened = true;
+      }
+      
     }
   }
 }

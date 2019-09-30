@@ -61,7 +61,6 @@ export default {
   },
 
   mounted() {
-    console.log(eventBus.user)
     // for css animation
     this.show = true;
     setTimeout(() => {
