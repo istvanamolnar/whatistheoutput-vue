@@ -142,7 +142,7 @@ export default {
   .text, .letsplay {
     border: 2px solid #888;
     border-radius: 5px;
-    color:#009b48;
+    color:#3ca744;
     font-size: 18px;
     font-weight: 800;
     height: 45px;
@@ -152,7 +152,7 @@ export default {
   }
 
   .text::placeholder {
-    color: #009b48;
+    color: #3ca744;
   }
 
   .letsplay:hover {
@@ -164,7 +164,7 @@ export default {
   }
 
   .theme {
-    border: 3px solid #009b48;
+    border: 3px solid #3ca744;
     cursor: pointer;
     height: 89px;
     margin: 1vh;
@@ -204,12 +204,12 @@ export default {
     width: 220px;
   }
   #slider .bar {
-    background: #009b48;
+    background: #3ca744;
     height: 2px;
     width: 100%;
   }
   #slider .highlight {
-    background: #009b48;
+    background: #3ca744;
     border-radius: 40px;
     height: 2px;
     position: absolute;
@@ -222,7 +222,7 @@ export default {
   }
   input[type="range"]::-webkit-slider-thumb {
     -webkit-appearance: none;
-    background-color: #009b48;
+    background-color: #3ca744;
     border: 2px solid #000;
     border-radius: 30px;
     cursor: pointer;
@@ -234,7 +234,7 @@ export default {
   }
 
   #rangevalue {
-    color: #009b48;
+    color: #3ca744;
     font-size: 24px;
     font-family: 'ZCOOL KuaiLe', cursive;
     height: 30px;

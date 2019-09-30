@@ -2,7 +2,7 @@
   <div class="modal fade p-3" id="welcomepage" tabindex="-1" role="dialog" ref="welcome-page">
     <div class="modal-dialog mx-auto my-3" role="document">
       <div class="welcome-content modal-content d-flex flex-column align-items-center">
-        <div class="modal-body pt-0">
+        <div class="modal-body py-0">
           <div class="welcome-text">Welcome to</div>
           <div class="welcome-text">What Is The Output quiz!</div>
           <div class="rules my-3">In this game, you will get tricky JavaScript interview questions.</div>
@@ -35,7 +35,6 @@ export default {
   }
 
   .rules {
-    font-family: 'Courier New', Courier, monospace;
     font-size: 20px;
     margin: auto;
     max-width: 300px;
@@ -43,10 +42,6 @@ export default {
 
   .rules:hover, .welcome-text:hover {
     cursor: default;
-  }
-
-  .secondline-text {
-    font-family: 'Courier New', Courier, monospace;
   }
 
   .okay-button {

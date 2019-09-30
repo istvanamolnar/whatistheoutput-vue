@@ -124,10 +124,17 @@ export default {
   }
 
   .option:not(.disabled):hover {
-    background-color: #3ca744;
     border-radius: 8px;
     cursor: pointer;
     -webkit-text-fill-color: #fff;
+  }
+
+  .btn.active {
+    background-color: #3ca744;
+  }
+
+  .btn:not(.btn-danger):not(.btn-success):not(.btn-outline-success):hover {
+    background-color: #3ca744;
   }
 
   .action-buttons {

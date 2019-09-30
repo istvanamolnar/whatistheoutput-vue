@@ -54,7 +54,6 @@ export default {
 
   .explanation {
     max-width: 100vw;
-    font-family: 'Courier New', Courier, monospace;
   }
 
   .explain-code {

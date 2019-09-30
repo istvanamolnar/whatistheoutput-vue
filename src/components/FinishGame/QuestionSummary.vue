@@ -96,7 +96,6 @@ export default {
 
   .hint {
     color: #888;
-    font-family: 'Courier New', Courier, monospace;
     font-size: 18px;
     font-weight: 600;
     margin-top: -50px;

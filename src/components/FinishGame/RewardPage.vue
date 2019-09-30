@@ -94,7 +94,6 @@ export default {
   }
 
   .reward {
-    font-family: 'Courier New', Courier, monospace;
     font-size: 24px;
     margin: 10px auto;
   }

@@ -1,5 +1,5 @@
 <template>
-  <div class="container-fluid justify-content-center align-items-center claimContainer" ref="claimContainer">
+  <div class="container-fluid align-items-center claimContainer" ref="claimContainer">
     <transition name="slide-fade">
       <div class="d-flex flex-column align-items-center claimBackground" ref="claimBackground">
         <transition name="bounceIn">
@@ -106,7 +106,7 @@ export default {
 
   .claimButton {
     height: 50px;
-    width: 120px;
+    width: 250px;
   }
 
   .finalScore {
@@ -139,6 +139,12 @@ export default {
     font-family: 'ZCOOL KuaiLe', cursive;
     font-size: 30px;
     font-weight: 700;
+  }
+
+  .treasure-chest {
+    width: 25vw;
+    min-width: 120px;
+    max-width: 250px;
   }
 
   /* Animations */
