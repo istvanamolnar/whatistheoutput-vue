@@ -106,7 +106,8 @@ export default {
   }
 
   .rotated {
-    flex-direction: column
+    flex-direction: column;
+    padding: 10px;
   }
 
   .title {

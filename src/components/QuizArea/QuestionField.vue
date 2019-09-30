@@ -34,7 +34,8 @@ export default {
   }
   
   .question-field {
-    border-radius: 4px;
+    border-bottom: 0;
+    border-top: 4px;
     display: flex;
     font-size: 24px;
     font-size: 2.5vh;

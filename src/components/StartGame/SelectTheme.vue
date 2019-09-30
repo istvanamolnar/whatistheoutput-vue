@@ -22,9 +22,10 @@
         </div>
       </div>
       <div class="d-flex flex-column align-items-center button-container">
-        <input class="text" type="text" 
-          placeholder="Enter your name" 
-          v-model="nickname" 
+        <input class="text" type="text"
+          v-model="nickname"
+          onfocus="this.value = ''"
+          onblur="this.value = 'Enter your name'"
           ref="nameInput" required/>
         <div class="letsplay btn btn-success"
           @click="startGame()" 
@@ -50,7 +51,7 @@ export default {
   data() {
     const vm = this;
     return {
-      nickname: '',
+      nickname: 'Enter your name',
       numOfQuestions: 8,
       imagesURL: process.env.VUE_APP_IMAGES_URL,
       theme: 'd-bicycles',

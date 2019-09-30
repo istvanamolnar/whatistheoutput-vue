@@ -2,10 +2,10 @@
   <div class="modal fade h-100 m-0 p-0" id="questionSummary" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-dialog-centered d-flex justify-content-center align-items-center dialog-container" role="document">
       <div class="modal-content summary-container" ref="title">
-        <div class="close-button-container">
-          <button type="submit" class="btn btn-info close-summary" data-dismiss="modal">Close</button>
-        </div>
         <div v-if="answers" class="d-flex flex-column align-items-center summary-background">
+          <div class="close-button-container">
+            <button type="submit" class="btn btn-info close-summary" data-dismiss="modal">Close</button>
+          </div>
           <div v-for="answer in answers" :key="answer._id" 
             class="d-flex flex-column align-items-center justify-content-center correct-container"
             ref="correctContainer">
@@ -80,7 +80,6 @@ export default {
   }
 
   .close-button-container {
-    background-color: rgba(126, 126, 126, 0.8);
     width: 100%;
     height: 60px;
     position: fixed;

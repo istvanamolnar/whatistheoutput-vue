@@ -1,5 +1,5 @@
 <template>
-  <div v-if="currentQuestion" class="container py-2 d-flex flex-column rounded" ref="answersField">
+  <div v-if="currentQuestion" class="container py-2 d-flex flex-column" ref="answersField">
     <div v-for="ans in currentQuestion.answers" :key="ans._id"
       class="mx-auto my-1 btn btn-outline-success option"
       :data-id="ans._id"
@@ -9,7 +9,7 @@
         {{ ans.answer }}
       </highlight-code>
     </div>
-    <div class="action-buttons mx-auto p-0 d-flex flex-row justify-content-between" ref="buttonContainer">
+    <div class="action-buttons mx-auto p-0 mb-3 d-flex flex-row justify-content-between" ref="buttonContainer">
       <transition name="slide-fade">
         <div v-if="reveal" class="mx-0 my-1 btn-outline-warning explain" ref="explainButton"
           @click="checkSolution($event)"
