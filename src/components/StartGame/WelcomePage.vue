@@ -1,6 +1,6 @@
 <template>
   <div class="modal fade p-3" id="welcomepage" tabindex="-1" role="dialog" ref="welcome-page">
-    <div class="modal-dialog mx-auto my-3" role="document">
+    <div class="modal-dialog mx-auto my-3 welcome-container" role="document">
       <div class="welcome-content modal-content d-flex flex-column align-items-center">
         <div class="modal-body py-0">
           <div class="welcome-text">Welcome to</div>
@@ -27,6 +27,10 @@ export default {
     border-radius: 10px;
     color: #eee;
     text-align: center;
+  }
+
+  .welcome-container {
+    max-width: max-content;
   }
 
   .welcome-text {

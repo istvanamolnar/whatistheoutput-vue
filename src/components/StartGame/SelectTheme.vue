@@ -24,8 +24,8 @@
       <div class="d-flex flex-column align-items-center button-container">
         <input class="text" type="text"
           v-model="nickname"
-          onfocus="this.value = ''"
-          onblur="this.value = 'Enter your name'"
+          onfocus="this.value = this.value === 'Enter your name' ? '' : this.value"
+          onblur="this.value = this.value === '' ? 'Enter your name' : this.value"
           ref="nameInput" required/>
         <div class="letsplay btn btn-success"
           @click="startGame()" 
