@@ -1,11 +1,9 @@
 <template>
-  <transition name="bounce">
-    <div v-if="reveal" class="question-field" ref="questionField">
-      <highlight-code lang="javascript" class="question-text m-auto p-2">
-        {{ questionText }}
-      </highlight-code>
-    </div>
-  </transition>
+  <div v-if="reveal" class="question-field bounce" ref="questionField">
+    <highlight-code lang="javascript" class="question-text m-auto p-2">
+      {{ questionText }}
+    </highlight-code>
+  </div>
 </template>
 
 <script>
@@ -44,8 +42,8 @@ export default {
   }
 
   /* Animations */
-  .bounce-enter-active {
-    animation: bounce-in .5s;
+  .bounce {
+    animation: bounce-in 0.5s;
   }
   @keyframes bounce-in {
     0% {
