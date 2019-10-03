@@ -1,6 +1,6 @@
 <template>
   <transition name="bounce">
-    <div v-if="show" class="question-field" ref="questionField">
+    <div v-if="reveal" class="question-field" ref="questionField">
       <highlight-code lang="javascript" class="question-text m-auto p-2">
         {{ questionText }}
       </highlight-code>
@@ -14,11 +14,12 @@ export default {
   props: ['questionText', 'theme'],
   data() {
     return {
-      show: false
+      reveal: false
     }
   },
+
   mounted() {
-    this.show = true;
+    this.reveal = true; // the bounce transition works correctly this way
     setTimeout(() => { // for some reason it doesn't work outside of the setTimeout, I haven't found any more practical solution for this
       this.$refs.questionField.style.backgroundColor = this.theme[0] === 'd' ? 'rgba(0, 0, 0, 0.6)' : 'rgba(255, 255, 255, 0.6)';
     }, 0);

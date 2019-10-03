@@ -17,7 +17,7 @@
         </p>
         <div id="slider">
           <input class="bar" type="range" id="rangeinput" 
-            value="8" min="4" max="12" @mousemove="numOfQuestions = $refs.value.value" v-on="handlers" onchange="rangevalue.value=value" ref="value"/>
+            value="4" min="4" max="12" @mousemove="numOfQuestions = $refs.value.value" v-on="handlers" onchange="rangevalue.value=value" ref="value"/>
           <span class="highlight"></span><br>
         </div>
       </div>
@@ -53,7 +53,7 @@ export default {
     const vm = this;
     return {
       nickname: 'Enter your name',
-      numOfQuestions: 8,
+      numOfQuestions: 4,
       imagesURL: process.env.VUE_APP_IMAGES_URL,
       theme: 'd-bicycles',
       themes: ['d-bicycles', 'd-shattered', 'l-alchemy', 'l-restaurant'],
@@ -85,7 +85,7 @@ export default {
   methods: {
     startGame() {
       this.numOfQuestions = this.$refs.value.value
-      if (this.$refs.nameInput.value && !this.disabledPlayButton) {
+      if (this.$refs.nameInput.value !== '' && this.$refs.nameInput.value !== 'Enter your name' && !this.disabledPlayButton) {
         this.disabledPlayButton = true; // otherwise play button can be clicked multiple times, which causes duplicated first question
         eventBus.user = {
           game: 'whatistheoutput',

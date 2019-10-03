@@ -9,36 +9,15 @@
         {{ ans.answer }}
       </highlight-code>
     </div>
-    <div class="action-buttons mx-auto p-0 mb-3 d-flex flex-row justify-content-between" ref="buttonContainer">
-      <transition name="slide-fade">
-        <div v-if="reveal" class="mx-0 my-1 btn-outline-warning explain" ref="explainButton"
-          @click="checkSolution($event)"
-          data-toggle="modal" 
-          data-target="#seedetails">Explain</div>
-      </transition>
-      <transition name="slide-fade">
-        <div v-if="reveal" class="mx-0 my-1 btn-outline-success next" ref="nextButton"
-          @click="getNextQuestion()">Next</div>
-      </transition>
-    </div>
-    <explain-modal 
-      :description="currentQuestion.description" 
-      :questionText="currentQuestion.question"
-      :theme="theme"/>
   </div>
 </template>
 <script>
-import ExplainModal from './ExplainModal';
 
 export default {
   name: 'AnswersField',
-  components: {
-    'explain-modal': ExplainModal
-  },
-  props: ['currentQuestion', 'mode', 'picked', 'selected', 'theme'],
+  props: ['currentQuestion', 'mode', 'selected', 'theme'],
   data() {
     return {
-      reveal: false,
       serverURL: process.env.VUE_APP_BACKEND_SERVER_URL
     }
   },
@@ -50,21 +29,12 @@ export default {
     } else if (this.mode === 'summary') {
       this.$refs[true][0].className = 'mx-auto my-1 p-0 btn btn-success active';
       this.$refs[false].forEach(falseAnswer => {
-        falseAnswer.className = falseAnswer.dataset.id === this.picked._id ? 'mx-auto my-1 p-0 btn btn-danger active' : 'mx-auto my-1 p-0 btn btn-outline-success disabled';
+        falseAnswer.className = falseAnswer.dataset.id === this.selected._id ? 'mx-auto my-1 p-0 btn btn-danger active' : 'mx-auto my-1 p-0 btn btn-outline-success disabled';
       })
     }
   },
 
   methods: {
-    checkSolution(event) {
-      event.target.className += ' active';
-    },
-
-    getNextQuestion() {
-      this.reveal = false;
-      this.$emit('chosenAnswer', null);
-    },
-
     selectAnswer(event, ans) {
       if (this.selected === null) {
         this.$emit('chosenAnswer', ans);
@@ -103,7 +73,6 @@ export default {
               }
             });
           }
-          this.reveal = true;
         }, 1500);
       }
     }
@@ -137,55 +106,8 @@ export default {
     background-color: #3ca744;
   }
 
-  .action-buttons {
-    height: 40px;
-    width: 300px;
-  }
-
-  .next, .explain {
-    align-items: center;
-    border-radius: 4px;
-    border-width: 2px;
-    display: flex;
-    font-weight: 600;
-    height: 40px;
-    justify-content: center;
-    text-align: center;
-    width: 140px;
-  }
-
-  .next:hover {
-    background-color: #3ca744;
-    cursor: pointer;
-  }
-  
-  .explain:hover {
-    background-color: #ffd500;
-    cursor: pointer;
-    -webkit-text-fill-color: #fff;
-  }
-
-  .next {
-    border: 2px solid #3ca744;
-  }
-
-  .explain {
-    border: 2px solid #ffd500;
-  }
-
   .active {
     -webkit-text-fill-color: #fff;
   }
 
-  /* Animations */
-  .slide-fade-enter-active {
-    transition: all .5s ease;
-  }
-  .slide-fade-leave-active {
-    transition: all .3s cubic-bezier(1.0, 0.5, 0.8, 1.0);
-  }
-  .slide-fade-enter, .slide-fade-leave-to {
-    transform: translateX(10px);
-    opacity: 0;
-  }
 </style>

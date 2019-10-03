@@ -15,7 +15,7 @@
             <answers-field class="mx-auto p-2"
               :currentQuestion="answer" 
               :mode="mode"
-              :picked="answer.selectedAnswer"
+              :selected="answer.selectedAnswer"
               :theme="theme"/>
             <div class="modal-body mx-auto hint" ref="details">
               {{ answer.description }}

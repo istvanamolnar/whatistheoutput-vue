@@ -22,11 +22,6 @@
 export default {
   name: 'ExplainModal',
   props: ['description', 'questionText', 'theme',],
-  data() {
-    return {
-      showModal: false
-    }
-  },
   mounted() {
     if (this.theme[0] === 'd') {
       this.$refs.title.style.backgroundColor = '#0f0f0f';
