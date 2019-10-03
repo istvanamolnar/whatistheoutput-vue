@@ -50,7 +50,7 @@ export default {
         const correctAnswer = this.$refs[true][0];
         if (correctAnswer.dataset.id === selectedAnswer._id) {
           correctAnswer.classList.remove('btn-outline-success');
-          correctAnswer.classList.add('btn-success', 'active');
+          correctAnswer.classList.add('active');
           this.$refs[false].forEach(falseAnswer => falseAnswer.classList.add('disabled'));
         } else {
           correctAnswer.classList.add('disabled');
@@ -59,14 +59,14 @@ export default {
           });
         }
         setTimeout(() => {
-          correctAnswer.classList.add('bounce-in', 'active');
+          correctAnswer.classList.add('bounce-in','active');
           for (let i = 1; i < 5; i++) {
             setTimeout(() => {
               if (correctAnswer.className.includes('active')) {
                 correctAnswer.classList.remove('btn-success', 'active');
-                correctAnswer.classList.add('btn-outline-success', 'disabled');
+                correctAnswer.classList.add('btn-outline-success');
               } else {
-                correctAnswer.classList.remove('btn-outline-success', 'disabled');
+                correctAnswer.classList.remove('btn-outline-success');
                 correctAnswer.classList.add('btn-success', 'active');
               }
             }, 500 * i);

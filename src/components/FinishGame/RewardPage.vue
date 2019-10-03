@@ -1,12 +1,12 @@
 <template>
   <div class="modal fade p-3" id="rewardpage" tabindex="-2" role="dialog" ref="rewardPage">
-    <div v-if="dogPhoto" class="modal-dialog mx-auto my-3" role="document">
+    <div v-if="dogPhoto" class="modal-dialog mx-auto my-3" :key="dogPhoto.toString()" role="document">
       <div class="reward-content modal-content d-flex flex-column" ref="rewardContainer">
         <div class="congratulations">Congratulations!</div>
         <div class="congratulations">You have won:</div>
         <div class="reward">A random dog photo:</div>
         <div class="d-flex justify-content-center align-items-center">
-          <img :src="dogPhoto" class="dog-photo" alt="Random dog photo">
+          <img :src="dogPhoto" class="dog-photo bounce" alt="Random dog photo">
         </div>
         <div class="d-flex justify-content-center">
           <div class="btn btn-success finish-button" @click="openImage()" >{{opened ? "New game" : "Nice, cheers!"}}</div>
@@ -66,6 +66,8 @@ export default {
           game: eventBus.user.game
         }
       })
+      // eslint-disable-next-line
+      .then((res) => console.log(res.data.message))
       .catch((error) => {
         // eslint-disable-next-line
         console.log(error);
@@ -114,5 +116,20 @@ export default {
 
   .reward-content {
     border: 1px solid #888;
+  }
+
+  .bounce {
+    animation: bounce-in 0.5s;
+  }
+  @keyframes bounce-in {
+    0% {
+      transform: scale(0);
+    }
+    50% {
+      transform: scale(1.4);
+    }
+    100% {
+      transform: scale(1);
+    }
   }
 </style>

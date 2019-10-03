@@ -107,7 +107,6 @@ export default {
           this.nextButtonRevealed = true;
         }, 1499);
         setTimeout(() => {
-          this.$refs.buttonContainer.classList.add('appear');
           if (this.theme[0] === 'd') {
             this.$refs.buttonContainer.style.backgroundColor = '#000';
           } else if (this.theme[0] === 'l') {
@@ -159,11 +158,6 @@ export default {
   .action-buttons {
     height: 50px;
     width: 300px;
-  }
-
-  .appear {
-    opacity: 1;
-    transition: opacity 0.6s cubic-bezier(0.39, 0.575, 0.565, 1);
   }
 
   .next, .explain {
