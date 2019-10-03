@@ -1,4 +1,4 @@
-[`What Is The Output?`](https://instvanamolnar.github.io)
+[**`What Is The Output?`**](https://instvanamolnar.github.io)
 
 If you are learning JavaScript, you will find this short quiz fun.
 
