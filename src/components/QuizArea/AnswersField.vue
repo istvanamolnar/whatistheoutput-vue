@@ -59,7 +59,7 @@ export default {
           });
         }
         setTimeout(() => {
-          correctAnswer.classList.add('active', 'bounce-in');
+          correctAnswer.classList.add('bounce-in', 'active');
           for (let i = 1; i < 5; i++) {
             setTimeout(() => {
               if (correctAnswer.className.includes('active')) {

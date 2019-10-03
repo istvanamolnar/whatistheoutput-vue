@@ -1,7 +1,10 @@
 <template>
   <div v-if="user" class="main-container d-flex flex-column m-auto p-0 h-100" ref="mainContainer">
     <div class="title mx-auto" ref="title">What Is The Output?</div>
-      <div v-if="currentQuestion" class="mx-auto my-2 d-flex rotated" ref="quizContainer">
+      <div v-if="currentQuestion" 
+        class="mx-auto my-2 d-flex rotated" 
+        :key="currentQuestion._id"
+        ref="quizContainer">
         <question-field class="m-auto" 
           :questionText="currentQuestion.question"
           :theme="theme"/>
@@ -11,7 +14,9 @@
           :theme="theme"
           :mode="mode"
           @chosenAnswer="handleSelected"/>
-        <div class="action-buttons mx-auto p-0 d-flex flex-row justify-content-between" 
+        <div 
+          v-if="nextButtonRevealed"
+          class="action-buttons mx-auto p-0 d-flex flex-row justify-content-between" 
           ref="buttonContainer"
           :key="currentQuestion._id">
           <div class="mx-0 my-1 btn-outline-warning explain"
@@ -50,6 +55,7 @@ export default {
     return {
       currentQuestion : Object,
       mode: 'quiz',
+      nextButtonRevealed: false,
       scoreCounter: 0,
       selected: null,
       theme: eventBus.user.theme,
@@ -99,7 +105,15 @@ export default {
         });
         setTimeout(() => {
           this.nextButtonRevealed = true;
-          this.$refs.buttonContainer.classList.add('appear')
+        }, 1499);
+        setTimeout(() => {
+          this.$refs.buttonContainer.classList.add('appear');
+          if (this.theme[0] === 'd') {
+            this.$refs.buttonContainer.style.backgroundColor = '#000';
+          } else if (this.theme[0] === 'l') {
+            this.$refs.buttonContainer.style.backgroundColor = '#fff';
+          }
+
           if (value.isCorrect === true) {
             eventBus.user.currentGame.score += Math.floor((Date.now() - this.scoreCounter) / 100);
           }
@@ -145,7 +159,6 @@ export default {
   .action-buttons {
     height: 50px;
     width: 300px;
-    opacity: 0;
   }
 
   .appear {
