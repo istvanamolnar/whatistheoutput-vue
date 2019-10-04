@@ -7,22 +7,24 @@
         <question-field class="m-auto" 
           :questionText="currentQuestion.question"
           :key="currentQuestion.question"/>
-        <answers-field class="mx-auto p-2"
-          :selected="selected"
-          :currentQuestion="currentQuestion"
-          :theme="theme"
-          :mode="mode"
-          @chosenAnswer="handleSelected"/>
-        <div 
-          v-if="nextButtonRevealed"
-          class="action-buttons mx-auto px-2 py-0 d-flex flex-row justify-content-between" 
-          ref="buttonContainer"
-          :key="currentQuestion._id">
-          <div class="mx-0 my-1 btn-outline-warning explain"
-            data-toggle="modal" 
-            data-target="#seedetails">Explain</div>
-          <div class="mx-0 my-1 btn-outline-success next"
-            @click="getAQuestion()">Next</div>
+        <div class="content-container d-flex flex-column">
+          <answers-field class="mx-auto p-2"
+            :selected="selected"
+            :currentQuestion="currentQuestion"
+            :theme="theme"
+            :mode="mode"
+            @chosenAnswer="handleSelected"/>
+          <div 
+            v-if="nextButtonRevealed"
+            class="action-buttons mx-auto px-2 py-0 d-flex flex-row justify-content-between" 
+            ref="buttonContainer"
+            :key="currentQuestion._id">
+            <div class="mx-0 my-1 btn-outline-warning explain"
+              data-toggle="modal" 
+              data-target="#seedetails">Explain</div>
+            <div class="mx-0 my-1 btn-outline-success next"
+              @click="getAQuestion()">Next</div>
+          </div>
         </div>
       <div class="score text-center" ref="questionCounter">
         Question: {{ user.currentGame.numOfQuestions - user.currentGame.questions.length }} / {{ user.currentGame.numOfQuestions }}
@@ -196,7 +198,7 @@ export default {
   }
 
   @media all and (max-height: 420px) {
-    .rotated {
+    .quiz-container {
       flex-direction: row;
       justify-content: center;
       width: 90vw;

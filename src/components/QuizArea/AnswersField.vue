@@ -93,9 +93,8 @@ export default {
   .btn {
     display: flex;
     height: 40px;
-    max-width: 300px;
-    min-width: max-content;
-    width: 100%;
+    min-width: 270px;
+    width: 300px;
   }
 
   .option {

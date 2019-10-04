@@ -89,7 +89,7 @@ import axios from 'axios';
 
 export default {
   name: 'HandleQuestion',
-  props: ['pickedQuestion', 'theme', 'operation'],
+  props: ['operation', 'pickedQuestion', 'theme'],
   data() {
     return {
       secretCode: ''
@@ -100,10 +100,10 @@ export default {
     addQuestion(form) {
       if (form.secretCode === process.env.VUE_APP_SECRET_CODE) {
         axios({
-          method: 'post',
-          headers: { "x-api-key": process.env.VUE_APP_API_KEY },
-          url: `${process.env.VUE_APP_BACKEND_SERVER_URL}/questions`,
           data: form,
+          headers: { "x-api-key": process.env.VUE_APP_API_KEY },
+          method: 'post',
+          url: `${process.env.VUE_APP_BACKEND_SERVER_URL}/questions`
         })
         .then((response) => {
           // eslint-disable-next-line
@@ -123,9 +123,10 @@ export default {
     deleteQuestion(form) {
       form.secretCode = this.secretCode;
       axios({
+        data: form,
+        headers: { "x-api-key": process.env.VUE_APP_API_KEY },
         method: 'delete',
-        url: `${process.env.VUE_APP_BACKEND_SERVER_URL}/questions?questionId=${form._id}`,
-        data: form
+        url: `${process.env.VUE_APP_BACKEND_SERVER_URL}/questions?questionId=${form._id}`
       }, {crossdomain: true})
       .then((response) => {
         // eslint-disable-next-line
@@ -141,9 +142,10 @@ export default {
       form.game = 'whatistheoutput';
       form.secretCode = this.secretCode;
       axios({
+        data: form,
+        headers: { "x-api-key": process.env.VUE_APP_API_KEY },
         method: 'put',
-        url: `${process.env.VUE_APP_BACKEND_SERVER_URL}/questions`,
-        data: form
+        url: `${process.env.VUE_APP_BACKEND_SERVER_URL}/questions`
       })
       .then((response) => {
         // eslint-disable-next-line
