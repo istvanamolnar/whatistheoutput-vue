@@ -1,5 +1,5 @@
 <template>
-  <div class="d-flex align-items-center bg-dark h-100 m-0 main" ref="main">
+  <div class="d-flex align-items-center h-100 m-0 main" ref="main">
     <div class="top">
       <div class="h3 p-2 m-0 chose-theme" ref="chooseTheme">Choose theme:</div>
       <div class="container-fluid bg-transparent p-0 m-0 d-flex justify-content-center">
@@ -104,6 +104,7 @@ export default {
           game: 'whatistheoutput',
           name: this.nickname,
           theme: this.theme,
+          themes: ['d-bicycles', 'd-shattered', 'l-alchemy', 'l-ahoy'],
           currentGame: {
             answers: [],
             numOfQuestions: this.numOfQuestions,

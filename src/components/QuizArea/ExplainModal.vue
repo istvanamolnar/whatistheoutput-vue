@@ -19,9 +19,17 @@
 </template>
 
 <script>
+import { eventBus } from '../../main';
+
 export default {
   name: 'ExplainModal',
-  props: ['description', 'questionText', 'theme',],
+  props: ['description', 'questionText'],
+  data() {
+    return {
+      theme: eventBus.user.theme
+    }
+  },
+
   mounted() {
     if (this.theme[0] === 'd') {
       this.$refs.title.style.backgroundColor = '#0f0f0f';

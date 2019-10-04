@@ -1,17 +1,16 @@
 <template>
   <div v-if="user" class="main-container d-flex flex-column align-items-center m-auto h-100" ref="mainContainer">
-    <div class="title mx-auto" ref="title">What Is The Output?</div>
+    <div class="title" ref="title">What Is The Output?</div>
       <div v-if="currentQuestion" 
         class="mx-auto d-flex align-items-center quiz-container"
         ref="quizContainer">
         <question-field class="m-auto" 
           :questionText="currentQuestion.question"
           :key="currentQuestion.question"/>
-        <div class="content-container d-flex flex-column">
+        <div class="answers-actionbuttons-container d-flex flex-column">
           <answers-field class="mx-auto p-2"
             :selected="selected"
             :currentQuestion="currentQuestion"
-            :theme="theme"
             :mode="mode"
             @chosenAnswer="handleSelected"/>
           <div 
@@ -31,10 +30,15 @@
         <br>Score: {{ user.currentGame.score }}
       </div>
     </div>
+    <div class="theme-selector" ref="themeSelector">
+      <img :src="imagesURL + '/images/' + background + '.png'" class="theme"
+        v-for="background in themes" :key="background"
+        @click="changeTheme" :alt="background">
+    </div>
     <explain-modal 
-      :description="currentQuestion.description" 
-      :questionText="currentQuestion.question"
-      :theme="theme"/>
+      :description="currentQuestion.description"
+      :key="theme" 
+      :questionText="currentQuestion.question"/>
   </div>
 </template>
 
@@ -55,11 +59,13 @@ export default {
   data() {
     return {
       currentQuestion : Object,
+      imagesURL: process.env.VUE_APP_IMAGES_URL,
       mode: 'quiz',
       nextButtonRevealed: false,
       scoreCounter: 0,
       selected: null,
       theme: eventBus.user.theme,
+      themes: ['d-bicycles', 'd-shattered', 'l-alchemy', 'l-ahoy'],
       user: eventBus.user
     }
   },
@@ -74,16 +80,40 @@ export default {
       this.$refs.quizContainer.style.backgroundColor = '#111';
       this.$refs.quizContainer.style.color = '#eee';
       this.$refs.title.style.color = '#ddd';
+      this.$refs.questionCounter.style.backgroundColor = '#111';
       this.$refs.questionCounter.style.color = '#ddd';
     } else if (this.theme[0] === 'l') {
       this.$refs.quizContainer.style.backgroundColor = '#eee';
       this.$refs.quizContainer.style.color = '#333';
       this.$refs.title.style.color = '#222';
+      this.$refs.questionCounter.style.backgroundColor = '#eee';
       this.$refs.questionCounter.style.color = '#222';
     }
   },
 
   methods: {
+    changeTheme(event) {
+      eventBus.user.theme = event.target.alt;
+      this.theme = event.target.alt;
+      this.$refs.mainContainer.style.backgroundImage = `url('${process.env.VUE_APP_IMAGES_URL}/images/${eventBus.user.theme}.png')`;
+      if (this.theme[0] === 'd') {
+        this.$refs.quizContainer.style.backgroundColor = '#111';
+        this.$refs.quizContainer.style.color = '#eee';
+        this.$refs.title.style.color = '#ddd';
+        this.$refs.questionCounter.style.color = '#ddd';
+        this.$refs.questionCounter.style.backgroundColor = '#111';
+      } else if (this.theme[0] === 'l') {
+        this.$refs.quizContainer.style.backgroundColor = '#eee';
+        this.$refs.quizContainer.style.color = '#333';
+        this.$refs.title.style.color = '#222';
+        this.$refs.questionCounter.style.color = '#222';
+        this.$refs.questionCounter.style.backgroundColor = '#eee';
+      } else {
+        // eslint-disable-next-line
+        console.log("Something went wrong");
+      }
+    },
+
     getAQuestion() {
       this.nextButtonRevealed = false;
       this.selected = null;
@@ -128,8 +158,24 @@ export default {
 </script>
 
 <style scoped>
-  .row {
-    width: 99vw;
+
+  .theme-selector {
+    align-items: center;
+    border: 1px solid #3ca744;
+    bottom: 20px;
+    display: flex;
+    flex-direction: row;
+    margin: auto;
+    position: fixed;
+  }
+
+  .theme {
+    border: 3px solid #3ca744;
+    cursor: pointer;
+    height: 60px;
+    margin: 1vh;
+    padding: 0;
+    width: 60px;
   }
 
   .quiz-container {
@@ -145,6 +191,7 @@ export default {
     font-size: 4vh;
     font-weight: 600;
     margin-top: 5vh;
+    margin: 5vh auto 0 auto;
   }
 
   .score {
@@ -206,6 +253,7 @@ export default {
 
     .title {
       font-size: 30px;
+      margin-top: 0;
     }
 
     .score {
@@ -213,6 +261,10 @@ export default {
       position:fixed;
       right: 3vw;
       top: 3vh;
+    }
+
+    .theme-selector {
+      left: 20px;
     }
   }
 

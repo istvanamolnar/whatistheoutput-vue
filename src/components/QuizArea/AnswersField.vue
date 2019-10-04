@@ -12,13 +12,15 @@
   </div>
 </template>
 <script>
+import { eventBus } from '../../main';
 
 export default {
   name: 'AnswersField',
-  props: ['currentQuestion', 'mode', 'selected', 'theme'],
+  props: ['currentQuestion', 'mode', 'selected'],
   data() {
     return {
-      serverURL: process.env.VUE_APP_BACKEND_SERVER_URL
+      serverURL: process.env.VUE_APP_BACKEND_SERVER_URL,
+      theme: eventBus.user.theme
     }
   },
 
