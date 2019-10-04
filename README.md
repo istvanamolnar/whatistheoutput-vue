@@ -6,6 +6,6 @@ REWARDS: Rare Lootbox, Epic Lootbox, Legendary Lootbox.
 
 Best REWARD: You will learn something.
 
-Front-end: Vue.js, Bootstrap, highlight.js
-Back-end: AWS API Gateway, Lambda, IAM
-Database: DynamoDB
+* Front-end: Vue.js, Bootstrap, highlight.js
+* Back-end: AWS API Gateway, Lambda, IAM
+* Database: DynamoDB
