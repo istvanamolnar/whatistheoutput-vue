@@ -12,7 +12,7 @@
         <div class="modal-body mx-auto explanation" ref="details">
             <p class="m-0">{{ description }}</p>
         </div>
-        <button type="button" class="btn btn-success mx-auto mb-3" data-dismiss="modal">Thanks</button>
+        <button type="button" class="btn btn-success mx-auto mb-3 font-weight-bold" data-dismiss="modal">Thanks</button>
       </div>
     </div>
   </div>

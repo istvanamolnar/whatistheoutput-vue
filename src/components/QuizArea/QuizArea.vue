@@ -1,13 +1,12 @@
 <template>
-  <div v-if="user" class="main-container d-flex flex-column m-auto p-0 h-100" ref="mainContainer">
+  <div v-if="user" class="main-container d-flex flex-column align-items-center m-auto h-100" ref="mainContainer">
     <div class="title mx-auto" ref="title">What Is The Output?</div>
       <div v-if="currentQuestion" 
-        class="mx-auto my-2 d-flex rotated" 
-        :key="currentQuestion._id"
+        class="mx-auto d-flex align-items-center quiz-container"
         ref="quizContainer">
         <question-field class="m-auto" 
           :questionText="currentQuestion.question"
-          :theme="theme"/>
+          :key="currentQuestion.question"/>
         <answers-field class="mx-auto p-2"
           :selected="selected"
           :currentQuestion="currentQuestion"
@@ -16,7 +15,7 @@
           @chosenAnswer="handleSelected"/>
         <div 
           v-if="nextButtonRevealed"
-          class="action-buttons mx-auto p-0 d-flex flex-row justify-content-between" 
+          class="action-buttons mx-auto px-2 py-0 d-flex flex-row justify-content-between" 
           ref="buttonContainer"
           :key="currentQuestion._id">
           <div class="mx-0 my-1 btn-outline-warning explain"
@@ -25,10 +24,10 @@
           <div class="mx-0 my-1 btn-outline-success next"
             @click="getAQuestion()">Next</div>
         </div>
+      <div class="score text-center" ref="questionCounter">
+        Question: {{ user.currentGame.numOfQuestions - user.currentGame.questions.length }} / {{ user.currentGame.numOfQuestions }}
+        <br>Score: {{ user.currentGame.score }}
       </div>
-    <div class="score text-center" ref="questionCounter">
-      Question: {{ user.currentGame.numOfQuestions - user.currentGame.questions.length }} / {{ user.currentGame.numOfQuestions }}
-      <br>Score: {{ user.currentGame.score }}
     </div>
     <explain-modal 
       :description="currentQuestion.description" 
@@ -70,11 +69,13 @@ export default {
   mounted() {
     this.$refs.mainContainer.style.backgroundImage = `url('${process.env.VUE_APP_IMAGES_URL}/images/${eventBus.user.theme}.png')`;
     if (this.theme[0] === 'd') {
-      this.$refs.quizContainer.style.backgroundColor = '#000';
+      this.$refs.quizContainer.style.backgroundColor = '#111';
+      this.$refs.quizContainer.style.color = '#eee';
       this.$refs.title.style.color = '#ddd';
       this.$refs.questionCounter.style.color = '#ddd';
     } else if (this.theme[0] === 'l') {
-      this.$refs.quizContainer.style.backgroundColor = '#fff';
+      this.$refs.quizContainer.style.backgroundColor = '#eee';
+      this.$refs.quizContainer.style.color = '#333';
       this.$refs.title.style.color = '#222';
       this.$refs.questionCounter.style.color = '#222';
     }
@@ -107,12 +108,6 @@ export default {
           this.nextButtonRevealed = true;
         }, 1499);
         setTimeout(() => {
-          if (this.theme[0] === 'd') {
-            this.$refs.buttonContainer.style.backgroundColor = '#000';
-          } else if (this.theme[0] === 'l') {
-            this.$refs.buttonContainer.style.backgroundColor = '#fff';
-          }
-
           if (value.isCorrect === true) {
             eventBus.user.currentGame.score += Math.floor((Date.now() - this.scoreCounter) / 100);
           }
@@ -135,8 +130,10 @@ export default {
     width: 99vw;
   }
 
-  .rotated {
+  .quiz-container {
+    border-radius: 15px;
     flex-direction: column;
+    opacity: 0.9;
     padding: 10px;
   }
 
@@ -149,15 +146,18 @@ export default {
   }
 
   .score {
+    color: #777;
     font-family: 'ZCOOL KuaiLe', cursive;
     font-size: 24px;
     font-size: 3.5vh;
     font-weight: 600;
+    min-width: max-content;
+    width: 30px;
   }
 
   .action-buttons {
     height: 50px;
-    width: 300px;
+    width: 316px;
   }
 
   .next, .explain {
@@ -169,7 +169,7 @@ export default {
     height: 40px;
     justify-content: center;
     text-align: center;
-    width: 140px;
+    width: 135px;
   }
 
   .next:hover {

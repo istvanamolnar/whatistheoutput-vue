@@ -24,6 +24,7 @@
       </div>
     </div>
     <handle-question
+      :operation="operation"
       :pickedQuestion="pickedQuestion" 
       :theme="theme"/>
     <img :src="imagesURL + '/images/settings.png'" class="manage-questions" @click="$router.push('/')"/>
@@ -47,6 +48,7 @@ export default {
   data() {
     return {
       mode: 'manage',
+      operation: null,
       questions: [],
       imagesURL: process.env.VUE_APP_IMAGES_URL,
       serverURL: process.env.VUE_APP_BACKEND_SERVER_URL,
@@ -83,6 +85,7 @@ export default {
 
   methods: {
     handleQuestion(question) {
+      this.operation = 'edit';
       this.pickedQuestion = question;
       // to select current correct answer in modal
       this.pickedQuestion.answers.forEach((answer, index) => {
@@ -91,6 +94,7 @@ export default {
     },
 
     newQuestion() {
+      this.operation = 'new';
       this.pickedQuestion = {
         answers: [
           { answer: '' },
@@ -113,7 +117,7 @@ export default {
   .manage-container {
     background-repeat: repeat;
     padding-top: 50px;
-    width: 99vw;
+    width: 100%;
   }
 
   .navbar {
@@ -123,7 +127,7 @@ export default {
     justify-content: center;
     position: fixed;
     top: 0;
-    width: 99vw;
+    width: 100%;
     z-index: 1;
   }
 
@@ -150,10 +154,10 @@ export default {
 
   .manage-questions {
     bottom: 10px;
-    height: 10px;
+    height: 15px;
     left: 10px;
     position:fixed;
-    width: 10px;
+    width: 15px;
   }
 
   .manage-questions:hover {

@@ -24,22 +24,14 @@ export default {
   name: 'RewardPage',
   data() {
     return {
-      dogPhoto: String,
-      opened: false,
-      theme: eventBus.user.theme
+      dogPhoto: null,
+      opened: false
     }
   },
 
   mounted() {
     this.getDogPhoto();
     this.saveUserData();
-    if (this.theme[0] === 'd') {
-      this.$refs.rewardContainer.style.backgroundColor = '#333';
-      this.$refs.rewardContainer.style.color = '#ddd';
-    } else if (this.theme[0] === 'l') {
-      this.$refs.rewardContainer.style.backgroundColor = '#ddd';
-      this.$refs.rewardContainer.style.color = '#333';
-    }
   },
 
   methods: {
@@ -116,6 +108,10 @@ export default {
 
   .reward-content {
     border: 1px solid #888;
+  }
+
+  .modal-content {
+    background-color: #eee;
   }
 
   .bounce {

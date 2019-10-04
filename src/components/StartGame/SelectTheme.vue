@@ -13,11 +13,11 @@
     <div class="bottom">
       <div class="question-range">
         <p class="num-of-questions" ref="questionCounter">number of questions: 
-          <output id="rangevalue">{{numOfQuestions}}</output>
+          <output id="rangevalue" ref="rangeValue">{{numOfQuestions}}</output>
         </p>
         <div id="slider">
           <input class="bar" type="range" id="rangeinput" 
-            value="4" min="4" max="12" @mousemove="numOfQuestions = $refs.value.value" v-on="handlers" onchange="rangevalue.value=value" ref="value"/>
+            value="4" min="4" max="12" @mousemove="changeValue" v-on="handlers" onchange="rangevalue.value=value" ref="value"/>
           <span class="highlight"></span><br>
         </div>
       </div>
@@ -34,6 +34,7 @@
     </div>
     <welcome-page/>
     <img :src="imagesURL + '/images/settings.png'" class="manage-questions" @click="$router.push('manage')"/>
+    <a href="https://gitlab.com/istvanamolnar/whatistheoutput-fe" target="_blank"><img :src="imagesURL + '/images/gitlab.png'" class="gitlab-icon"/></a> 
   </div>
 </template>
 
@@ -56,7 +57,7 @@ export default {
       numOfQuestions: 4,
       imagesURL: process.env.VUE_APP_IMAGES_URL,
       theme: 'd-bicycles',
-      themes: ['d-bicycles', 'd-shattered', 'l-alchemy', 'l-restaurant'],
+      themes: ['d-bicycles', 'd-shattered', 'l-alchemy', 'l-ahoy'],
       disabledPlayButton: false,
       handlers: {
         touchmove: vm.divTouchmove
@@ -78,11 +79,23 @@ export default {
     this.$refs.nameInput.style.color = '#009b48';
     this.$refs.questionCounter.style.backgroundColor = 'rgba(0, 0, 0, 0.9)';
     this.$refs.questionCounter.style.color = 'rgba(255, 255, 255, 0.9)';
+    this.$refs.rangeValue.style.color = '#3ca744';
     this.$refs.startButton.style.backgroundColor = '#009b48';
     this.$refs.startButton.style.color = 'rgba(255, 255, 255, 0.9)';
   },
 
   methods: {
+    changeValue() {
+      this.numOfQuestions = this.$refs.value.value;
+      if (this.$refs.rangeValue.value > 9) {
+        this.$refs.rangeValue.style.color = '#f00';
+      } else if (this.$refs.rangeValue.value > 6) {
+        this.$refs.rangeValue.style.color = '#ffd500';
+      } else {
+        this.$refs.rangeValue.style.color = '#3ca744';
+      }
+    },
+
     startGame() {
       this.numOfQuestions = this.$refs.value.value
       if (this.$refs.nameInput.value !== '' && this.$refs.nameInput.value !== 'Enter your name' && !this.disabledPlayButton) {
@@ -136,6 +149,13 @@ export default {
 
     divTouchmove() {
       this.numOfQuestions = this.$refs.value.value;
+      if (this.$refs.rangeValue.value > 9) {
+        this.$refs.rangeValue.style.color = '#f00';
+      } else if (this.$refs.rangeValue.value > 6) {
+        this.$refs.rangeValue.style.color = '#ffd500';
+      } else {
+        this.$refs.rangeValue.style.color = '#3ca744';
+      }
     }
   },
 }
@@ -221,6 +241,7 @@ export default {
   input[type="range"] {
     -webkit-appearance: none;
     background-color: #000;
+    cursor: pointer;
     height: 2px;
   }
   input[type="range"]::-webkit-slider-thumb {
@@ -228,7 +249,6 @@ export default {
     background-color: #3ca744;
     border: 2px solid #000;
     border-radius: 30px;
-    cursor: pointer;
     height: 40px;
     position: relative;
     top: 0px;
@@ -240,7 +260,6 @@ export default {
     background-color: #3ca744;
     border: 2px solid #000;
     border-radius: 30px;
-    cursor: pointer;
     height: 40px;
     position: relative;
     top: 0px;
@@ -249,12 +268,11 @@ export default {
   }
 
   #rangevalue {
-    color: #3ca744;
     font-size: 24px;
     font-family: 'ZCOOL KuaiLe', cursive;
-    height: 30px;
+    height: 40px;
     text-align: center;
-    width: 30px;
+    width: 40px;
   }
   input[type="range"]:focus {
     outline: none;
@@ -292,11 +310,19 @@ export default {
   }
 
   .manage-questions {
-    bottom: 10px;
-    height: 10px;
+    bottom: 15px;
+    height: 15px;
     left: 10px;
     position:fixed;
-    width: 10px;
+    width: 15px;
+  }
+
+  .gitlab-icon {
+    bottom: 15px;
+    height: 15px;
+    position:fixed;
+    left: 40px;
+    width: 15px;
   }
 
   .manage-questions:hover {

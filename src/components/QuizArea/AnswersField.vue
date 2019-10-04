@@ -23,7 +23,6 @@ export default {
   },
 
   mounted() {
-    this.$refs.answersField.style.backgroundColor = this.theme[0] === 'd' ? 'rgba(0, 0, 0, 0.8)' : 'rgba(255, 255, 255, 0.8)';
     if (this.mode === 'manage') {
       this.$refs[true][0].classList.add('btn-success', 'active');
       this.$refs[false].forEach(falseAnswer => {
@@ -60,14 +59,15 @@ export default {
         }
         setTimeout(() => {
           correctAnswer.classList.add('bounce-in','active');
+          correctAnswer.classList.remove('disabled');
           for (let i = 1; i < 5; i++) {
             setTimeout(() => {
               if (correctAnswer.className.includes('active')) {
-                correctAnswer.classList.remove('btn-success', 'active');
-                correctAnswer.classList.add('btn-outline-success');
+                correctAnswer.classList.remove('active');
+                correctAnswer.classList.add('btn-outline-success', 'disabled');
               } else {
-                correctAnswer.classList.remove('btn-outline-success');
-                correctAnswer.classList.add('btn-success', 'active');
+                correctAnswer.classList.remove('btn-outline-success', 'disabled');
+                correctAnswer.classList.add('active');
               }
             }, 500 * i);
           }
@@ -92,11 +92,15 @@ export default {
 
   .btn {
     display: flex;
-    font-weight: 600;
     height: 40px;
     max-width: 300px;
     min-width: max-content;
     width: 100%;
+  }
+
+  .option {
+    font-size: 18px;
+    font-weight: 600;
   }
 
   .option:not(.disabled):not(.active):hover {

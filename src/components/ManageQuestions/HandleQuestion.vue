@@ -3,7 +3,7 @@
     <div class="modal-dialog modal-dialog-centered d-flex justify-content-center align-items-center" role="document">
       <div class="modal-content handle-content" ref="title">
         <div class="handlemodal-body mx-auto" ref="details">
-          <div class="handleContainer">
+          <div v-if="operation" class="handleContainer">
             <form class="add-question d-flex flex-column align-items-left">
               <div class="d-flex flex-column mb-2">
                 <label for="question">Question</label>
@@ -19,7 +19,7 @@
                         v-model="pickedQuestion.correctOne" aria-label="Answer one" required>
                     </div>
                   </div>
-                  <input type="text" class="form-control" 
+                  <input type="text" class="form-control"
                     v-model="pickedQuestion.answers[0].answer" placeholder="Answer one" required>
                 </div>
                 <div class="input-group">
@@ -35,8 +35,8 @@
                 <div class="input-group">
                   <div class="input-group-prepend">
                     <div class="input-group-text">
-                      <input type="radio" name="is-correct" 
-                        value="2" v-model="pickedQuestion.correctOne" aria-label="Answer three" required>
+                      <input type="radio" name="is-correct" value="2" 
+                        v-model="pickedQuestion.correctOne" aria-label="Answer three" required>
                     </div>
                   </div>
                   <input type="text" class="form-control" 
@@ -67,13 +67,13 @@
               </div>
               <input type="password" class="mb-4 form-control" 
                     v-model="secretCode" placeholder="Secret code">
-              <div class="d-flex justify-content-between w-100">
+              <div class="d-flex justify-content-around w-100">
                 <button type="submit" class="btn btn-light submit-button" data-dismiss="modal">Cancel</button>
-                <button type="submit" class="btn btn-danger submit-button" data-dismiss="modal"
+                <button v-if="operation === 'edit'" type="submit" class="btn btn-danger submit-button" data-dismiss="modal"
                   @click.prevent="deleteQuestion(pickedQuestion)">Remove</button>
-                <button type="submit" class="btn btn-primary submit-button" data-dismiss="modal"
+                <button v-if="operation === 'edit'" type="submit" class="btn btn-primary submit-button" data-dismiss="modal"
                   @click.prevent="editQuestion(pickedQuestion)">Update</button>
-                <button type="submit" class="btn btn-success submit-button" data-dismiss="modal"
+                <button v-if="operation === 'new'" type="submit" class="btn btn-success submit-button" data-dismiss="modal"
                   @click.prevent="addQuestion(pickedQuestion)">Submit</button>
               </div>
             </form>
@@ -89,7 +89,7 @@ import axios from 'axios';
 
 export default {
   name: 'HandleQuestion',
-  props: ['pickedQuestion', 'theme'],
+  props: ['pickedQuestion', 'theme', 'operation'],
   data() {
     return {
       secretCode: ''
