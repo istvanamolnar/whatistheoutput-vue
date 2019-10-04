@@ -1,33 +1,33 @@
 <template>
   <div v-if="user" class="main-container d-flex flex-column align-items-center m-auto h-100" ref="mainContainer">
     <div class="title" ref="title">What Is The Output?</div>
-      <div v-if="currentQuestion" 
-        class="mx-auto d-flex align-items-center quiz-container"
-        ref="quizContainer">
-        <question-field class="m-auto" 
-          :questionText="currentQuestion.question"
-          :key="currentQuestion.question"/>
-        <div class="answers-actionbuttons-container d-flex flex-column">
-          <answers-field class="mx-auto p-2"
-            :selected="selected"
-            :currentQuestion="currentQuestion"
-            :mode="mode"
-            @chosenAnswer="handleSelected"/>
-          <div 
-            v-if="nextButtonRevealed"
-            class="action-buttons mx-auto px-2 py-0 d-flex flex-row justify-content-between" 
-            ref="buttonContainer"
-            :key="currentQuestion._id">
-            <div class="mx-0 my-1 btn-outline-warning explain"
-              data-toggle="modal" 
-              data-target="#seedetails">Explain</div>
-            <div class="mx-0 my-1 btn-outline-success next"
-              @click="getAQuestion()">Next</div>
-          </div>
-        </div>
+    <div v-if="currentQuestion" 
+      class="mx-auto d-flex align-items-center quiz-container"
+      ref="quizContainer">
       <div class="score text-center" ref="questionCounter">
         Question: {{ user.currentGame.numOfQuestions - user.currentGame.questions.length }} / {{ user.currentGame.numOfQuestions }}
         <br>Score: {{ user.currentGame.score }}
+      </div>
+      <question-field class="m-auto" 
+        :questionText="currentQuestion.question"
+        :key="currentQuestion.question"/>
+      <div class="answers-actionbuttons-container d-flex flex-column">
+        <answers-field class="mx-auto p-2"
+          :selected="selected"
+          :currentQuestion="currentQuestion"
+          :mode="mode"
+          @chosenAnswer="handleSelected"/>
+        <div 
+          v-if="nextButtonRevealed"
+          class="action-buttons mx-auto px-2 py-0 d-flex flex-row justify-content-between" 
+          ref="buttonContainer"
+          :key="currentQuestion._id">
+          <div class="mx-0 my-1 btn-outline-warning explain"
+            data-toggle="modal" 
+            data-target="#seedetails">Explain</div>
+          <div class="mx-0 my-1 btn-outline-success next"
+            @click="getAQuestion()">Next</div>
+        </div>
       </div>
     </div>
     <div class="theme-selector" ref="themeSelector">
@@ -195,6 +195,7 @@ export default {
   }
 
   .score {
+    border-bottom: 2px solid #888;
     color: #777;
     font-family: 'ZCOOL KuaiLe', cursive;
     font-size: 24px;
