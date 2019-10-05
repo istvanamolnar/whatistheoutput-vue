@@ -89,7 +89,11 @@ import axios from 'axios';
 
 export default {
   name: 'HandleQuestion',
-  props: ['operation', 'pickedQuestion', 'theme'],
+  props: {
+    operation: String,
+    pickedQuestion: Object,
+    theme: String
+  },
   data() {
     return {
       secretCode: ''

@@ -23,7 +23,11 @@ import { eventBus } from '../../main';
 
 export default {
   name: 'ExplainModal',
-  props: ['description', 'questionText'],
+  props: {
+    description: String,
+    questionText: String
+  },
+
   data() {
     return {
       theme: eventBus.user.theme

@@ -9,7 +9,9 @@
 <script>
 export default {
   name: 'QuestionField',
-  props: ['questionText'],
+  props: {
+    questionText: String
+  }
 }
 </script>
 

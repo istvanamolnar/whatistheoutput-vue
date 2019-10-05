@@ -17,7 +17,7 @@
 
 <script>
 export default {
-  name: 'WelcomePage',
+  name: 'WelcomePage'
 }
 </script>
 

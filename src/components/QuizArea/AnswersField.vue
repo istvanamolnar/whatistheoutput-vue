@@ -16,7 +16,12 @@ import { eventBus } from '../../main';
 
 export default {
   name: 'AnswersField',
-  props: ['currentQuestion', 'mode', 'selected'],
+  props: {
+    currentQuestion: Object,
+    mode: String, 
+    selected: Object
+  },
+
   data() {
     return {
       serverURL: process.env.VUE_APP_BACKEND_SERVER_URL,
