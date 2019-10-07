@@ -34,7 +34,7 @@
     </div>
     <welcome-page/>
     <img :src="imagesURL + '/images/settings.png'" class="manage-questions" @click="$router.push('manage')"/>
-    <a href="https://gitlab.com/istvanamolnar/whatistheoutput-fe" target="_blank"><img :src="imagesURL + '/images/gitlab.png'" class="gitlab-icon"/></a> 
+    <a href="https://gitlab.com/istvanamolnar/whatistheoutput" target="_blank"><img :src="imagesURL + '/images/gitlab.png'" class="gitlab-icon"/></a> 
   </div>
 </template>
 
@@ -74,14 +74,14 @@ export default {
     }, 500);
     this.$refs.main.style.backgroundImage = `url('${this.imagesURL}/images/d-bicycles.png')`;
     this.$refs.chooseTheme.style.backgroundColor = 'rgba(0, 0, 0, 0.6)';
-    this.$refs.chooseTheme.style.color = 'rgba(255, 255, 255, 0.9)';
-    this.$refs.nameInput.style.backgroundColor = 'rgba(0, 0, 0)';
+    this.$refs.chooseTheme.style.color = 'rgba(255, 255, 255, 0.6)';
+    this.$refs.nameInput.style.backgroundColor = 'rgba(0, 0, 0, 0.6)';
     this.$refs.nameInput.style.color = '#009b48';
-    this.$refs.questionCounter.style.backgroundColor = 'rgba(0, 0, 0, 0.9)';
-    this.$refs.questionCounter.style.color = 'rgba(255, 255, 255, 0.9)';
+    this.$refs.questionCounter.style.backgroundColor = 'rgba(0, 0, 0, 0.6)';
+    this.$refs.questionCounter.style.color = 'rgba(255, 255, 255, 0.6)';
     this.$refs.rangeValue.style.color = '#3ca744';
     this.$refs.startButton.style.backgroundColor = '#009b48';
-    this.$refs.startButton.style.color = 'rgba(255, 255, 255, 0.9)';
+    this.$refs.startButton.style.color = 'rgba(255, 255, 255, 0.6)';
   },
 
   methods: {
@@ -120,27 +120,27 @@ export default {
         // eslint-disable-next-line
         .catch(err => console.log(err));
       } else {
-        const isBlack = this.$refs.nameInput.style.backgroundColor === 'rgb(0, 0, 0)';
-        this.$refs.nameInput.style.backgroundColor = isBlack ? 'rgb(255, 255, 255)' : 'rgb(0, 0, 0)';
+        const isBlack = this.$refs.nameInput.style.backgroundColor === 'rgba(0, 0, 0, 0.6)';
+        this.$refs.nameInput.style.backgroundColor = isBlack ? 'rgba(255, 255, 255, 0.6)' : 'rgba(0, 0, 0, 0.6)';
       }
     },
 
     changeTheme(event) {
       this.theme = event.target.alt;
       if (this.theme[0] === 'd') {
-        this.$refs.nameInput.style.backgroundColor = 'rgb(0, 0, 0)';
+        this.$refs.nameInput.style.backgroundColor = 'rgba(0, 0, 0, 0.6)';
         this.$refs.nameInput.style.color = '#009b48';
         this.$refs.chooseTheme.style.backgroundColor = 'rgba(0, 0, 0, 0.6)';
         this.$refs.chooseTheme.style.color = '#fff';
         this.$refs.questionCounter.style.backgroundColor = 'rgba(0, 0, 0, 0.6)';
-        this.$refs.questionCounter.style.color = 'rgba(255, 255, 255, 0.9)';
+        this.$refs.questionCounter.style.color = 'rgba(255, 255, 255, 0.6)';
       } else if (this.theme[0] === 'l') {
-        this.$refs.nameInput.style.backgroundColor = 'rgb(255, 255, 255)';
+        this.$refs.nameInput.style.backgroundColor = 'rgba(255, 255, 255, 0.6)';
         this.$refs.nameInput.style.color = '#009b48';
         this.$refs.chooseTheme.style.backgroundColor = 'rgba(255, 255, 255, 0.6)';
         this.$refs.chooseTheme.style.color = '#000';
-        this.$refs.questionCounter.style.backgroundColor = 'rgba(255, 255, 255, 0.9)';
-        this.$refs.questionCounter.style.color = 'rgba(0, 0, 0, 0.9)';
+        this.$refs.questionCounter.style.backgroundColor = 'rgba(255, 255, 255, 0.6)';
+        this.$refs.questionCounter.style.color = 'rgba(0, 0, 0, 0.6)';
       } else {
         // eslint-disable-next-line
         console.log("Something went wrong");

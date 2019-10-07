@@ -1,32 +1,32 @@
 <template>
-  <div v-if="user" class="main-container d-flex flex-column align-items-center m-auto h-100" ref="mainContainer">
-    <div class="title" ref="title">What Is The Output?</div>
+  <div v-if="user" class="main-container" ref="mainContainer">
     <div v-if="currentQuestion" 
-      class="mx-auto d-flex align-items-center quiz-container"
+      class="quiz-container"
       ref="quizContainer">
-      <div class="score text-center" ref="questionCounter">
-        Question: {{ user.currentGame.numOfQuestions - user.currentGame.questions.length }} / {{ user.currentGame.numOfQuestions }}
-        <br>Score: {{ user.currentGame.score }}
-      </div>
+      <div class="title" ref="title">What Is The Output?</div>
       <question-field class="m-auto" 
         :questionText="currentQuestion.question"
         :key="currentQuestion.question"/>
-      <div class="answers-actionbuttons-container d-flex flex-column">
-        <answers-field class="mx-auto p-2"
+      <div class="answers-buttons">
+        <answers-field
           :selected="selected"
           :currentQuestion="currentQuestion"
           :mode="mode"
           @chosenAnswer="handleSelected"/>
         <div 
           v-if="nextButtonRevealed"
-          class="action-buttons mx-auto px-2 py-0 d-flex flex-row justify-content-between" 
+          class="action-buttons" 
           ref="buttonContainer"
           :key="currentQuestion._id">
-          <div class="mx-0 my-1 btn-outline-warning explain"
+          <div class="btn-outline-warning explain"
             data-toggle="modal" 
             data-target="#seedetails">Explain</div>
-          <div class="mx-0 my-1 btn-outline-success next"
+          <div class="btn-outline-success next"
             @click="getAQuestion()">Next</div>
+        </div>
+        <div class="score" ref="questionCounter">
+          Question: {{ user.currentGame.numOfQuestions - user.currentGame.questions.length }} / {{ user.currentGame.numOfQuestions }}
+          <br>Score: {{ user.currentGame.score }}
         </div>
       </div>
     </div>
@@ -80,13 +80,11 @@ export default {
       this.$refs.quizContainer.style.backgroundColor = '#111';
       this.$refs.quizContainer.style.color = '#eee';
       this.$refs.title.style.color = '#ddd';
-      this.$refs.questionCounter.style.backgroundColor = '#111';
       this.$refs.questionCounter.style.color = '#ddd';
     } else if (this.theme[0] === 'l') {
       this.$refs.quizContainer.style.backgroundColor = '#eee';
       this.$refs.quizContainer.style.color = '#333';
       this.$refs.title.style.color = '#222';
-      this.$refs.questionCounter.style.backgroundColor = '#eee';
       this.$refs.questionCounter.style.color = '#222';
     }
   },
@@ -158,6 +156,25 @@ export default {
 </script>
 
 <style scoped>
+  .main-container {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+  }
+
+  .quiz-container {
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+    min-width: max-content;
+    opacity: 0.9;
+    padding: 10px;
+    position: absolute;
+    z-index: 1;
+  }
 
   .theme-selector {
     align-items: center;
@@ -170,7 +187,8 @@ export default {
   }
 
   .theme {
-    border: 3px solid #3ca744;
+    background-size: contain;
+    border: 2px solid #3ca744;
     cursor: pointer;
     height: 60px;
     margin: 1vh;
@@ -178,36 +196,35 @@ export default {
     width: 60px;
   }
 
-  .quiz-container {
-    border-radius: 15px;
-    flex-direction: column;
-    opacity: 0.9;
-    padding: 10px;
-  }
-
   .title {
     font-family: 'ZCOOL KuaiLe', cursive;
     font-size: 24px;
     font-size: 4vh;
     font-weight: 600;
-    margin-top: 5vh;
-    margin: 5vh auto 0 auto;
   }
 
   .score {
-    border-bottom: 2px solid #888;
-    color: #777;
     font-family: 'ZCOOL KuaiLe', cursive;
     font-size: 24px;
     font-size: 3.5vh;
     font-weight: 600;
     min-width: max-content;
     width: 30px;
+    text-align: center;
+  }
+
+  .answers-buttons {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
   }
 
   .action-buttons {
+    display: flex;
     height: 50px;
-    width: 316px;
+    justify-content: space-between;
+    width: 300px;
   }
 
   .next, .explain {
@@ -215,10 +232,9 @@ export default {
     border-radius: 4px;
     border-width: 2px;
     display: flex;
-    font-weight: 600;
+    font-weight: 700;
     height: 40px;
     justify-content: center;
-    text-align: center;
     width: 135px;
   }
 

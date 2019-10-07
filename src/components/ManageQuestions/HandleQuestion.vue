@@ -91,8 +91,7 @@ export default {
   name: 'HandleQuestion',
   props: {
     operation: String,
-    pickedQuestion: Object,
-    theme: String
+    pickedQuestion: Object
   },
   data() {
     return {

@@ -1,7 +1,7 @@
 <template>
-  <div v-if="currentQuestion" class="container py-2 d-flex flex-column" ref="answersField">
+  <div v-if="currentQuestion" class="answers-field" ref="answersField">
     <div v-for="ans in currentQuestion.answers" :key="ans._id"
-      class="mx-auto my-1 p-0 btn btn-outline-success option"
+      class="btn btn-outline-success option"
       :data-id="ans._id"
       :ref="ans.isCorrect"
       @click="selectAnswer($event, ans)">
@@ -25,7 +25,7 @@ export default {
   data() {
     return {
       serverURL: process.env.VUE_APP_BACKEND_SERVER_URL,
-      theme: eventBus.user.theme
+      theme: eventBus.user.theme || 'd-shattered'
     }
   },
 
@@ -96,17 +96,21 @@ export default {
 </script>
 
 <style scoped>
-
-  .btn {
+  .answers-field {
     display: flex;
-    height: 40px;
-    min-width: 270px;
-    width: 300px;
+    flex-direction: column;
+    width: max-content;
+    margin: auto;
   }
 
   .option {
+    display: flex;
     font-size: 18px;
     font-weight: 600;
+    height: 40px;
+    margin-bottom: 10px;
+    width: 300px;
+    min-width: max-content;
   }
 
   .option:not(.disabled):not(.active):hover {
@@ -115,11 +119,7 @@ export default {
     -webkit-text-fill-color: #fff;
   }
 
-  .btn.active {
-    background-color: #3ca744;
-  }
-
-  .btn:not(.btn-danger):not(.btn-success):not(.btn-outline-success):hover {
+  .option.active {
     background-color: #3ca744;
   }
 

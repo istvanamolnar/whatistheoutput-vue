@@ -1,6 +1,6 @@
 <template>
   <div class="question-field bounce" ref="questionField">
-    <highlight-code lang="javascript" class="question-text m-auto p-2">
+    <highlight-code lang="javascript" class="question-text">
       {{ questionText }}
     </highlight-code>
   </div>
@@ -22,17 +22,12 @@ export default {
     }
   }
 
-  .question-text {
-    overflow: visible;
-  }
-  
   .question-field {
     border-bottom: 0;
     border-top: 4px;
     display: flex;
-    font-size: 24px;
+    font-size: 22px;
     font-size: 2.5vh;
-    width: 100%;
   }
 
   /* Animations */

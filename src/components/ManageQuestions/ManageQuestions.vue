@@ -15,18 +15,15 @@
           data-toggle="modal" data-target="#editquestion"
           @click="handleQuestion(question)"/>
         <question-field class="question mx-auto mt-2" 
-          :questionText="question.question" 
-          :theme="theme"/>
+          :questionText="question.question"/>
         <answers-field class="answers mx-auto p-2"
           :currentQuestion="question" 
-          :mode="mode"
-          :theme="theme"/>
+          :mode="mode"/>
       </div>
     </div>
     <handle-question
       :operation="operation"
-      :pickedQuestion="pickedQuestion" 
-      :theme="theme"/>
+      :pickedQuestion="pickedQuestion"/>
     <img :src="imagesURL + '/images/settings.png'" class="manage-questions" @click="$router.push('/')"/>
   </div>
 </template>
