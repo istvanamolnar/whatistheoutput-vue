@@ -1,73 +1,65 @@
 <template>
   <div class="modal fade" id="editquestion" tabindex="-1" role="dialog">
-    <div class="modal-dialog modal-dialog-centered d-flex justify-content-center align-items-center" role="document">
+    <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content handle-content" ref="title">
-        <div class="handlemodal-body mx-auto" ref="details">
+        <div class="handlemodal-body" ref="details">
           <div v-if="operation" class="handleContainer">
-            <form class="add-question d-flex flex-column align-items-left">
-              <div class="d-flex flex-column mb-2">
-                <label for="question">Question</label>
-                <textarea type="text" rows="3" v-model="pickedQuestion.question" 
-                  class="question-area" placeholder="Enter question here" required/>
-              </div>
-              <div class="mb-2">
-                <label for="answers-field">Answers</label>
-                <div class="input-group answers-area">
-                  <div class="input-group-prepend">
-                    <div class="input-group-text">
-                      <input type="radio" name="is-correct" value="0" 
-                        v-model="pickedQuestion.correctOne" aria-label="Answer one" required>
-                    </div>
+            <form class="add-question">
+              <label for="question">Question</label>
+              <textarea type="text" rows="3" v-model="pickedQuestion.question" 
+                class="question-area" placeholder="Enter question here" required/>
+              <label for="answers-field">Answers</label>
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <div class="input-group-text">
+                    <input type="radio" name="is-correct" value="0" 
+                      v-model="pickedQuestion.correctOne" aria-label="Answer one" required>
                   </div>
-                  <input type="text" class="form-control"
-                    v-model="pickedQuestion.answers[0].answer" placeholder="Answer one" required>
                 </div>
-                <div class="input-group">
-                  <div class="input-group-prepend">
-                    <div class="input-group-text">
-                      <input type="radio" name="is-correct" value="1" 
-                        v-model="pickedQuestion.correctOne" aria-label="Answer two" required>
-                    </div>
-                  </div>
-                  <input type="text" class="form-control" 
-                    v-model="pickedQuestion.answers[1].answer" placeholder="Answer two" required>
-                </div>
-                <div class="input-group">
-                  <div class="input-group-prepend">
-                    <div class="input-group-text">
-                      <input type="radio" name="is-correct" value="2" 
-                        v-model="pickedQuestion.correctOne" aria-label="Answer three" required>
-                    </div>
-                  </div>
-                  <input type="text" class="form-control" 
-                    v-model="pickedQuestion.answers[2].answer" placeholder="Answer three">
-                </div>
-                <div class="input-group">
-                  <div class="input-group-prepend">
-                    <div class="input-group-text">
-                      <input type="radio" name="is-correct" value="3" 
-                        v-model="pickedQuestion.correctOne" aria-label="Answer four" required>
-                    </div>
-                  </div>
-                  <input type="text" class="form-control" 
-                    v-model="pickedQuestion.answers[3].answer" placeholder="Answer four">
-                </div>
-                <small id="answerHelp" class="form-text text-muted">
-                  Add at least two, up to four answers and select the correct one</small>
+                <input type="text" class="form-control"
+                  v-model="pickedQuestion.answers[0].answer" placeholder="Answer one" required>
               </div>
-              <div class="d-flex flex-column">
-                <label for="reference">Reference</label>
-                <input type="email" class="mb-2 form-control" 
-                  v-model="pickedQuestion.reference" id="reference" placeholder="domain@link">
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <div class="input-group-text">
+                    <input type="radio" name="is-correct" value="1" 
+                      v-model="pickedQuestion.correctOne" aria-label="Answer two" required>
+                  </div>
+                </div>
+                <input type="text" class="form-control" 
+                  v-model="pickedQuestion.answers[1].answer" placeholder="Answer two" required>
               </div>
-              <div class="d-flex flex-column mb-2">
-                <label for="description">Description</label>
-                <textarea type="text" rows="3" v-model="pickedQuestion.description" 
-                  class="description-area" id="description" placeholder="Add explaination" required/>
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <div class="input-group-text">
+                    <input type="radio" name="is-correct" value="2" 
+                      v-model="pickedQuestion.correctOne" aria-label="Answer three" required>
+                  </div>
+                </div>
+                <input type="text" class="form-control" 
+                  v-model="pickedQuestion.answers[2].answer" placeholder="Answer three">
               </div>
-              <input type="password" class="mb-4 form-control" 
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <div class="input-group-text">
+                    <input type="radio" name="is-correct" value="3" 
+                      v-model="pickedQuestion.correctOne" aria-label="Answer four" required>
+                  </div>
+                </div>
+                <input type="text" class="form-control" 
+                  v-model="pickedQuestion.answers[3].answer" placeholder="Answer four">
+              </div>
+              <small id="answerHelp" class="form-text text-muted">
+                Add at least two, up to four answers and select the correct one</small>
+              <label for="reference">Reference</label>
+              <input type="email" class="mb-2 form-control" 
+                v-model="pickedQuestion.reference" id="reference" placeholder="domain@link">
+              <label for="description">Description</label>
+              <textarea type="text" rows="3" v-model="pickedQuestion.description" 
+                class="description-area" id="description" placeholder="Add explaination" required/>
+              <input type="password" class="form-control" 
                     v-model="secretCode" placeholder="Secret code">
-              <div class="d-flex justify-content-around w-100">
+              <div class="d-flex justify-content-around w-100 mt-3">
                 <button type="submit" class="btn btn-light submit-button" data-dismiss="modal">Cancel</button>
                 <button v-if="operation === 'edit'" type="submit" class="btn btn-danger submit-button" data-dismiss="modal"
                   @click.prevent="deleteQuestion(pickedQuestion)">Remove</button>
@@ -101,6 +93,9 @@ export default {
 
   methods: {
     addQuestion(form) {
+      form.secretCode = this.secretCode;
+      form.game = 'whatistheoutput';
+      form.correctOne = parseInt(form.correctOne);
       if (form.secretCode === process.env.VUE_APP_SECRET_CODE) {
         axios({
           data: form,
@@ -110,7 +105,7 @@ export default {
         })
         .then((response) => {
           // eslint-disable-next-line
-          console.log(response);
+          console.log(response.data.message);
         })
         .catch((error) => {
           // eslint-disable-next-line
@@ -118,7 +113,7 @@ export default {
         });
       } else {
         // eslint-disable-next-line
-        console.log('access denied!');
+        console.log('access denied');
       }
       this.$emit('resetMethod', 0);
     },
@@ -142,22 +137,27 @@ export default {
     },
 
     editQuestion(form) {
-      form.game = 'whatistheoutput';
       form.secretCode = this.secretCode;
-      axios({
-        data: form,
-        headers: { "x-api-key": process.env.VUE_APP_API_KEY },
-        method: 'put',
-        url: `${process.env.VUE_APP_BACKEND_SERVER_URL}/questions`
-      })
-      .then((response) => {
+      if (form.secretCode === process.env.VUE_APP_SECRET_CODE) {
+        form.game = 'whatistheoutput';
+        axios({
+          data: form,
+          headers: { "x-api-key": process.env.VUE_APP_API_KEY },
+          method: 'put',
+          url: `${process.env.VUE_APP_BACKEND_SERVER_URL}/questions`
+        })
+        .then((response) => {
+          // eslint-disable-next-line
+          console.log(response.data.message);
+        })
+        .catch((error) => {
+          // eslint-disable-next-line
+          console.log(error);
+        });
+      } else {
         // eslint-disable-next-line
-        console.log(response);
-      })
-      .catch((error) => {
-        // eslint-disable-next-line
-        console.log(error);
-      });
+        console.log('access denied');
+      }
     }
   }
 }
@@ -173,14 +173,13 @@ export default {
     background-color: #333;
     border-radius: 10px;
     padding: 20px;
-    width: 100%;
   }
 
   .handlemodal-footer {
     border: none;
   }
 
-  .question-area, .answers-area, .description-area {
+  .question-area, .description-area {
     background-color: #000;
     color: #fff;
     min-width: 300px;

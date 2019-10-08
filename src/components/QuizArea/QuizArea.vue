@@ -4,6 +4,10 @@
       class="quiz-container"
       ref="quizContainer">
       <div class="title" ref="title">What Is The Output?</div>
+      <div class="score" ref="questionCounter">
+        Question: {{ user.currentGame.numOfQuestions - user.currentGame.questions.length }} / {{ user.currentGame.numOfQuestions }}
+        <br>Score: {{ user.currentGame.score }}
+      </div>
       <question-field class="m-auto" 
         :questionText="currentQuestion.question"
         :key="currentQuestion.question"/>
@@ -23,10 +27,6 @@
             data-target="#seedetails">Explain</div>
           <div class="btn-outline-success next"
             @click="getAQuestion()">Next</div>
-        </div>
-        <div class="score" ref="questionCounter">
-          Question: {{ user.currentGame.numOfQuestions - user.currentGame.questions.length }} / {{ user.currentGame.numOfQuestions }}
-          <br>Score: {{ user.currentGame.score }}
         </div>
       </div>
     </div>
@@ -165,10 +165,10 @@ export default {
   }
 
   .quiz-container {
+    align-items: center;
     border-radius: 15px;
     display: flex;
     flex-direction: column;
-    margin: 0 auto;
     min-width: max-content;
     opacity: 0.9;
     padding: 10px;

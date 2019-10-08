@@ -66,7 +66,7 @@ export default {
   }
 
   .summary-container {
-    border-radius: 15px;
+    border:none;
     background-color: transparent;
   }
 

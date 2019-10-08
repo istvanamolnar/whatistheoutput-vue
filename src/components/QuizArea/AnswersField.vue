@@ -25,7 +25,7 @@ export default {
   data() {
     return {
       serverURL: process.env.VUE_APP_BACKEND_SERVER_URL,
-      theme: eventBus.user.theme || 'd-shattered'
+      theme: eventBus.user.theme
     }
   },
 

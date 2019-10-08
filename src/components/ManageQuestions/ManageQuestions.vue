@@ -6,17 +6,16 @@
         data-toggle="modal" 
         @click="newQuestion">Add new question</div>
     </nav>
-    <div v-if="questions" class="d-flex flex-column align-items-center">
+    <div v-if="questions">
       <div v-for="question in questions" :key="question._id" 
-        class="d-flex flex-column align-items-center justify-content-center answer-check" 
-        :ref="question._id">
+        class="answer-check">
         <img :src="imagesURL + '/images/wrench.png'" 
           class="edit-icon" alt="Edit icon"
           data-toggle="modal" data-target="#editquestion"
           @click="handleQuestion(question)"/>
-        <question-field class="question mx-auto mt-2" 
+        <question-field class="question" 
           :questionText="question.question"/>
-        <answers-field class="answers mx-auto p-2"
+        <answers-field class="answers"
           :currentQuestion="question" 
           :mode="mode"/>
       </div>
@@ -33,6 +32,7 @@ import QuestionField from '../QuizArea/QuestionField';
 import AnswersField from '../QuizArea/AnswersField';
 import HandleQuestion from '../ManageQuestions/HandleQuestion';
 import axios from 'axios';
+import { eventBus } from '../../main';
 
 export default {
   name: 'ManageQuestions',
@@ -66,7 +66,12 @@ export default {
   },
 
   created() {
-    axios(this.serverURL + '/whatistheoutput')
+    eventBus.user = { theme: 'd-shattered' }
+    axios({
+      headers: { "x-api-key": process.env.VUE_APP_API_KEY },
+      method: 'get',
+      url: this.serverURL + '/whatistheoutput'
+    })
     .then((response) => {
       this.questions = response.data;
     })
@@ -86,7 +91,7 @@ export default {
       this.pickedQuestion = question;
       // to select current correct answer in modal
       this.pickedQuestion.answers.forEach((answer, index) => {
-        answer.isCorrect ? this.pickedQuestion.correctOne = index : null;
+        answer.isCorrect === true ? this.pickedQuestion.correctOne = index : null;
       })
     },
 
@@ -113,7 +118,7 @@ export default {
 <style scoped>
   .manage-container {
     background-repeat: repeat;
-    padding-top: 50px;
+    padding: 50px 0;
     width: 100%;
   }
 
@@ -128,19 +133,21 @@ export default {
     z-index: 1;
   }
 
-  .question-container {
-    margin: 15px;
-  }
-
   .answer-check {
+    align-items: center;
     background-color: #000;
-    margin-top: 30px;
-    padding: 0;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: 30px auto;
+    padding: 10px;
+    width: max-content;
   }
 
   .edit-icon {
     height: 25px;
-    margin: 10px 10px 0 0;
+    margin: 10px;
     width: 25px;
     align-self:flex-end
   }

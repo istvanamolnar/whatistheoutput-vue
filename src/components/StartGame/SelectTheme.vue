@@ -1,13 +1,13 @@
 <template>
-  <div class="d-flex align-items-center h-100 m-0 main" ref="main">
+  <div class="main" ref="main">
     <div class="top">
-      <div class="h3 p-2 m-0 chose-theme" ref="chooseTheme">Choose theme:</div>
-      <div class="container-fluid bg-transparent p-0 m-0 d-flex justify-content-center">
-        <div class="row m-0 justify-content-center">
-          <img :src="imagesURL + '/images/' + background + '.png'" class="theme"
-            v-for="background in themes" :key="background"
-            @click="changeTheme" :alt="background">
-        </div>
+      <div class="chose-theme" ref="chooseTheme">Choose theme:</div>
+      <div class="select-container">
+        <img :src="imagesURL + '/images/' + background + '.png'" 
+          class="theme"
+          v-for="background in themes" :key="background"
+          @click="changeTheme" 
+          :alt="background">
       </div>
     </div>
     <div class="bottom">
@@ -21,19 +21,20 @@
           <span class="highlight"></span><br>
         </div>
       </div>
-      <div class="d-flex flex-column align-items-center button-container">
+      <div class="button-container">
         <input class="text" type="text"
           v-model="nickname"
           onfocus="this.value = this.value === 'Enter your name' ? '' : this.value"
           onblur="this.value = this.value === '' ? 'Enter your name' : this.value"
+          @keydown.enter="startGame"
           ref="nameInput" required/>
         <div class="letsplay btn btn-success"
-          @click="startGame()" 
+          @click="startGame" 
           ref="startButton">Let's play!</div>
       </div>
     </div>
     <welcome-page/>
-    <img :src="imagesURL + '/images/settings.png'" class="manage-questions" @click="$router.push('manage')"/>
+    <img :src="imagesURL + '/images/settings.png'" class="manage-questions" @click="manageQuestions"/>
     <a href="https://gitlab.com/istvanamolnar/whatistheoutput" target="_blank"><img :src="imagesURL + '/images/gitlab.png'" class="gitlab-icon"/></a> 
   </div>
 </template>
@@ -73,15 +74,15 @@ export default {
       });
     }, 500);
     this.$refs.main.style.backgroundImage = `url('${this.imagesURL}/images/d-bicycles.png')`;
-    this.$refs.chooseTheme.style.backgroundColor = 'rgba(0, 0, 0, 0.6)';
-    this.$refs.chooseTheme.style.color = 'rgba(255, 255, 255, 0.6)';
-    this.$refs.nameInput.style.backgroundColor = 'rgba(0, 0, 0, 0.6)';
+    this.$refs.chooseTheme.style.backgroundColor = 'rgb(0, 0, 0)';
+    this.$refs.chooseTheme.style.color = 'rgb(255, 255, 255)';
+    this.$refs.nameInput.style.backgroundColor = 'rgb(0, 0, 0';
     this.$refs.nameInput.style.color = '#009b48';
-    this.$refs.questionCounter.style.backgroundColor = 'rgba(0, 0, 0, 0.6)';
-    this.$refs.questionCounter.style.color = 'rgba(255, 255, 255, 0.6)';
+    this.$refs.questionCounter.style.backgroundColor = 'rgb(0, 0, 0)';
+    this.$refs.questionCounter.style.color = 'rgb(255, 255, 255)';
     this.$refs.rangeValue.style.color = '#3ca744';
     this.$refs.startButton.style.backgroundColor = '#009b48';
-    this.$refs.startButton.style.color = 'rgba(255, 255, 255, 0.6)';
+    this.$refs.startButton.style.color = 'rgb(255, 255, 255)';
   },
 
   methods: {
@@ -112,7 +113,7 @@ export default {
             score: 0
           }
         };
-        axios.get(`${process.env.VUE_APP_BACKEND_SERVER_URL}/whatistheoutput?numOfQuestions=${this.numOfQuestions}`, { crossdomain: true })
+        axios.get(`${process.env.VUE_APP_BACKEND_SERVER_URL}/whatistheoutput?numOfQuestions=${this.numOfQuestions}`)
         .then(res => {
           eventBus.user.currentGame.questions = res.data;
         })
@@ -120,27 +121,27 @@ export default {
         // eslint-disable-next-line
         .catch(err => console.log(err));
       } else {
-        const isBlack = this.$refs.nameInput.style.backgroundColor === 'rgba(0, 0, 0, 0.6)';
-        this.$refs.nameInput.style.backgroundColor = isBlack ? 'rgba(255, 255, 255, 0.6)' : 'rgba(0, 0, 0, 0.6)';
+        const isBlack = this.$refs.nameInput.style.backgroundColor === 'rgb(0, 0, 0)';
+        this.$refs.nameInput.style.backgroundColor = isBlack ? 'rgb(255, 255, 255)' : 'rgb(0, 0, 0)';
       }
     },
 
     changeTheme(event) {
       this.theme = event.target.alt;
       if (this.theme[0] === 'd') {
-        this.$refs.nameInput.style.backgroundColor = 'rgba(0, 0, 0, 0.6)';
+        this.$refs.nameInput.style.backgroundColor = 'rgb(0, 0, 0)';
         this.$refs.nameInput.style.color = '#009b48';
-        this.$refs.chooseTheme.style.backgroundColor = 'rgba(0, 0, 0, 0.6)';
+        this.$refs.chooseTheme.style.backgroundColor = 'rgb(0, 0, 0)';
         this.$refs.chooseTheme.style.color = '#fff';
-        this.$refs.questionCounter.style.backgroundColor = 'rgba(0, 0, 0, 0.6)';
-        this.$refs.questionCounter.style.color = 'rgba(255, 255, 255, 0.6)';
+        this.$refs.questionCounter.style.backgroundColor = 'rgb(0, 0, 0)';
+        this.$refs.questionCounter.style.color = 'rgb(255, 255, 255)';
       } else if (this.theme[0] === 'l') {
-        this.$refs.nameInput.style.backgroundColor = 'rgba(255, 255, 255, 0.6)';
+        this.$refs.nameInput.style.backgroundColor = 'rgb(255, 255, 255)';
         this.$refs.nameInput.style.color = '#009b48';
-        this.$refs.chooseTheme.style.backgroundColor = 'rgba(255, 255, 255, 0.6)';
+        this.$refs.chooseTheme.style.backgroundColor = 'rgb(255, 255, 255)';
         this.$refs.chooseTheme.style.color = '#000';
-        this.$refs.questionCounter.style.backgroundColor = 'rgba(255, 255, 255, 0.6)';
-        this.$refs.questionCounter.style.color = 'rgba(0, 0, 0, 0.6)';
+        this.$refs.questionCounter.style.backgroundColor = 'rgb(255, 255, 255)';
+        this.$refs.questionCounter.style.color = 'rgb(0, 0, 0)';
       } else {
         // eslint-disable-next-line
         console.log("Something went wrong");
@@ -157,12 +158,40 @@ export default {
       } else {
         this.$refs.rangeValue.style.color = '#3ca744';
       }
+    },
+    manageQuestions() {
+      eventBus.user = {theme: this.theme};
+      this.$router.push('manage');
     }
   },
 }
 
 </script>
 <style scoped>
+  .main {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  .chose-theme {
+    font-family: 'ZCOOL KuaiLe', cursive;
+    font-size: 26px;
+    font-weight: 700;
+    margin-top: 20px;
+    width: 100vw;
+    text-align: center;
+  }
+
+  .select-container {
+    background-color: transparent;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin: auto;
+    width: 240px;
+  }
   .text, .letsplay {
     border: 2px solid #888;
     border-radius: 5px;
@@ -177,6 +206,10 @@ export default {
 
   .text::placeholder {
     color: #3ca744;
+  }
+
+  .letsplay {
+    color: #fff;
   }
 
   .letsplay:hover {
@@ -196,13 +229,6 @@ export default {
     width: 89px;
   }
 
-  .chose-theme {
-    font-family: 'ZCOOL KuaiLe', cursive;
-    font-weight: 700;
-    margin-top: 30px;
-    width: 100vw;
-    text-align: center;
-  }
 
   .question-range {
     align-items: center;
@@ -294,20 +320,15 @@ export default {
     width: max-content;
   }
 
-  .row {
-    width: 240px;
-  }
-
   .button-container {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
     width: 320px;
   }
 
   .disabled {
     opacity: 1;
-  }
-
-  .main {
-    flex-direction: column;
   }
 
   .manage-questions {
@@ -331,12 +352,21 @@ export default {
   }
 
   @media all and (max-height: 420px) {
-    .row {
+    .select-container {
       width: 100vw;
+    }
+    .chose-theme {
+      font-size: 20px;
+      margin-top: 0;
+    }
+
+    .theme {
+      height: 60px;
+      width: 60px;
     }
   }
   @media all and (min-width: 950px) {
-    .row {
+    .select-container {
       width: 100vw;
     }
   }

@@ -1,18 +1,18 @@
 <template>
   <div class="modal fade" id="seedetails" tabindex="-1" role="dialog">
-    <div class="modal-dialog modal-dialog-centered d-flex justify-content-center align-items-center" role="document">
+    <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content" ref="title" >
-        <div class="modal-header mx-auto p-1">
+        <div class="modal-header">
           <div id="DetailsLabel">
-            <highlight-code lang="javascript" class="m-auto p-1 explain-code">
+            <highlight-code lang="javascript" class="explain-code">
               {{ questionText }}
             </highlight-code>
           </div>
         </div>
-        <div class="modal-body mx-auto explanation" ref="details">
-            <p class="m-0">{{ description }}</p>
+        <div class="modal-body explanation" ref="details">
+            <p>{{ description }}</p>
         </div>
-        <button type="button" class="btn btn-success mx-auto mb-3 font-weight-bold" data-dismiss="modal">Thanks</button>
+        <button type="button" class="btn btn-success thanks-button" data-dismiss="modal">Thanks</button>
       </div>
     </div>
   </div>
@@ -57,13 +57,20 @@ export default {
 
   .modal-header {
     border: none;
-  }
-
-  .explanation {
-    max-width: 100vw;
+    margin: auto;
   }
 
   .explain-code {
     font-size: 18px;
+  }
+
+  .explanation {
+    max-width: 100vw;
+    margin: auto;
+  }
+
+  .thanks-button {
+    margin: 0 auto 20px;
+    width: 100px;
   }
 </style>

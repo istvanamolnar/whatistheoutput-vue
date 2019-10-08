@@ -1,14 +1,12 @@
 <template>
-  <div class="modal fade p-3" id="rewardpage" tabindex="-2" role="dialog" ref="rewardPage">
-    <div v-if="dogPhoto" class="modal-dialog mx-auto my-3" :key="dogPhoto.toString()" role="document">
-      <div class="reward-content modal-content d-flex flex-column" ref="rewardContainer">
+  <div class="modal fade" id="rewardpage" tabindex="-2" role="dialog" ref="rewardPage">
+    <div v-if="dogPhoto" class="reward-dialog" :key="dogPhoto.toString()" role="document">
+      <div class="reward-content" ref="rewardContainer">
         <div class="congratulations">Congratulations!</div>
         <div class="congratulations">You have won:</div>
         <div class="reward">A random dog photo:</div>
-        <div class="d-flex justify-content-center align-items-center">
-          <img :src="dogPhoto" class="dog-photo bounce" alt="Random dog photo">
-        </div>
-        <div class="d-flex justify-content-center">
+        <img :src="dogPhoto" class="dog-photo bounce" alt="Random dog photo">
+        <div class="finish-button-container">
           <div class="btn btn-success finish-button" @click="openImage()" >{{opened ? "New game" : "Nice, cheers!"}}</div>
           <div class="btn btn-outline-danger finish-button" @click="getDogPhoto">I don't like this one</div>
         </div>
@@ -25,7 +23,8 @@ export default {
   data() {
     return {
       dogPhoto: null,
-      opened: false
+      opened: false,
+      theme: eventBus.user.theme
     }
   },
 
@@ -40,6 +39,15 @@ export default {
       axios.get('https://dog.ceo/api/breeds/image/random')
       .then((res) => {
         this.dogPhoto = res.data.message;
+        setTimeout(() => {
+          if (this.theme[0] === 'd') {
+            this.$refs.rewardContainer.style.backgroundColor = '#000';
+            this.$refs.rewardContainer.style.color = '#eee';
+          } else if (this.theme[0] === 'l') {
+            this.$refs.rewardContainer.style.color = '#111';
+            this.$refs.rewardContainer.style.backgroundColor = '#fff';
+          }
+        }, 0);
       })
       .catch((error) => {
         // eslint-disable-next-line
@@ -49,6 +57,7 @@ export default {
 
     saveUserData() {
       axios({
+        headers: { "x-api-key": process.env.VUE_APP_API_KEY },
         method: 'post',
         url: `${process.env.VUE_APP_BACKEND_SERVER_URL}/user`,
         data: {
@@ -83,7 +92,6 @@ export default {
   .congratulations {
     font-family: 'ZCOOL KuaiLe', cursive;
     font-size: 30px;
-    margin: auto;
     max-width: 300px;
   }
 
@@ -99,24 +107,49 @@ export default {
 
   .finish-button {
     width: max-content;
-    margin: 20px auto;;
+    margin: 20px 10px;
   }
 
   .finish-button:hover {
     cursor: pointer;
   }
 
-  .reward-content {
-    border: 1px solid #888;
+  .reward-dialog {
+    width: 450px;
+    margin: auto;
   }
 
-  .modal-content {
-    background-color: #eee;
+  .reward-content {
+    align-items: center;
+    border: 1px solid #888;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
   }
 
   .bounce {
     animation: bounce-in 0.5s;
   }
+
+  @media all and (max-width: 450px) {
+    .reward-dialog {
+      width: 100vw;
+    }
+
+    .finish-button-container {
+      align-items: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding-top: 10px;
+    }
+
+    .finish-button {
+      margin: 0 auto 10px;
+    }
+  }
+
   @keyframes bounce-in {
     0% {
       transform: scale(0);
