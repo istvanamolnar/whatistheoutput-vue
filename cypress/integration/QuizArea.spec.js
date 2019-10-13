@@ -1,6 +1,6 @@
 describe('Quiz Area', function() {
   beforeEach(() => {
-    cy.visit('localhost:8080')
+    cy.visit('https://istvanamolnar.github.io')
     cy.wait(1000)
     cy.get('.okay-button').click()
     cy.get('.text')

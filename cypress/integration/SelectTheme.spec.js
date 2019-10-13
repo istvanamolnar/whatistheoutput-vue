@@ -1,6 +1,6 @@
 describe('Start Game', function() {
   beforeEach(() => {
-    cy.visit('localhost:8080')
+    cy.visit('https://istvanamolnar.github.io')
     cy.wait(1000)
     cy.get('.okay-button').click()
   })
@@ -18,22 +18,22 @@ describe('Start Game', function() {
     .each(($el) => {
       cy.wrap($el).click()
       cy.wait(300)
-      cy.get('.h3').should('have.css', 'background-color', $el.context.alt[0] === 'd' ? 'rgba(0, 0, 0, 0.6)' : 'rgba(255, 255, 255, 0.6)')
-      cy.get('.num-of-questions').should('have.css', 'background-color', $el.context.alt[0] === 'd' ? 'rgba(0, 0, 0, 0.6)' : 'rgba(255, 255, 255, 0.6)')
-      cy.get('.text').should('have.css', 'background-color', $el.context.alt[0] === 'd' ? 'rgba(0, 0, 0, 0.6)' : 'rgba(255, 255, 255, 0.6)')
+      cy.get('.chose-theme').should('have.css', 'background-color', $el.context.alt[0] === 'd' ? 'rgb(0, 0, 0)' : 'rgb(255, 255, 255)')
+      cy.get('.num-of-questions').should('have.css', 'background-color', $el.context.alt[0] === 'd' ? 'rgb(0, 0, 0)' : 'rgb(255, 255, 255)')
+      cy.get('.text').should('have.css', 'background-color', $el.context.alt[0] === 'd' ? 'rgb(0, 0, 0)' : 'rgb(255, 255, 255)')
     })
   })
 
   it('checks name field background color toggle @click, if name field is null', () => {
     cy.get('.text')
-      .should('have.css', 'background-color', 'rgba(0, 0, 0, 0.6)')
+      .should('have.css', 'background-color', 'rgb(0, 0, 0)')
     for (let i = 0; i < 4; i++) {
       cy.get('.letsplay').click()
       cy.get('.text')
-      .should('have.css', 'background-color', 'rgba(255, 255, 255, 0.6)')
+      .should('have.css', 'background-color', 'rgb(255, 255, 255)')
       cy.get('.letsplay').click()
       cy.get('.text')
-        .should('have.css', 'background-color', 'rgba(0, 0, 0, 0.6)')
+        .should('have.css', 'background-color', 'rgb(0, 0, 0)')
     }
   })
 
