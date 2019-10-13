@@ -20,33 +20,43 @@
         <img class="treasure-chest" :src="imagesURL + '/images/treasure.png'" alt="treasure">
         <transition name="bounceIn">
           <div v-if="show" 
-            class="mt-3 btn btn-success d-flex justify-content-center align-items-center font-weight-bold claim-button"
+            class="btn btn-success claim-button"
             data-toggle="modal" 
             data-target="#rewardpage">OPEN</div>
         </transition>
         <transition name="bounceIn">
           <div v-if="show" 
-            class="mt-3 btn btn-info d-flex justify-content-center align-items-center font-weight-bold claim-button"
+            class="btn btn-info claim-button"
             data-toggle="modal" 
             data-target="#questionSummary">SUMMARY</div>
+        </transition>
+        <transition name="bounceIn">
+          <div v-if="show" 
+            class="btn btn-warning claim-button"
+            @click="reveal = true"
+            data-toggle="modal" 
+            data-target="#leaderboardpage">Leaderboard</div>
         </transition>
       </div>
     </transition>
     <reward-page/>
     <question-summary/>
+    <leaderboard-page v-if="reveal"/>
   </div>
 </template>
 
 <script>
 import RewardPage from './RewardPage';
 import QuestionSummary from './QuestionSummary';
+import Leaderboard from './Leaderboard';
 import { eventBus } from '../../main';
 
 export default {
   name: 'SummaryPage',
   components: {
     'reward-page': RewardPage,
-    'question-summary': QuestionSummary
+    'question-summary': QuestionSummary,
+    'leaderboard-page': Leaderboard
   },
 
   data() {
@@ -55,6 +65,7 @@ export default {
       name: eventBus.user.name,
       score: eventBus.user.currentGame.score,
       imagesURL: process.env.VUE_APP_IMAGES_URL,
+      reveal: false,
       show: false,
       theme: eventBus.user.theme
     }
@@ -105,7 +116,12 @@ export default {
   }
 
   .claim-button {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    font-weight: 700;
     height: 50px;
+    margin-top: 15px;
     width: 250px;
   }
 

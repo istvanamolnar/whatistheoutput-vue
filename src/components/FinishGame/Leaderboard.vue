@@ -1,0 +1,117 @@
+<template>
+  <div class="modal fade bg" id="leaderboardpage" tabindex="1" role="dialog" ref="bg">
+    <div class="modal-dialog leaderboard-container" role="document">
+      <div class="modal-content leaderboard-content">
+        <button class="btn btn-info close-button" data-dismiss="modal">Close</button>
+        <table class="table table-sm table-bordered table-container" ref="tableContainer">
+          <thead>
+            <tr>
+              <th scope="col" class="rank">#</th>
+              <th scope="col" class="name">name</th>
+              <th scope="col" class="score">score</th>
+            </tr>
+          </thead>
+          <tbody v-if="gameData">
+            <tr v-for="game in gameData" :key="game.gameId" class="table-row" ref="tableRow">
+              <th scope="row" class="rank">{{game.rank}}</th>
+              <td class="name"><strong>{{game.name}}</strong></td>
+              <td class="score">{{game.score}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import axios from 'axios';
+import { eventBus } from '../../main';
+
+export default {
+  name: 'Leaderboard',
+  data() {
+    return {
+      gameData: undefined
+    }
+  },
+
+  mounted() {
+    axios.get(`${process.env.VUE_APP_BACKEND_SERVER_URL}/user/leaderboard`)
+    .then(res => {
+      this.gameData = res.data.sort((a, b) => b.score - a.score);
+      this.gameData.forEach((game, index) => {
+        game.rank = index + 1;
+        if (game.name === eventBus.user.name) {
+          setTimeout(() => {
+            this.$refs.tableRow[index].style.backgroundColor = '#3ca744'
+            this.$refs.tableRow[index].style.color = '#fff'
+          }, 0);
+        }
+      });
+      if (eventBus.user.theme[0] === 'd') {
+        this.$refs.tableContainer.classList.add('table-dark');
+        this.$refs.tableContainer.style.color = '#ddd';
+      } else {
+        this.$refs.tableContainer.classList.add('table-light');
+        this.$refs.tableContainer.style.color = '#333';
+      }
+    })
+    // eslint-disable-next-line
+    .catch(err => console.log(err));
+  }
+}
+</script>
+
+<style scoped>
+  .leaderboard-container {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .content-container {
+    align-items: flex-end;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .leaderboard-content {
+    background-color: transparent;
+    max-width: max-content;
+    border: none;
+  }
+
+  .table-container {
+    cursor: default;
+    margin: auto;
+    width: 300px;
+    border: 3px solid #888;
+    border-radius: 10px;
+  }
+
+  .close-button {
+    align-self: flex-end;
+    margin-bottom: 15px;
+    width: 120px;
+  }
+
+  .name, .score, .rank {
+    border-color: #888;
+    text-align: center;
+  }
+
+  .table-row:nth-child(1) {
+    background-color: #ffd500;
+    color: #333;
+  }
+
+  .table-row:nth-child(2) {
+    background-color: #ccc;
+    color: #333;
+  }
+
+  .table-row:nth-child(3) {
+    background-color: #ff5900;
+  }
+</style>

@@ -1,5 +1,5 @@
 <template>
-  <div class="modal fade h-100 m-0 p-0" id="questionSummary" tabindex="-1" role="dialog">
+  <div class="modal fade" id="questionSummary" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-dialog-centered d-flex justify-content-center align-items-center dialog-container" role="document">
       <div class="modal-content summary-container" ref="title">
         <div v-if="answers" class="d-flex flex-column align-items-center summary-background">

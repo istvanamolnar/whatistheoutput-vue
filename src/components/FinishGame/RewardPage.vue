@@ -56,16 +56,19 @@ export default {
     },
 
     saveUserData() {
+      let gameData = {
+        name: eventBus.user.name,
+        score: eventBus.user.currentGame.score,
+        userAnswers: eventBus.user.currentGame.answers,
+        numOfQuestions: eventBus.user.currentGame.numOfQuestions,
+        game: eventBus.user.game
+      };
+
       axios({
         headers: { "x-api-key": process.env.VUE_APP_API_KEY },
         method: 'post',
         url: `${process.env.VUE_APP_BACKEND_SERVER_URL}/user`,
-        data: {
-          name: eventBus.user.name,
-          score: eventBus.user.currentGame.score,
-          userAnswers: eventBus.user.currentGame.answers,
-          game: eventBus.user.game
-        }
+        data: gameData
       })
       // eslint-disable-next-line
       .then((res) => console.log(res.data.message))

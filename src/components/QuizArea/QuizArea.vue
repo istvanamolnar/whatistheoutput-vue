@@ -131,6 +131,7 @@ export default {
         eventBus.user.currentGame.answers.push({
           answers: this.currentQuestion.answers,
           question: this.currentQuestion.question,
+          questionId: this.currentQuestion._id,
           selectedAnswer: value,
           description: this.currentQuestion.description
         });
