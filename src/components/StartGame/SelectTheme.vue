@@ -127,8 +127,8 @@ export default {
         this.fetchSomeQuestions()
         .then(() => this.$router.push('letsplay'));
       } else {
-        const isBlack = this.$refs.nameInput.style.backgroundColor === 'rgb(0, 0, 0)';
-        this.$refs.nameInput.style.backgroundColor = isBlack ? 'rgb(255, 255, 255)' : 'rgb(0, 0, 0)';
+        const isWhite = this.$refs.nameInput.style.backgroundColor === 'rgb(255, 255, 255)';
+        this.$refs.nameInput.style.backgroundColor = isWhite ? 'rgb(0, 0, 0)' : 'rgb(255, 255, 255)';
       }
     },
 

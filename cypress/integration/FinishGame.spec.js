@@ -1,5 +1,5 @@
 describe('Quiz Area', function() {
-  beforeEach(() => {
+  it('plays a game', () => {
     cy.visit('https://istvanamolnar.github.io')
     cy.wait(1000)
     cy.get('.okay-button').click()
@@ -16,9 +16,8 @@ describe('Quiz Area', function() {
       cy.wait(2000)
       cy.get('.next').click()
     }
-  })
-  it('opens summary', () => {
-    cy.wait(500)
+
+    cy.wait(1000)    
     cy.contains('SUMMARY').click()
     cy.wait(500)
     cy.get('.close-summary').click()
@@ -33,14 +32,7 @@ describe('Quiz Area', function() {
     cy.contains('New game').click()
   })
 
-  it('opens leaderboard', () => {
-    cy.wait(500)
-    cy.contains('Leaderboard').click()
-    cy.wait(500)
-    cy.get('.close-button').click()
-  })
-
-  it('gets new dog photo and starts new game', () => {
+/*   it('gets new dog photo and starts new game', () => {
     cy.wait(500)
     cy.contains('OPEN').click()
     cy.wait(500)
@@ -50,5 +42,5 @@ describe('Quiz Area', function() {
     cy.wait(500)
     cy.contains('cheers').click()
     cy.contains('New game').click()
-  })
+  }) */
 })
