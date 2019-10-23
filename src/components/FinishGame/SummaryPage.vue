@@ -49,7 +49,7 @@
 import RewardPage from './RewardPage';
 import QuestionSummary from './QuestionSummary';
 import Leaderboard from './Leaderboard';
-import { eventBus } from '../../main';
+import { mapGetters } from 'vuex';
 
 export default {
   name: 'SummaryPage',
@@ -59,23 +59,25 @@ export default {
     'leaderboard-page': Leaderboard
   },
 
+  computed: mapGetters([
+    'name',
+    'score',
+    'theme'
+  ]),
+
   data() {
     return {
-      answers: eventBus.user.currentGame.answers,
-      name: eventBus.user.name,
-      score: eventBus.user.currentGame.score,
       imagesURL: process.env.VUE_APP_IMAGES_URL,
       reveal: false,
-      show: false,
-      theme: eventBus.user.theme
+      show: false
     }
   },
 
   mounted() {
     // for css animation
     this.show = true;
+    this.$refs.claimContainer.style.backgroundImage = `url('${this.imagesURL}/images/${this.theme}.png')`;
     setTimeout(() => {
-      this.$refs.claimContainer.style.backgroundImage = `url('${this.imagesURL}/images/${this.theme}.png')`;
       if (this.theme[0] === 'd') {
         this.$refs.claimHeader.style.color = '#ddd';
         this.$refs.claimScore.style.color = '#ddd';

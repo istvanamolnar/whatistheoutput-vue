@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import { eventBus } from '../../main';
+import { mapGetters } from 'vuex';
 
 export default {
   name: 'ExplainModal',
@@ -28,11 +28,9 @@ export default {
     questionText: String
   },
 
-  data() {
-    return {
-      theme: eventBus.user.theme
-    }
-  },
+  computed: mapGetters([
+    'theme'
+  ]),
 
   mounted() {
     if (this.theme[0] === 'd') {

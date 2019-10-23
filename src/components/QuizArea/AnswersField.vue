@@ -12,7 +12,7 @@
   </div>
 </template>
 <script>
-import { eventBus } from '../../main';
+import { mapGetters } from 'vuex';
 
 export default {
   name: 'AnswersField',
@@ -22,10 +22,13 @@ export default {
     selected: Object
   },
 
+  computed: mapGetters([
+    'theme'
+  ]),
+
   data() {
     return {
-      serverURL: process.env.VUE_APP_BACKEND_SERVER_URL,
-      theme: eventBus.user.theme
+      serverURL: process.env.VUE_APP_BACKEND_SERVER_URL
     }
   },
 

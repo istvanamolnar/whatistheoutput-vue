@@ -1,12 +1,12 @@
 <template>
-  <div v-if="user" class="main-container" ref="mainContainer">
-    <div v-if="currentQuestion" 
+  <div class="main-container" ref="mainContainer">
+    <div v-if="currentQuestion"
       class="quiz-container"
       ref="quizContainer">
       <div class="title" ref="title">What Is The Output?</div>
       <div class="score" ref="questionCounter">
-        Question: {{ user.currentGame.numOfQuestions - user.currentGame.questions.length }} / {{ user.currentGame.numOfQuestions }}
-        <br>Score: {{ user.currentGame.score }}
+        Question: {{ numOfQuestions - questions.length + 1 }} / {{ numOfQuestions }}
+        <br>Score: {{ score }}
       </div>
       <question-field class="m-auto" 
         :questionText="currentQuestion.question"
@@ -35,7 +35,7 @@
         v-for="background in themes" :key="background"
         @click="changeTheme" :alt="background">
     </div>
-    <explain-modal 
+    <explain-modal v-if="currentQuestion" 
       :description="currentQuestion.description"
       :key="theme" 
       :questionText="currentQuestion.question"/>
@@ -46,8 +46,7 @@
 import QuestionField from './QuestionField';
 import AnswersField from './AnswersField';
 import ExplainModal from './ExplainModal';
-
-import { eventBus } from '../../main';
+import { mapActions, mapGetters } from 'vuex';
 
 export default {
   name: 'QuizArea',
@@ -56,44 +55,87 @@ export default {
     'question-field': QuestionField,
     'explain-modal': ExplainModal
   },
+
+  computed: mapGetters([
+    'currentQuestion',
+    'numOfQuestions',
+    'questions',
+    'score',
+    'theme',
+    'themes'
+  ]),
+
   data() {
     return {
-      currentQuestion : Object,
       imagesURL: process.env.VUE_APP_IMAGES_URL,
       mode: 'quiz',
       nextButtonRevealed: false,
       scoreCounter: 0,
-      selected: null,
-      theme: eventBus.user.theme,
-      themes: ['d-bicycles', 'd-shattered', 'l-alchemy', 'l-ahoy'],
-      user: eventBus.user
+      selected: null
     }
-  },
-
-  created() {
-    this.getAQuestion();
   },
 
   mounted() {
-    this.$refs.mainContainer.style.backgroundImage = `url('${process.env.VUE_APP_IMAGES_URL}/images/${eventBus.user.theme}.png')`;
-    if (this.theme[0] === 'd') {
-      this.$refs.quizContainer.style.backgroundColor = '#111';
-      this.$refs.quizContainer.style.color = '#eee';
-      this.$refs.title.style.color = '#ddd';
-      this.$refs.questionCounter.style.color = '#ddd';
-    } else if (this.theme[0] === 'l') {
-      this.$refs.quizContainer.style.backgroundColor = '#eee';
-      this.$refs.quizContainer.style.color = '#333';
-      this.$refs.title.style.color = '#222';
-      this.$refs.questionCounter.style.color = '#222';
-    }
+    this.setColors()
+    this.scoreCounter = Date.now();
   },
 
   methods: {
+    ...mapActions([
+      'addAnswer',
+      'fetchSomeQuestions',
+      'increaseScore',
+      'getNewQuestion',
+      'setTheme',
+    ]),
+
     changeTheme(event) {
-      eventBus.user.theme = event.target.alt;
-      this.theme = event.target.alt;
-      this.$refs.mainContainer.style.backgroundImage = `url('${process.env.VUE_APP_IMAGES_URL}/images/${eventBus.user.theme}.png')`;
+      this.setTheme(event.target.alt);
+      this.setColors();
+    },
+
+    getAQuestion() {
+      this.nextButtonRevealed = false;
+      this.selected = null;
+      this.getNewQuestion();
+      if (this.questions.length === 0) {
+        this.finishGame();
+      } else {
+        this.scoreCounter = Date.now();
+        this.getNewQuestion;
+      }
+    },
+
+    handleSelected(value) {
+      if (!this.selected) {
+        this.selected = value;
+        this.addAnswer({
+          answers: this.currentQuestion.answers,
+          question: this.currentQuestion.question,
+          questionId: this.currentQuestion._id,
+          selectedAnswer: value,
+          description: this.currentQuestion.description
+        });
+        setTimeout(() => {
+          this.nextButtonRevealed = true;
+        }, 1499);
+        setTimeout(() => {
+          if (value.isCorrect === true) {
+            this.increaseScore(Math.floor((Date.now() - this.scoreCounter) / 100));
+          }
+        }, 1500);
+      } else {
+        this.currentQuestion = null;
+        this.getAQuestion();
+      }
+    },
+
+    finishGame() {
+      this.$router.push('summary');
+    },
+
+    setColors() {
+      this.$refs.mainContainer.style.backgroundImage = `url('${process.env.VUE_APP_IMAGES_URL}/images/${this.theme}.png')`;
       if (this.theme[0] === 'd') {
         this.$refs.quizContainer.style.backgroundColor = '#111';
         this.$refs.quizContainer.style.color = '#eee';
@@ -110,47 +152,6 @@ export default {
         // eslint-disable-next-line
         console.log("Something went wrong");
       }
-    },
-
-    getAQuestion() {
-      this.nextButtonRevealed = false;
-      this.selected = null;
-      if (this.user.currentGame.questions.length === 0) {
-        delete eventBus.user.currentGame.questions;
-        this.finishGame();
-      } else {
-        this.scoreCounter = Date.now();
-        this.currentQuestion = this.user.currentGame.questions[0];
-        this.user.currentGame.questions = this.user.currentGame.questions.slice(1);
-      }
-    },
-
-    handleSelected(value) {
-      if (!this.selected) {
-        this.selected = value;
-        eventBus.user.currentGame.answers.push({
-          answers: this.currentQuestion.answers,
-          question: this.currentQuestion.question,
-          questionId: this.currentQuestion._id,
-          selectedAnswer: value,
-          description: this.currentQuestion.description
-        });
-        setTimeout(() => {
-          this.nextButtonRevealed = true;
-        }, 1499);
-        setTimeout(() => {
-          if (value.isCorrect === true) {
-            eventBus.user.currentGame.score += Math.floor((Date.now() - this.scoreCounter) / 100);
-          }
-        }, 1500);
-      } else {
-        this.currentQuestion = null;
-        this.getAQuestion();
-      }
-    },
-
-    finishGame() {
-      this.$router.push('summary');
     }
   }
 }

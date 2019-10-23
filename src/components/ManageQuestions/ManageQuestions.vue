@@ -6,8 +6,8 @@
         data-toggle="modal" 
         @click="newQuestion">Add new question</div>
     </nav>
-    <div v-if="questions">
-      <div v-for="question in questions" :key="question._id" 
+    <div v-if="allQuestions">
+      <div v-for="question in allQuestions" :key="question._id" 
         class="answer-check">
         <img :src="imagesURL + '/images/wrench.png'" 
           class="edit-icon" alt="Edit icon"
@@ -20,9 +20,7 @@
           :mode="mode"/>
       </div>
     </div>
-    <handle-question
-      :operation="operation"
-      :pickedQuestion="pickedQuestion"/>
+    <handle-question :operation="operation"/>
     <img :src="imagesURL + '/images/settings.png'" class="manage-questions" @click="$router.push('/')"/>
   </div>
 </template>
@@ -31,8 +29,7 @@
 import QuestionField from '../QuizArea/QuestionField';
 import AnswersField from '../QuizArea/AnswersField';
 import HandleQuestion from '../ManageQuestions/HandleQuestion';
-import axios from 'axios';
-import { eventBus } from '../../main';
+import { mapGetters, mapActions } from 'vuex';
 
 export default {
   name: 'ManageQuestions',
@@ -42,43 +39,22 @@ export default {
     'question-field': QuestionField
   },
 
+  computed: mapGetters([
+    'allQuestions',
+    'pickedQuestion',
+    'theme'
+  ]),
+
   data() {
     return {
       mode: 'manage',
       operation: null,
-      questions: [],
       imagesURL: process.env.VUE_APP_IMAGES_URL,
-      serverURL: process.env.VUE_APP_BACKEND_SERVER_URL,
-      theme: 'd-shattered',
-      pickedQuestion: {
-        answers: [
-          { answer: '' },
-          { answer: '' },
-          { answer: '' },
-          { answer: '' },
-        ],
-        correctOne: null,
-        description: [],
-        question: [], 
-        reference: ''
-      }
     };
   },
 
   created() {
-    eventBus.user = { theme: 'd-shattered' }
-    axios({
-      headers: { "x-api-key": process.env.VUE_APP_API_KEY },
-      method: 'get',
-      url: this.serverURL + '/whatistheoutput'
-    })
-    .then((response) => {
-      this.questions = response.data;
-    })
-    .catch((error) => {
-      // eslint-disable-next-line
-      console.log(error);
-    });
+    this.fetchAllQuestions();
   },
 
   mounted() {
@@ -86,9 +62,15 @@ export default {
   },
 
   methods: {
+    ...mapActions([
+      'openNewQuestion',
+      'fetchAllQuestions',
+      'setPickedQuestion'
+    ]),
+
     handleQuestion(question) {
       this.operation = 'edit';
-      this.pickedQuestion = question;
+      this.setPickedQuestion(question);
       // to select current correct answer in modal
       this.pickedQuestion.answers.forEach((answer, index) => {
         answer.isCorrect === true ? this.pickedQuestion.correctOne = index : null;
@@ -97,18 +79,7 @@ export default {
 
     newQuestion() {
       this.operation = 'new';
-      this.pickedQuestion = {
-        answers: [
-          { answer: '' },
-          { answer: '' },
-          { answer: '' },
-          { answer: '' },
-        ],
-        correctOne: null,
-        description: [],
-        question: [], 
-        reference: ''
-      };
+      this.openNewQuestion();
     }
   }
 }

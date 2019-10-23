@@ -17,13 +17,13 @@
         </p>
         <div id="slider">
           <input class="bar" type="range" id="rangeinput" 
-            value="4" min="4" max="12" @mousemove="changeValue" v-on="handlers" onchange="rangevalue.value=value" ref="value"/>
+            value="4" min="4" max="12" @mousemove="changeNumOfQuestions" v-on="handlers" onchange="rangevalue.value=value" ref="value"/>
           <span class="highlight"></span><br>
         </div>
       </div>
       <div class="button-container">
         <input class="text" type="text"
-          v-model="nickname"
+          :value="name"
           onfocus="this.value = this.value === 'Enter your name' ? '' : this.value"
           onblur="this.value = this.value === '' ? 'Enter your name' : this.value"
           @keydown.enter="startGame"
@@ -41,8 +41,7 @@
 
 <script>
 import WelcomePage from './WelcomePage';
-import { eventBus } from '../../main';
-import axios from 'axios';
+import { mapActions, mapGetters } from 'vuex';
 import $ from 'jquery';
 
 export default {
@@ -51,17 +50,20 @@ export default {
     'welcome-page': WelcomePage
   },
 
+  computed: mapGetters([
+    'name',
+    'numOfQuestions',
+    'theme',
+    'themes'
+  ]),
+
   data() {
     const vm = this;
     return {
-      nickname: 'Enter your name',
-      numOfQuestions: 4,
       imagesURL: process.env.VUE_APP_IMAGES_URL,
-      theme: 'd-bicycles',
-      themes: ['d-bicycles', 'd-shattered', 'l-alchemy', 'l-ahoy'],
       disabledPlayButton: false,
       handlers: {
-        touchmove: vm.divTouchmove
+        touchmove: vm.changeNumOfQuestions
       }
     }
   },
@@ -74,60 +76,18 @@ export default {
       });
     }, 500);
     this.$refs.main.style.backgroundImage = `url('${this.imagesURL}/images/d-bicycles.png')`;
-    this.$refs.chooseTheme.style.backgroundColor = 'rgb(0, 0, 0)';
-    this.$refs.chooseTheme.style.color = 'rgb(255, 255, 255)';
-    this.$refs.nameInput.style.backgroundColor = 'rgb(0, 0, 0';
-    this.$refs.nameInput.style.color = '#009b48';
-    this.$refs.questionCounter.style.backgroundColor = 'rgb(0, 0, 0)';
-    this.$refs.questionCounter.style.color = 'rgb(255, 255, 255)';
-    this.$refs.rangeValue.style.color = '#3ca744';
-    this.$refs.startButton.style.backgroundColor = '#009b48';
-    this.$refs.startButton.style.color = 'rgb(255, 255, 255)';
   },
 
   methods: {
-    changeValue() {
-      this.numOfQuestions = this.$refs.value.value;
-      if (this.$refs.rangeValue.value > 9) {
-        this.$refs.rangeValue.style.color = '#f00';
-      } else if (this.$refs.rangeValue.value > 6) {
-        this.$refs.rangeValue.style.color = '#ffd500';
-      } else {
-        this.$refs.rangeValue.style.color = '#3ca744';
-      }
-    },
-
-    startGame() {
-      this.numOfQuestions = this.$refs.value.value
-      if (this.$refs.nameInput.value !== '' && this.$refs.nameInput.value !== 'Enter your name' && !this.disabledPlayButton) {
-        this.disabledPlayButton = true; // otherwise play button can be clicked multiple times, which causes duplicated first question
-        eventBus.user = {
-          game: 'whatistheoutput',
-          name: this.nickname,
-          theme: this.theme,
-          themes: ['d-bicycles', 'd-shattered', 'l-alchemy', 'l-ahoy'],
-          currentGame: {
-            answers: [],
-            numOfQuestions: this.numOfQuestions,
-            questions: [],
-            score: 0
-          }
-        };
-        axios.get(`${process.env.VUE_APP_BACKEND_SERVER_URL}/whatistheoutput?numOfQuestions=${this.numOfQuestions}`)
-        .then(res => {
-          eventBus.user.currentGame.questions = res.data;
-        })
-        .then(() => this.$router.push('letsplay'))
-        // eslint-disable-next-line
-        .catch(err => console.log(err));
-      } else {
-        const isBlack = this.$refs.nameInput.style.backgroundColor === 'rgb(0, 0, 0)';
-        this.$refs.nameInput.style.backgroundColor = isBlack ? 'rgb(255, 255, 255)' : 'rgb(0, 0, 0)';
-      }
-    },
+    ...mapActions([
+      'fetchSomeQuestions',
+      'setTheme',
+      'setNumOfQuestions',
+      'setName'
+    ]),
 
     changeTheme(event) {
-      this.theme = event.target.alt;
+      this.setTheme(event.target.alt);
       if (this.theme[0] === 'd') {
         this.$refs.nameInput.style.backgroundColor = 'rgb(0, 0, 0)';
         this.$refs.nameInput.style.color = '#009b48';
@@ -149,8 +109,8 @@ export default {
       this.$refs.main.style.backgroundImage = `url('${this.imagesURL}/images/${this.theme}.png')`;
     },
 
-    divTouchmove() {
-      this.numOfQuestions = this.$refs.value.value;
+    changeNumOfQuestions() {
+      this.setNumOfQuestions(this.$refs.value.value);
       if (this.$refs.rangeValue.value > 9) {
         this.$refs.rangeValue.style.color = '#f00';
       } else if (this.$refs.rangeValue.value > 6) {
@@ -159,8 +119,21 @@ export default {
         this.$refs.rangeValue.style.color = '#3ca744';
       }
     },
+
+    startGame() {
+      if (this.$refs.nameInput.value !== '' && this.$refs.nameInput.value !== 'Enter your name' && !this.disabledPlayButton) {
+        this.disabledPlayButton = true; // otherwise play button can be clicked multiple times, which causes duplicated first question
+        this.setName(this.$refs.nameInput.value);
+        this.fetchSomeQuestions()
+        .then(() => this.$router.push('letsplay'));
+      } else {
+        const isBlack = this.$refs.nameInput.style.backgroundColor === 'rgb(0, 0, 0)';
+        this.$refs.nameInput.style.backgroundColor = isBlack ? 'rgb(255, 255, 255)' : 'rgb(0, 0, 0)';
+      }
+    },
+
+
     manageQuestions() {
-      eventBus.user = {theme: this.theme};
       this.$router.push('manage');
     }
   },
@@ -176,6 +149,8 @@ export default {
   }
 
   .chose-theme {
+    background-color: #000;
+    color: #fff;
     font-family: 'ZCOOL KuaiLe', cursive;
     font-size: 26px;
     font-weight: 700;
@@ -202,6 +177,10 @@ export default {
     margin: 7px;
     text-align: center;
     width: 100%;
+  }
+
+  .text {
+    background-color: rgb(0, 0, 0);
   }
 
   .text::placeholder {
@@ -295,6 +274,7 @@ export default {
   }
 
   #rangevalue {
+    color: #3ca744;
     font-size: 24px;
     font-family: 'ZCOOL KuaiLe', cursive;
     height: 40px;
@@ -309,7 +289,8 @@ export default {
     align-items: center;
     border-radius: 4px;
     border: 2px solid #000;
-    color: #000;
+    background-color : #000;
+    color: #fff;
     display: flex;
     font-size: 24px;
     font-family: 'ZCOOL KuaiLe', cursive;

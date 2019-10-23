@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import { eventBus } from '../../main';
+import { mapGetters } from 'vuex';
 import AnswerField from '../QuizArea/AnswersField';
 import QuestionField from '../QuizArea/QuestionField';
 
@@ -39,11 +39,14 @@ export default {
     'question-field': QuestionField
   },
 
+  computed: mapGetters([
+    'answers',
+    'theme'
+  ]),
+
   data() {
     return {
       mode: 'summary',
-      answers: eventBus.user.currentGame.answers,
-      theme: eventBus.user.theme,
       imagesURL: process.env.VUE_APP_IMAGES_URL
     }
   },

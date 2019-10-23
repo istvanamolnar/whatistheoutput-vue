@@ -11,8 +11,8 @@
               <th scope="col" class="score">score</th>
             </tr>
           </thead>
-          <tbody v-if="gameData">
-            <tr v-for="game in gameData" :key="game.gameId" class="table-row" ref="tableRow">
+          <tbody v-if="leaderboardData">
+            <tr v-for="game in leaderboardData" :key="game.gameId" class="table-row" ref="tableRow">
               <th scope="row" class="rank">{{game.rank}}</th>
               <td class="name"><strong>{{game.name}}</strong></td>
               <td class="score">{{game.score}}</td>
@@ -25,31 +25,36 @@
 </template>
 
 <script>
-import axios from 'axios';
-import { eventBus } from '../../main';
+import { mapGetters, mapActions } from 'vuex';
 
 export default {
   name: 'Leaderboard',
-  data() {
-    return {
-      gameData: undefined
-    }
+
+  computed: mapGetters([
+    'leaderboardData',
+    'name',
+    'theme'
+  ]),
+
+  methods: {
+    ...mapActions([
+      'getLeaderboard'
+    ])
   },
 
   mounted() {
-    axios.get(`${process.env.VUE_APP_BACKEND_SERVER_URL}/user/leaderboard`)
-    .then(res => {
-      this.gameData = res.data.sort((a, b) => b.score - a.score);
-      this.gameData.forEach((game, index) => {
+    this.getLeaderboard()
+    .then(() => {
+      this.leaderboardData.forEach((game, index) => {
         game.rank = index + 1;
-        if (game.name === eventBus.user.name) {
+        if (game.name === this.name) {
           setTimeout(() => {
             this.$refs.tableRow[index].style.backgroundColor = '#3ca744'
             this.$refs.tableRow[index].style.color = '#fff'
           }, 0);
         }
       });
-      if (eventBus.user.theme[0] === 'd') {
+      if (this.theme[0] === 'd') {
         this.$refs.tableContainer.classList.add('table-dark');
         this.$refs.tableContainer.style.color = '#ddd';
       } else {

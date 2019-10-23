@@ -1,7 +1,7 @@
 <template>
-  <div class="modal fade" id="welcomepage" tabindex="-1" role="dialog" ref="welcome-page">
+  <div class="modal fade" id="welcomepage" tabindex="-1" role="dialog">
     <div class="modal-dialog welcome-container" role="document">
-      <div class="welcome-content modal-content d-flex flex-column align-items-center">
+      <div class="welcome-content modal-content">
         <div class="modal-body">
           <div class="welcome-text">Welcome to</div>
           <div class="welcome-text">What Is The Output quiz!</div>
@@ -23,9 +23,12 @@ export default {
 
 <style scoped>
   .welcome-content {
+    align-items: center;
     background-color: #333;
     border-radius: 10px;
     color: #eee;
+    display: flex;
+    flex-direction: column;
     text-align: center;
   }
 

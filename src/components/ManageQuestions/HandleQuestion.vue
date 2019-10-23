@@ -77,14 +77,18 @@
 </template>
 
 <script>
-import axios from 'axios';
+import { mapGetters, mapActions } from 'vuex';
 
 export default {
   name: 'HandleQuestion',
   props: {
-    operation: String,
-    pickedQuestion: Object
+    operation: String
   },
+
+  computed: mapGetters([
+    'pickedQuestion',
+  ]),
+
   data() {
     return {
       secretCode: ''
@@ -92,71 +96,37 @@ export default {
   },
 
   methods: {
+    ...mapActions([
+      'addNew',
+      'deleteSelected',
+      'editSelected'
+    ]),
+
     addQuestion(form) {
       form.secretCode = this.secretCode;
       form.game = 'whatistheoutput';
       form.correctOne = parseInt(form.correctOne);
       if (form.secretCode === process.env.VUE_APP_SECRET_CODE) {
-        axios({
-          data: form,
-          headers: { "x-api-key": process.env.VUE_APP_API_KEY },
-          method: 'post',
-          url: `${process.env.VUE_APP_BACKEND_SERVER_URL}/questions`
-        })
-        .then((response) => {
-          // eslint-disable-next-line
-          console.log(response.data.message);
-        })
-        .catch((error) => {
-          // eslint-disable-next-line
-          console.log(error);
-        });
+        this.addNew(form)
       } else {
         // eslint-disable-next-line
         console.log('access denied');
       }
-      this.$emit('resetMethod', 0);
     },
 
     deleteQuestion(form) {
       form.secretCode = this.secretCode;
-      axios({
-        data: form,
-        headers: { "x-api-key": process.env.VUE_APP_API_KEY },
-        method: 'delete',
-        url: `${process.env.VUE_APP_BACKEND_SERVER_URL}/questions?questionId=${form._id}`
-      }, {crossdomain: true})
-      .then((response) => {
-        // eslint-disable-next-line
-        console.log(response);
-      })
-      .catch((error) => {
-        // eslint-disable-next-line
-        console.log(error);
-      });
+      this.deleteSelected({secretCode: this.secretCode, id: form._id});
     },
 
     editQuestion(form) {
       form.secretCode = this.secretCode;
       if (form.secretCode === process.env.VUE_APP_SECRET_CODE) {
         form.game = 'whatistheoutput';
-        axios({
-          data: form,
-          headers: { "x-api-key": process.env.VUE_APP_API_KEY },
-          method: 'put',
-          url: `${process.env.VUE_APP_BACKEND_SERVER_URL}/questions`
-        })
-        .then((response) => {
-          // eslint-disable-next-line
-          console.log(response.data.message);
-        })
-        .catch((error) => {
-          // eslint-disable-next-line
-          console.log(error);
-        });
+        this.editSelected(form);
       } else {
         // eslint-disable-next-line
-        console.log('access denied');
+        console.log('access denied!');
       }
     }
   }

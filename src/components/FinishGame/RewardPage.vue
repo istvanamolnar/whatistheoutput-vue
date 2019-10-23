@@ -8,70 +8,52 @@
         <img :src="dogPhoto" class="dog-photo bounce" alt="Random dog photo">
         <div class="finish-button-container">
           <div class="btn btn-success finish-button" @click="openImage()" >{{opened ? "New game" : "Nice, cheers!"}}</div>
-          <div class="btn btn-outline-danger finish-button" @click="getDogPhoto">I don't like this one</div>
+          <div class="btn btn-outline-danger finish-button" @click="handleDogPhoto()">I don't like this one</div>
         </div>
       </div>
     </div>
   </div>
 </template>
 <script>
-import axios from 'axios';
-import { eventBus } from '../../main';
+import { mapActions, mapGetters } from 'vuex';
 
 export default {
   name: 'RewardPage',
+
+  computed: mapGetters([
+    'dogPhoto',
+    'theme'
+  ]),
+
   data() {
     return {
-      dogPhoto: null,
-      opened: false,
-      theme: eventBus.user.theme
+      opened: false
     }
   },
 
   mounted() {
     this.getDogPhoto();
-    this.saveUserData();
+    this.saveGame();
   },
 
   methods: {
-    getDogPhoto() {
+    ...mapActions([
+      'getDogPhoto',
+      'saveGame'
+    ]),
+
+    handleDogPhoto() {
       this.opened = false;
-      axios.get('https://dog.ceo/api/breeds/image/random')
-      .then((res) => {
-        this.dogPhoto = res.data.message;
-        setTimeout(() => {
-          if (this.theme[0] === 'd') {
-            this.$refs.rewardContainer.style.backgroundColor = '#000';
-            this.$refs.rewardContainer.style.color = '#eee';
-          } else if (this.theme[0] === 'l') {
-            this.$refs.rewardContainer.style.color = '#111';
-            this.$refs.rewardContainer.style.backgroundColor = '#fff';
-          }
-        }, 0);
+      this.getDogPhoto()
+      .then(() => {
+        if (this.theme[0] === 'd') {
+          this.$refs.rewardContainer.style.backgroundColor = '#000';
+          this.$refs.rewardContainer.style.color = '#eee';
+        } else if (this.theme[0] === 'l') {
+          this.$refs.rewardContainer.style.color = '#111';
+          this.$refs.rewardContainer.style.backgroundColor = '#fff';
+        }
       })
-      .catch((error) => {
-        // eslint-disable-next-line
-        console.log(error);
-      });
-    },
-
-    saveUserData() {
-      let gameData = {
-        name: eventBus.user.name,
-        score: eventBus.user.currentGame.score,
-        userAnswers: eventBus.user.currentGame.answers,
-        numOfQuestions: eventBus.user.currentGame.numOfQuestions,
-        game: eventBus.user.game
-      };
-
-      axios({
-        headers: { "x-api-key": process.env.VUE_APP_API_KEY },
-        method: 'post',
-        url: `${process.env.VUE_APP_BACKEND_SERVER_URL}/user`,
-        data: gameData
-      })
-      // eslint-disable-next-line
-      .then((res) => console.log(res.data.message))
       .catch((error) => {
         // eslint-disable-next-line
         console.log(error);
