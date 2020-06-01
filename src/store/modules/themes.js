@@ -1,5 +1,5 @@
 const state = {
-  themes: ['d-bicycles', 'd-shattered', 'l-alchemy', 'l-ahoy'],
+  themes: ['d-bicycles', 'd-evolution', 'l-alchemy', 'l-ahoy'],
   theme: 'd-bicycles',
 };
 

@@ -32,8 +32,15 @@ export default {
   },
 
   mounted() {
-    this.getDogPhoto();
     this.saveGame();
+    this.getDogPhoto()
+      .then(() => {
+        this.setBgColor();
+      })
+      .catch((error) => {
+        // eslint-disable-next-line
+        console.log(error);
+      });
   },
 
   methods: {
@@ -46,6 +53,16 @@ export default {
       this.opened = false;
       this.getDogPhoto()
       .then(() => {
+        this.setBgColor();
+      })
+      .catch((error) => {
+        // eslint-disable-next-line
+        console.log(error);
+      });
+    },
+
+    setBgColor() {
+      setTimeout(() => {
         if (this.theme[0] === 'd') {
           this.$refs.rewardContainer.style.backgroundColor = '#000';
           this.$refs.rewardContainer.style.color = '#eee';
@@ -53,11 +70,7 @@ export default {
           this.$refs.rewardContainer.style.color = '#111';
           this.$refs.rewardContainer.style.backgroundColor = '#fff';
         }
-      })
-      .catch((error) => {
-        // eslint-disable-next-line
-        console.log(error);
-      });
+      }, 0);
     },
 
     openImage() {

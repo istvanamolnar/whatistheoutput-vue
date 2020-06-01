@@ -121,13 +121,14 @@ export default {
     },
 
     startGame() {
-      if (this.$refs.nameInput.value !== '' && this.$refs.nameInput.value !== 'Enter your name' && !this.disabledPlayButton) {
+      if (this.$refs.nameInput.value.trim() !== '' && this.$refs.nameInput.value !== 'Enter your name' && !this.disabledPlayButton) {
         this.disabledPlayButton = true; // otherwise play button can be clicked multiple times, which causes duplicated first question
         this.setName(this.$refs.nameInput.value);
         this.fetchSomeQuestions()
         .then(() => this.$router.push('letsplay'));
       } else {
         const isWhite = this.$refs.nameInput.style.backgroundColor === 'rgb(255, 255, 255)';
+        this.setName('Enter your name');
         this.$refs.nameInput.style.backgroundColor = isWhite ? 'rgb(0, 0, 0)' : 'rgb(255, 255, 255)';
       }
     },

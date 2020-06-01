@@ -21,6 +21,7 @@
         <transition name="bounceIn">
           <div v-if="show" 
             class="btn btn-success claim-button"
+            @click="isRewardRevealed = true"
             data-toggle="modal" 
             data-target="#rewardpage">OPEN</div>
         </transition>
@@ -33,15 +34,15 @@
         <transition name="bounceIn">
           <div v-if="show" 
             class="btn btn-warning claim-button"
-            @click="reveal = true"
+            @click="isLeaderboardRevealed = true"
             data-toggle="modal" 
             data-target="#leaderboardpage">Leaderboard</div>
         </transition>
       </div>
     </transition>
-    <reward-page/>
+    <reward-page v-if="isRewardRevealed"/>
     <question-summary/>
-    <leaderboard-page v-if="reveal"/>
+    <leaderboard-page v-if="isLeaderboardRevealed"/>
   </div>
 </template>
 
@@ -68,7 +69,8 @@ export default {
   data() {
     return {
       imagesURL: process.env.VUE_APP_IMAGES_URL,
-      reveal: false,
+      isRewardRevealed: false,
+      isLeaderboardRevealed: false,
       show: false
     }
   },
