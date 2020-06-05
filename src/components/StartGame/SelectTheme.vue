@@ -30,12 +30,21 @@
           ref="nameInput" required/>
         <div class="letsplay btn btn-success"
           @click="startGame" 
-          ref="startButton">Let's play!</div>
+          ref="startButton"
+        >
+          Let's play!
+        </div>
+      </div>
+      <div class="google-play-container" @click="openGooglePlay" ref="googlePlayContainer">
+        <img :src="imagesURL + '/images/google-play.png'" class="google-play"/>
+        <p class="google-play-button-text">Download</p>
       </div>
     </div>
-    <welcome-page/>
     <img :src="imagesURL + '/images/settings.png'" class="manage-questions" @click="manageQuestions"/>
-    <a href="https://gitlab.com/istvanamolnar/whatistheoutput" target="_blank"><img :src="imagesURL + '/images/gitlab.png'" class="gitlab-icon"/></a> 
+    <a href="https://gitlab.com/istvanamolnar/whatistheoutput" target="_blank">
+      <img :src="imagesURL + '/images/gitlab.png'" class="gitlab-icon"/>
+    </a> 
+    <welcome-page/>
   </div>
 </template>
 
@@ -76,6 +85,7 @@ export default {
       });
     }, 500);
     this.$refs.main.style.backgroundImage = `url('${this.imagesURL}/images/d-bicycles.png')`;
+    this.$refs.googlePlayContainer.style.backgroundColor = 'rgb(0, 0, 0)';
   },
 
   methods: {
@@ -95,6 +105,7 @@ export default {
         this.$refs.chooseTheme.style.color = '#fff';
         this.$refs.questionCounter.style.backgroundColor = 'rgb(0, 0, 0)';
         this.$refs.questionCounter.style.color = 'rgb(255, 255, 255)';
+        this.$refs.googlePlayContainer.style.backgroundColor = 'rgb(0, 0, 0)';
       } else if (this.theme[0] === 'l') {
         this.$refs.nameInput.style.backgroundColor = 'rgb(255, 255, 255)';
         this.$refs.nameInput.style.color = '#009b48';
@@ -102,6 +113,7 @@ export default {
         this.$refs.chooseTheme.style.color = '#000';
         this.$refs.questionCounter.style.backgroundColor = 'rgb(255, 255, 255)';
         this.$refs.questionCounter.style.color = 'rgb(0, 0, 0)';
+        this.$refs.googlePlayContainer.style.backgroundColor = 'rgb(255, 255, 255)';
       } else {
         // eslint-disable-next-line
         console.log("Something went wrong");
@@ -133,6 +145,9 @@ export default {
       }
     },
 
+    openGooglePlay() {
+      window.open('https://play.google.com/store/apps/details?id=io.github.istvanamolnar', '_blank');
+    },
 
     manageQuestions() {
       this.$router.push('manage');
@@ -321,12 +336,41 @@ export default {
     width: 15px;
   }
 
+  .google-play-container {
+    height: 46px;
+    width: 160px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+    border: 2px solid #3ca744;
+    margin: auto;
+    margin-top: 5px;
+  }
+
+  .google-play-container:hover {
+    cursor: pointer;
+  }
+
+  .google-play-button-text {
+    margin: 0;
+    margin-left: 5px;
+    color: #3ca744;
+    font-weight: 600;
+  }
+
+  .google-play {
+    height: 30px;
+    width: 30px;
+  }
+
   .gitlab-icon {
     bottom: 15px;
     height: 15px;
     position:fixed;
     left: 40px;
     width: 15px;
+    align-self: center;
   }
 
   .manage-questions:hover {

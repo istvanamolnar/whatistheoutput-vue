@@ -3,7 +3,7 @@ import axios from 'axios';
 const state = {
   answers: [],
   currentQuestion: null,
-  dogPhoto: null,
+  randomPhoto: null,
   game: 'whatistheoutput',
   leaderboardData: null,
   name: 'Enter your name',
@@ -15,7 +15,7 @@ const state = {
 const getters = {
   answers: state => state.answers,
   currentQuestion: state => state.questions[0],
-  dogPhoto: state => state.dogPhoto,
+  randomPhoto: state => state.randomPhoto,
   leaderboardData: state => state.leaderboardData,
   name: state => state.name,
   numOfQuestions: state => state.numOfQuestions,
@@ -33,14 +33,33 @@ const actions = {
     commit('fetchSomeQuestions', response.data);
   },
 
-  async getDogPhoto({ commit }) {
-    const response = await axios.get('https://dog.ceo/api/breeds/image/random')
-    commit('getDogPhoto', response.data.message);
+  async getRandomPhoto({ commit }) {
+    const response = await axios.get('https://source.unsplash.com/random/500x500')
+    commit('getRandomPhoto', response.request.responseURL);
   },
 
   async getLeaderboard({ commit }) {
     const response = await axios.get(`${process.env.VUE_APP_BACKEND_SERVER_URL}/user/leaderboard`)
     commit('getLeaderboard', response.data.sort((a, b) => b.score - a.score));
+  },
+
+  async downloadImage({ commit }, url) {
+    axios({
+      method: 'get',
+      url,
+      responseType: 'blob'
+    })
+    .then(response => {
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', 'random-photo.jpeg');
+      document.body.appendChild(link);
+      link.click();
+    })
+    // eslint-disable-next-line
+    .catch(() => console.log('error occured'));
+    commit('downloadImage');
   },
 
   getNewQuestion({ commit }) {
@@ -79,14 +98,16 @@ const actions = {
 const mutations = {
   addAnswer: (state, payload) => state.answers.push(payload),
   fetchSomeQuestions: (state, payload) => state.questions = payload,
-  getDogPhoto: (state, payload) => state.dogPhoto = payload,
+  getRandomPhoto: (state, payload) => state.randomPhoto = payload,
   getLeaderboard: (state, payload) => state.leaderboardData = payload,
   getNewQuestion: (state) => state.questions.shift(),
-  increaseScore: (state, value) => state.score += value,
+  increaseScore: (state, payload) => state.score += payload,
+  // eslint-disable-next-line
+  downloadImage: () => (console.log('downloaded')),
   // eslint-disable-next-line
   saveGame: () => (console.log('game saved')),
   setName: (state, payload) => state.name = payload,
-  setNumOfQuestions: (state, value) => state.numOfQuestions = value
+  setNumOfQuestions: (state, payload) => state.numOfQuestions = payload
 };
 
 export default {

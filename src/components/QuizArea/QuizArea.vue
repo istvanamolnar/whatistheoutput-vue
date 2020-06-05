@@ -83,7 +83,6 @@ export default {
   methods: {
     ...mapActions([
       'addAnswer',
-      'fetchSomeQuestions',
       'increaseScore',
       'getNewQuestion',
       'setTheme',

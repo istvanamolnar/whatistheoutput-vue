@@ -1,14 +1,14 @@
 <template>
   <div class="modal fade" id="rewardpage" tabindex="-2" role="dialog" ref="rewardPage">
-    <div v-if="dogPhoto" class="reward-dialog" :key="dogPhoto.toString()" role="document">
+    <div v-if="randomPhoto" class="reward-dialog" :key="randomPhoto.toString()" role="document">
       <div class="reward-content" ref="rewardContainer">
         <div class="congratulations">Congratulations!</div>
         <div class="congratulations">You have won:</div>
-        <div class="reward">A random dog photo:</div>
-        <img :src="dogPhoto" class="dog-photo bounce" alt="Random dog photo">
+        <div class="reward">A random photo:</div>
+        <img :src="randomPhoto" class="random-photo bounce" alt="Random unsplash photo">
         <div class="finish-button-container">
           <div class="btn btn-success finish-button" @click="openImage()" >{{opened ? "New game" : "Nice, cheers!"}}</div>
-          <div class="btn btn-outline-danger finish-button" @click="handleDogPhoto()">I don't like this one</div>
+          <div class="btn btn-outline-danger finish-button" @click="handleRandomPhoto()">I don't like this one</div>
         </div>
       </div>
     </div>
@@ -21,7 +21,7 @@ export default {
   name: 'RewardPage',
 
   computed: mapGetters([
-    'dogPhoto',
+    'randomPhoto',
     'theme'
   ]),
 
@@ -33,7 +33,7 @@ export default {
 
   mounted() {
     this.saveGame();
-    this.getDogPhoto()
+    this.getRandomPhoto()
       .then(() => {
         this.setBgColor();
       })
@@ -45,13 +45,14 @@ export default {
 
   methods: {
     ...mapActions([
-      'getDogPhoto',
-      'saveGame'
+      'getRandomPhoto',
+      'saveGame',
+      'downloadImage'
     ]),
 
-    handleDogPhoto() {
+    handleRandomPhoto() {
       this.opened = false;
-      this.getDogPhoto()
+      this.getRandomPhoto()
       .then(() => {
         this.setBgColor();
       })
@@ -77,7 +78,7 @@ export default {
       if (this.opened) {
         window.location.href = '/';
       } else {
-        window.open(this.dogPhoto, '_blank');
+        this.downloadImage(this.randomPhoto);
         this.opened = true;
       }
       
@@ -98,7 +99,7 @@ export default {
     margin: 10px auto;
   }
 
-  .dog-photo {
+  .random-photo {
     height: 90%;
     width: 90%;
   }
