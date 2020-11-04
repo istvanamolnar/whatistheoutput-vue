@@ -12,8 +12,8 @@
             </tr>
           </thead>
           <tbody v-if="leaderboardData">
-            <tr v-for="game in leaderboardData" :key="game.gameId" class="table-row" ref="tableRow">
-              <th scope="row" class="rank">{{game.rank}}</th>
+            <tr v-for="(game, index) in leaderboardData" :key="game.gameId" class="table-row" ref="tableRow">
+              <td class="rank">{{index + 1}}</td>
               <td class="name"><strong>{{game.name}}</strong></td>
               <td class="score">{{game.score}}</td>
             </tr>
@@ -46,7 +46,6 @@ export default {
     this.getLeaderboard()
     .then(() => {
       this.leaderboardData.forEach((game, index) => {
-        game.rank = index + 1;
         if (game.name === this.name) {
           setTimeout(() => {
             this.$refs.tableRow[index].style.backgroundColor = '#3ca744'
